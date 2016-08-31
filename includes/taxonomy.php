@@ -399,24 +399,24 @@ function econozel_query_terms_tax_query( $clauses, $taxonomies, $args ) {
 }
 
 /**
- * Return the total found rows for the term query
+ * Return the total found rows for the term query arguments
  *
  * @since 1.0.0
  *
- * @param array $args Original term query arguments.
+ * @param array $query_args Original term query arguments.
  * @return int Total found rows
  */
-function econozel_query_terms_found_rows( $args ) {
+function econozel_query_terms_found_rows( $query_args ) {
 
 	// Remove paging arguments
-	unset( $args['offset'], $args['paged'] );	
+	unset( $query_args['offset'], $query_args['paged'] );
 
 	// Define count query args
-	$args['fields'] = 'count';
-	$args['number'] = -1;
+	$query_args['fields'] = 'count';
+	$query_args['number'] = -1;
 
 	// Run count query
-	$count = get_terms( $args['taxonomy'], $args );
+	$count = get_terms( $query_args['taxonomy'], $query_args );
 
 	return (int) $count;
 }
