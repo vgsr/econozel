@@ -297,7 +297,6 @@ final class Econozel {
 	 *
 	 * Setup rules to create the following structures:
 	 * - `/{root}/`
-	 * - `/{root}/paged/{#}/`
 	 * - `/{root}/volume/{volume}/`
 	 * - `/{root}/volume/{volume}/paged/{#}/`
 	 * - `/{root}/volume/{volume}/{issue}/`
