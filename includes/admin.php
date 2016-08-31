@@ -1,4 +1,4 @@
-la<?php
+<?php
 
 /**
  * Econozel Admin Functions
