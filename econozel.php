@@ -9,7 +9,7 @@
 
 /**
  * Plugin Name:       Econozel
- * Description:       Present d' Econozel on your site
+ * Description:       Present d' Econozel on your site with Articles, Editions, and Volumes.
  * Plugin URI:        https://github.com/vgsr/econozel/
  * Version:           1.0.0
  * Author:            Laurens Offereins
