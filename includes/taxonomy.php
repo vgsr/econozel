@@ -363,7 +363,53 @@ function econozel_taxonomy_inline_edit( $column, $screen_type, $taxonomy = '' ) 
 /** Query *********************************************************************/
 
 /**
- * Modify the terms query clauses to add a tax query
+ * Modify the default term query arguments
+ *
+ * Filter available since WP 4.4.
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Default query args
+ * @param array $taxonomies Queried taxonomies
+ * @return array Default query args
+ */
+function econozel_query_terms_default_args( $args, $taxonomies ) {
+
+	// When querying a single taxonomy
+	if ( count( $taxonomies ) == 1 ) {
+		switch ( $taxonomies[0] ) {
+
+			// When querying Editions
+			case econozel_get_edition_tax_id() :
+
+				// Order by issue meta value, list latest issue first
+				$args['orderby'] = 'meta_issue';
+				$args['order']   = 'DESC';
+				$args['meta_query'] = array(
+					'meta_issue' => array(
+						'key'     => 'issue',
+						'compare' => 'EXISTS'
+					)
+				);
+
+				break;
+
+			// When querying Volumes
+			case econozel_get_volume_tax_id() :
+
+				// Order by slug descending, list latest Volume first
+				$args['orderby'] = 'slug';
+				$args['order']   = 'DESC';
+
+				break;
+		}
+	}
+
+	return $args;
+}
+
+/**
+ * Modify the terms query clauses
  *
  * @since 1.0.0
  *
@@ -372,26 +418,57 @@ function econozel_taxonomy_inline_edit( $column, $screen_type, $taxonomy = '' ) 
  * @param array $args Query arguments
  * @return array Query clauses
  */
-function econozel_query_terms_tax_query( $clauses, $taxonomies, $args ) {
+function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 
-	// When Volume taxonomy is queried for Editions
-	if ( isset( $args['econozel_volume'] ) && array( econozel_get_edition_tax_id() ) == $taxonomies ) {
+	// When querying Editions ...
+	if ( array( econozel_get_edition_tax_id() ) == $taxonomies ) {
 
-		// Setup tax query object
-		$tax_query = new WP_Tax_Query( array(
-			array(
-				'taxonomy' => econozel_get_volume_tax_id(),
-				'terms'    => array( (int) $args['econozel_volume'] ),
-				'field'    => 'term_id'
-			)
-		) );
+		// ... by single Volume
+		if ( isset( $args['econozel_volume'] ) ) {
 
-		// Get tax query SQL. 't' is the query's terms table alias
-		$tax_clauses = $tax_query->get_sql( 't', 'term_id' );
+			/**
+			 * Setup tax query object to query by single Volume
+			 */
+			$tax_query = new WP_Tax_Query( array(
+				array(
+					'taxonomy' => econozel_get_volume_tax_id(),
+					'terms'    => array( (int) $args['econozel_volume'] ),
+					'field'    => 'term_id'
+				)
+			) );
 
-		// Append tax clauses
-		$clauses['join']  .= $tax_clauses['join'];
-		$clauses['where'] .= $tax_clauses['where'];
+			// Get tax query SQL. 't' is the query's terms table alias
+			$tax_clauses = $tax_query->get_sql( 't', 'term_id' );
+
+			// Append tax clauses
+			$clauses['join']  .= $tax_clauses['join'];
+			$clauses['where'] .= $tax_clauses['where'];
+
+		// ... by all Volumes, ordering by issue
+		} elseif ( 'meta_issue' === $args['orderby'] ) {
+			global $wpdb;
+
+			/**
+			 * Append clauses to join on Volume term relationships
+			 *
+			 * This is done not through `WP_Tax_Query` because it lacks alternate
+			 * table aliases when generating single level tax queries.
+			 */
+			$clauses['join']  .= " INNER JOIN {$wpdb->term_relationships} tr ON ( t.term_id = tr.object_id )";
+			$clauses['join']  .= " INNER JOIN {$wpdb->term_taxonomy} tt2 ON ( tr.term_taxonomy_id = tt2.term_taxonomy_id )";
+			$clauses['where'] .= $wpdb->prepare( " AND ( tt2.taxonomy = %s )", econozel_get_volume_tax_id() );
+
+			// Get all Volumes ID's, properly ordered
+			$volumes = get_terms( econozel_get_volume_tax_id(), array( 'fields' => 'ids' ) );
+			$volumes = ! empty( $volumes ) ? implode( ', ', $volumes ) : '0';
+
+			/**
+			 * Change order to list the latest issue in the latest Volume first
+			 * Thus: 1. Volume order DESC 2. Edition order DESC
+			 */
+			$clauses['orderby'] = str_replace( 'ORDER BY ', "ORDER BY FIELD( tr.term_taxonomy_id, $volumes ), ", $clauses['orderby'] );
+			$clauses['order']   = 'DESC';
+		}
 	}
 
 	return $clauses;
