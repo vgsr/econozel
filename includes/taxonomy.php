@@ -373,7 +373,6 @@ function econozel_taxonomy_inline_edit( $column, $screen_type, $taxonomy = '' ) 
  * @return array Query clauses
  */
 function econozel_query_terms_tax_query( $clauses, $taxonomies, $args ) {
-	global $wpdb;
 
 	// When Volume taxonomy is queried for Editions
 	if ( isset( $args['econozel_volume'] ) && array( econozel_get_edition_tax_id() ) == $taxonomies ) {
