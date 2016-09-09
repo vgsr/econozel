@@ -557,7 +557,7 @@ function econozel_get_theme_compat_template() {
 		'index.php',
 	);
 
-	return econozel_get_query_template( 'archive', $templates );
+	return econozel_get_query_template( 'econozel-compat', $templates );
 }
 
 /** Archives ******************************************************************/
