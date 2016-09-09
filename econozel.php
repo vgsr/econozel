@@ -336,14 +336,14 @@ final class Econozel {
 		add_rewrite_rule( $root_slug    . $root_rule,   'index.php?' . $root_id . '=1', $priority );
 
 		// Volume rules
+		add_rewrite_rule( $volume_slug  . $paged_rule,  'index.php?' . $volume_root_id . '=1&'           . $paged_id . '=$matches[1]', $priority );
 		add_rewrite_rule( $volume_slug  . $root_rule,   'index.php?' . $volume_root_id . '=1',                                         $priority );
-		add_rewrite_rule( $volume_slug  . $paged_rule,  'index.php?' . $volume_root_id . '=1&'           . $paged_id . '=$matches[2]', $priority );
-		add_rewrite_rule( $volume_rule  . $root_rule,   'index.php?' . $volume_id      . '=$matches[1]',                               $priority );
 		add_rewrite_rule( $volume_rule  . $paged_rule,  'index.php?' . $volume_id      . '=$matches[1]&' . $paged_id . '=$matches[2]', $priority );
+		add_rewrite_rule( $volume_rule  . $root_rule,   'index.php?' . $volume_id      . '=$matches[1]',                               $priority );
 
 		// Edition rules
-		add_rewrite_rule( $edition_rule . $root_rule,   'index.php?' . $volume_id . '=$matches[1]&' . $issue_id . '=$matches[2]',                               $priority );
 		add_rewrite_rule( $edition_rule . $paged_rule,  'index.php?' . $volume_id . '=$matches[1]&' . $issue_id . '=$matches[2]&' . $paged_id . '=$matches[3]', $priority );
+		add_rewrite_rule( $edition_rule . $root_rule,   'index.php?' . $volume_id . '=$matches[1]&' . $issue_id . '=$matches[2]',                               $priority );
 	}
 }
 
