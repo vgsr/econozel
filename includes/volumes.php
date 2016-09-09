@@ -95,10 +95,10 @@ function econozel_has_volumes() {
 	// Get array keys
 	$term_keys = array_keys( $query->terms );
 
-	// This was not the last element
-	$has_next = ( $query->current_term != end( $term_keys ) );
+	// Current element is not the last
+	$has_next = $query->term_count && $query->current_term < end( $term_keys );
 
-	// We're in the loop when there are still posts
+	// We're in the loop when there are still elements
 	if ( ! $has_next ) {
 		$query->in_the_loop = false;
 
