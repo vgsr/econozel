@@ -24,6 +24,35 @@ function econozel_get_theme_compat_dir() {
 }
 
 /**
+ * Return the stack of template path locations
+ *
+ * @since 1.0.0
+ *
+ * @return array Template locations
+ */
+function econozel_get_template_stack() {
+	return apply_filters( 'econozel_get_template_stack', array(
+		get_stylesheet_directory(),     // Child theme
+		get_template_directory(),       // Parent theme
+		econozel_get_theme_compat_dir() // Plugin theme-compat
+	) );
+}
+
+/**
+ * Return the template folder locations to look for files
+ *
+ * @since 1.0.0
+ *
+ * @return array Template folders
+ */
+function econozel_get_template_locations() {
+	return apply_filters( 'econozel_get_template_locations', array(
+		'econozel', // econozel folder
+		''          // root folder
+	) );
+}
+
+/**
  * Filter the theme's template for theme compatability
  *
  * @since 1.0.0
@@ -284,18 +313,9 @@ function econozel_locate_template( $template_names, $load = false, $require_once
 	// No file found yet
 	$located = '';
 
-	// Define template stack
-	$stack = apply_filters( 'econozel_get_template_stack', array(
-		get_stylesheet_directory(),     // Child theme
-		get_template_directory(),       // Parent theme
-		econozel_get_theme_compat_dir() // Plugin theme-compat
-	) );
-
-	// Define template locations
-	$locations = apply_filters( 'econozel_get_template_locations', array(
-		'econozel',
-		''
-	) );
+	// Get template stack and locations
+	$stack     = econozel_get_template_stack();
+	$locations = econozel_get_template_locations();
 
 	// Try to find a template file
 	foreach ( (array) $template_names as $template_name ) {
