@@ -73,13 +73,12 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->is_home = false;
 
 		// Setup query object
-		if ( econozel_query_volumes( array(
-			'paged' => $posts_query->get( 'paged' )
-		) ) ) {
+		if ( econozel_query_volumes() ) {
 
 			// Define query result
 			$posts_query->found_posts   = $eco->volume_query->found_terms;
 			$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
+
 		}
 
 	// Edition Page
@@ -157,8 +156,7 @@ function econozel_parse_query( $posts_query ) {
 
 		// Setup query object
 		if ( econozel_query_editions( array(
-			'econozel_volume' => $the_volume->term_id,
-			'paged'           => $posts_query->get( 'paged' )
+			'econozel_volume' => $the_volume->term_id
 		) ) ) {
 
 			// Define query result
@@ -584,6 +582,33 @@ function econozel_have_archive() {
 	}
 
 	return $retval;
+}
+
+/**
+ * Return the currently queried page number
+ *
+ * @since 1.0.0
+ *
+ * @return int Queried page number
+ */
+function econozel_get_paged() {
+	global $wp_query;
+
+	// Check the query var
+	if ( get_query_var( 'paged' ) ) {
+		$paged = get_query_var( 'paged' );
+
+	// Check query paged
+	} elseif ( ! empty( $wp_query->query['paged'] ) ) {
+		$paged = $wp_query->query['paged'];
+	}
+
+	// Paged found
+	if ( ! empty( $paged ) )
+		return (int) $paged;
+
+	// Default to first page
+	return 1;
 }
 
 /**
