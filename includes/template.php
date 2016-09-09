@@ -563,6 +563,30 @@ function econozel_get_theme_compat_template() {
 /** Archives ******************************************************************/
 
 /**
+ * Return whether the current archive has query results
+ *
+ * @since 1.0.0
+ *
+ * @return bool Whether the current archive page has query results
+ */
+function econozel_have_archive() {
+
+	// Define return value
+	$retval = false;
+
+	// Volume Archive
+	if ( econozel_is_volume_archive() && econozel_has_volumes() ) {
+		$retval = true;
+
+	// Edition Archive
+	} elseif ( econozel_is_edition() && econozel_has_editions() ) {
+		$retval = true;
+	}
+
+	return $retval;
+}
+
+/**
  * Modify the document title parts for plugin pages
  *
  * @since 1.0.0
