@@ -66,19 +66,23 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->econozel_is_volume_archive = true;
 		$posts_query->is_archive                 = true;
 
-		// Make sure 404 is not set
-		$posts_query->is_404 = false;
-
-		// Correct is_home variable
-		$posts_query->is_home = false;
-
 		// Setup query object
 		if ( econozel_query_volumes() ) {
+
+			// Make sure 404 is not set
+			$posts_query->is_404 = false;
+
+			// Correct is_home variable
+			$posts_query->is_home = false;
 
 			// Define query result
 			$posts_query->found_posts   = $eco->volume_query->found_terms;
 			$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
 
+		// Nothing found
+		} else {
+			$posts_query->set_404();
+			return;
 		}
 
 	// Edition Page
@@ -141,27 +145,30 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->is_tax             = true;
 		$posts_query->is_archive         = true;
 
-		// Make sure 404 is not set
-		$posts_query->is_404 = false;
-
-		// Correct is_home variable
-		$posts_query->is_home = false;
-
-		// Set queried object vars
-		$posts_query->queried_object    = $the_volume;
-		$posts_query->queried_object_id = $the_volume->term_id;
-
 		// Set econozel_volume for future reference
 		$posts_query->set( 'econozel_volume', $the_volume->term_id );
 
 		// Setup query object
-		if ( econozel_query_editions( array(
-			'econozel_volume' => $the_volume->term_id
-		) ) ) {
+		if ( econozel_query_editions() ) {
+
+			// Make sure 404 is not set
+			$posts_query->is_404 = false;
+
+			// Correct is_home variable
+			$posts_query->is_home = false;
+
+			// Set queried object vars
+			$posts_query->queried_object    = $the_volume;
+			$posts_query->queried_object_id = $the_volume->term_id;
 
 			// Define query result
 			$posts_query->found_posts   = $eco->edition_query->found_terms;
 			$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
+
+		// Nothing found
+		} else {
+			$posts_query->set_404();
+			return;
 		}
 	}
 }

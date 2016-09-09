@@ -182,13 +182,9 @@ function econozel_get_volume( $volume = 0, $by = 'id' ) {
 		if ( econozel_in_the_volume_loop() ) {
 			$volume = econozel()->volume_query->term;
 
-		// ... the queried object on Volume pages
-		} elseif ( econozel_is_volume() ) {
-			$volume = get_queried_object();
-
-		// ... Volume by Edition
-		} elseif ( econozel_is_edition() ) {
-			$volume = econozel_get_edition_volume( null, true );
+		// ... the query var on Volume or Edition pages
+		} elseif ( get_query_var( 'econozel_volume' ) ) {
+			$volume = (int) get_query_var( 'econozel_volume' );
 		}
 
 	// Get Volume by Article

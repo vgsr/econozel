@@ -35,7 +35,7 @@ function econozel_query_editions( $args = array() ) {
 
 	// Define query args
 	$query_args = wp_parse_args( $args, array(
-		'econozel_volume' => false, // Required
+		'econozel_volume' => econozel_get_volume_id(),
 		'taxonomy'        => econozel_get_edition_tax_id(),
 		'number'          => get_option( 'posts_per_page' ),
 		'paged'           => econozel_get_paged(),
@@ -187,9 +187,9 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
 		if ( econozel_in_the_edition_loop() ) {
 			$edition = econozel()->edition_query->term;
 
-		// ... the queried object on Edition pages
-		} elseif ( econozel_is_edition() ) {
-			$edition = get_queried_object();
+		// ... the query var on Edition pages
+		} elseif ( get_query_var( 'econozel_edition' ) ) {
+			$edition = get_query_var( 'econozel_edition' );
 		}
 
 	// Get Edition by Article
