@@ -230,7 +230,7 @@ function econozel_get_root_slug() {
  * @return string Article rewrite slug
  */
 function econozel_get_article_slug() {
-	return apply_filters( 'econozel_get_article_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'article', 'Article rewrite slug', 'econozel' ) );
+	return apply_filters( 'econozel_get_article_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'articles', 'Article rewrite slug', 'econozel' ) );
 }
 
 /**
@@ -242,7 +242,7 @@ function econozel_get_article_slug() {
  * @return string Volume rewrite slug
  */
 function econozel_get_volume_slug() {
-	return apply_filters( 'econozel_get_volume_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'volume', 'Volume rewrite slug', 'econozel' ) );
+	return apply_filters( 'econozel_get_volume_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'volumes', 'Volume rewrite slug', 'econozel' ) );
 }
 
 /**
