@@ -124,6 +124,7 @@ final class Econozel {
 		require( $this->includes_dir . 'functions.php'    );
 		require( $this->includes_dir . 'taxonomy.php'     );
 		require( $this->includes_dir . 'template.php'     );
+		require( $this->includes_dir . 'theme-compat.php' );
 		require( $this->includes_dir . 'volumes.php'      );
 
 		// Administration
