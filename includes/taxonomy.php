@@ -469,6 +469,14 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			$clauses['orderby'] = str_replace( 'ORDER BY ', "ORDER BY FIELD( tr.term_taxonomy_id, $volumes ), ", $clauses['orderby'] );
 			$clauses['order']   = 'DESC';
 		}
+
+	// When querying Volumes ...
+	} elseif ( array( econozel_get_volume_tax_id() ) == $taxonomies ) {
+
+		// ... order by slug numerically
+		if ( 'slug' === $args['orderby'] ) {
+			$clauses['orderby'] = str_replace( 't.slug', 'CAST(t.slug AS SIGNED)', $clauses['orderby'] );
+		}
 	}
 
 	return $clauses;
