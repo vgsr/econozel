@@ -363,8 +363,7 @@ class Econozel_Admin {
 
 		<div class="form-field term-<?php echo "taxonomy-{$this->volume_tax_id}"; ?>">
 			<label for="<?php echo "taxonomy-{$this->volume_tax_id}"; ?>"><?php esc_html_e( 'Volume', 'econozel' ); ?></label>
-			<?php wp_dropdown_categories( array(
-				'taxonomy'   => $this->volume_tax_id,
+			<?php econozel_dropdown_volumes( array(
 				'name'       => "taxonomy-{$this->volume_tax_id}",
 				'hide_empty' => 0
 			) ); ?>
@@ -391,8 +390,7 @@ class Econozel_Admin {
 				<label for="<?php echo "taxonomy-{$this->volume_tax_id}"; ?>"><?php esc_html_e( 'Volume', 'econozel' ); ?></label>
 			</th>
 			<td>
-				<?php wp_dropdown_categories( array(
-					'taxonomy'   => $this->volume_tax_id,
+				<?php econozel_dropdown_volumes( array(
 					'name'       => "taxonomy-{$this->volume_tax_id}",
 					'hide_empty' => 0,
 					'selected'   => econozel_get_edition_volume( $term )

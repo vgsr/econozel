@@ -536,3 +536,53 @@ function econozel_list_cats( $label, $term = null ) {
 
 	return $label;
 }
+
+/** Template Tags *************************************************************/
+
+/**
+ * Display or retrieve the HTML dropdown list of Volumes
+ *
+ * @see wp_dropdown_categories()
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Arguments for {@see wp_dropdown_categories()}
+ * @return string Volumes HTML dropdown element
+ */
+function econozel_dropdown_volumes( $args = array() ) {
+	return wp_dropdown_categories( wp_parse_args( $args, array(
+		'taxonomy' => econozel_get_volume_tax_id(),
+		/**
+		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
+		 */
+		'orderby'  => 'slug',
+		'order'    => 'DESC'
+	) ) );
+}
+
+/**
+ * Display or retrieve the HTML dropdown list of Editions
+ *
+ * @see wp_dropdown_categories()
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Arguments for {@see wp_dropdown_categories()}
+ * @return string Editions HTML dropdown element
+ */
+function econozel_dropdown_editions( $args = array() ) {
+	return wp_dropdown_categories( wp_parse_args( $args, array(
+		'taxonomy'   => econozel_get_edition_tax_id(),
+		/**
+		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
+		 */
+		'orderby'    => 'meta_issue',
+		'order'      => 'DESC',
+		'meta_query' => array(
+			'meta_issue' => array(
+				'key'     => 'issue',
+				'compare' => 'EXISTS'
+			)
+		)
+	) ) );
+}
