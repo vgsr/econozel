@@ -184,7 +184,7 @@ function econozel_get_volume( $volume = 0, $by = 'id' ) {
 
 		// ... the query var on Volume or Edition pages
 		} elseif ( get_query_var( 'econozel_volume' ) ) {
-			$volume = (int) get_query_var( 'econozel_volume' );
+			$volume = get_term( (int) get_query_var( 'econozel_volume' ), econozel_get_volume_tax_id() );
 		}
 
 	// Get Volume by Article
