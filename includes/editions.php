@@ -189,7 +189,7 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
 
 		// ... the query var on Edition pages
 		} elseif ( get_query_var( 'econozel_edition' ) ) {
-			$edition = get_query_var( 'econozel_edition' );
+			$edition = get_term( (int) get_query_var( 'econozel_edition' ), econozel_get_edition_tax_id() );
 		}
 
 	// Get Edition by Article
