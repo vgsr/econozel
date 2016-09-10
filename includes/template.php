@@ -411,7 +411,7 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
 	/** Type ******************************************************************/
 
 	if ( econozel_is_tax_archive() ) {
-		$econozel_classes[] = 'econozel-tax-terms-list';
+		$econozel_classes[] = 'econozel-terms-list';
 	}
 
 	/** Clean up **************************************************************/
