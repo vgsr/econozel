@@ -226,8 +226,7 @@ class Econozel_Admin {
 	public function article_edition_meta_box( $post ) {
 
 		// Get Edition taxonomy
-		$taxonomy = $this->edition_tax_id;
-		$tax      = get_taxonomy( $taxonomy );
+		$tax = get_taxonomy( $this->edition_tax_id );
 
 		?>
 
@@ -235,9 +234,8 @@ class Econozel_Admin {
 			<fieldset>
 				<legend class="screen-reader-text"><?php esc_html_e( 'Edition', 'econozel' ); ?></legend>
 				<?php if ( current_user_can( $tax->cap->assign_terms ) ) : ?>
-				<?php wp_dropdown_categories( array(
-					'taxonomy'   => $taxonomy,
-					'name'       => "taxonomy-{$taxonomy}",
+				<?php econozel_dropdown_editions( array(
+					'name'       => "taxonomy-{$this->edition_tax_id}",
 					'hide_empty' => 0,
 					'selected'   => econozel_get_article_edition( $post )
 				) ); ?>
