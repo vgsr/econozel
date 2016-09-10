@@ -634,7 +634,7 @@ function econozel_have_archive() {
 		$retval = true;
 
 	// Edition Archive
-	} elseif ( econozel_is_edition() && econozel_has_editions() ) {
+	} elseif ( econozel_is_volume() && econozel_has_editions() ) {
 		$retval = true;
 	}
 
