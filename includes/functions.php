@@ -321,6 +321,30 @@ function econozel_get_article_rewrite_id() {
 /** Options *******************************************************************/
 
 /**
+ * Return the setting for Volumes per page
+ *
+ * @since 1.0.0
+ *
+ * @param int $default Default per page value
+ * @return int Volumes per page
+ */
+function econozel_get_volumes_per_page( $default = 5 ) {
+	return (int) apply_filters( 'econozel_get_volumes_per_page', get_option( 'econozel_volumes_per_page', $default ) );
+}
+
+/**
+ * Return the setting for Editions per page
+ *
+ * @since 1.0.0
+ *
+ * @param int $default Default per page value
+ * @return int Editions per page
+ */
+function econozel_get_editions_per_page( $default = 0 ) {
+	return (int) apply_filters( 'econozel_get_editions_per_page', get_option( 'econozel_editions_per_page', $default ) );
+}
+
+/**
  * Return whether to prepend the Volume title with 'Volume'
  *
  * @since 1.0.0

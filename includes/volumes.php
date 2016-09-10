@@ -36,7 +36,7 @@ function econozel_query_volumes( $args = array() ) {
 	// Define query args
 	$query_args = wp_parse_args( $args, array(
 		'taxonomy'        => econozel_get_volume_tax_id(),
-		'number'          => get_option( 'posts_per_page' ),
+		'number'          => econozel_get_volumes_per_page(),
 		'paged'           => econozel_get_paged(),
 		'fields'          => 'all',
 		'hide_empty'      => true
