@@ -174,6 +174,32 @@ function econozel_parse_query( $posts_query ) {
 }
 
 /**
+ * Overwrite the main WordPress query
+ *
+ * @since 1.0.0
+ *
+ * @param string $request SQL query
+ * @param WP_Query $query Query object
+ * @return string SQL query
+ */
+function econozel_filter_wp_query( $request, $query ) {
+	global $wpdb;
+
+	// Bail when this is not the main query
+	if ( ! $query->is_main_query() )
+		return $request;
+
+	// Bail when not displaying root or term archives
+	if ( ! econozel_is_root() && ! econozel_have_archive() )
+		return $request;
+
+	// Query for nothing
+	$request = "SELECT 1 FROM {$wpdb->posts} WHERE 0=1";
+
+	return $request;
+}
+
+/**
  * Stop WordPress performing a DB query for its main loop
  *
  * @since 1.0.0
@@ -182,18 +208,42 @@ function econozel_parse_query( $posts_query ) {
  * @param WP_Query $query Query object
  * @return null|array
  */
-function econozel_filter_wp_query( $retval, $query ) {
+function econozel_bypass_wp_query( $retval, $query ) {
 
 	// Bail when this is not the main query
 	if ( ! $query->is_main_query() )
 		return $retval;
 
-	// Bail when not displaying root or taxonomy terms
-	if ( ! econozel_is_root() && ! econozel_is_tax_archive() )
+	// Bail when not displaying root or term archives
+	if ( ! econozel_is_root() && ! econozel_have_archive() )
 		return $retval;
 
 	// Return something other than a null value to bypass WP_Query
 	return array();
+}
+
+/**
+ * Handle 404 errors for plugin pages manually
+ *
+ * @since 1.0.0
+ *
+ * @param bool $retval Whether to short-circuit
+ * @param WP_Query $query Query object
+ * @return bool Whether to short-circuit
+ */
+function econozel_handle_404( $retval, $query ) {
+
+	// Bail when 404 was already issued
+	if ( is_404() )
+		return $retval;
+
+	// Don't 404 for plugin root or term archives
+	if ( econozel_is_root() || econozel_have_archive() ) {
+		status_header( 200 );
+		$retval = true;
+	}
+
+	return $retval;
 }
 
 /**

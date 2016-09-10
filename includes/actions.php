@@ -12,19 +12,25 @@ defined( 'ABSPATH' ) || exit;
 
 /** Taxonomy ******************************************************************/
 
-add_filter( 'econozel_get_taxonomy_meta', 'econozel_add_edition_tax_meta',      5    );
-add_action( 'registered_taxonomy',        'econozel_register_taxonomy_meta',   10, 3 );
-add_filter( 'get_terms_defaults',         'econozel_query_terms_default_args', 10, 2 );
-add_filter( 'terms_clauses',              'econozel_query_terms_clauses',      10, 3 );
-add_filter( 'list_cats',                  'econozel_list_cats',                10, 2 );
+add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',      5    );
+add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',   10, 3 );
+add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args', 10, 2 ); // Since WP 4.4
+add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      10, 3 );
+add_filter( 'list_cats',                   'econozel_list_cats',                10, 2 );
+
+/** Query *********************************************************************/
+
+add_action( 'pre_handle_404',              'econozel_handle_404',               10, 2 ); // Since WP 4.5
+add_action( 'parse_query',                 'econozel_parse_query',                  2 ); // Early for overrides
+add_filter( 'posts_request',               'econozel_filter_wp_query',          10, 2 );
+add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          10, 2 ); // Since WP 4.6
 
 /** Template ******************************************************************/
 
-add_action( 'parse_query',                 'econozel_parse_query',                 2 ); // Early for overrides
-add_filter( 'document_title_parts',        'econozel_document_title_parts'           );
-add_filter( 'body_class',                  'econozel_body_class'                     );
-add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'          );
-add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description'    );
+add_filter( 'document_title_parts',        'econozel_document_title_parts'            ); // Since WP 4.4
+add_filter( 'body_class',                  'econozel_body_class'                      );
+add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'           );
+add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description'     );
 
 // Theme Compat
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
