@@ -313,19 +313,19 @@ function econozel_is_volume() {
 }
 
 /**
- * Check if current page is a taxononmy archive
+ * Check if current page is an Edition archive
  *
  * @since 1.0.0
  *
- * @return bool Is it a taxonomy archive?
+ * @return bool Is it an Edition archive?
  */
-function econozel_is_tax_archive() {
+function econozel_is_edition_archive() {
 
 	// Assume false
 	$retval = false;
 
-	// Check Volume archive or single Volume page
-	if ( econozel_is_volume_archive() || econozel_is_volume() ) {
+	// Volume page
+	if ( econozel_is_volume() ) {
 		$retval = true;
 	}
 
@@ -355,6 +355,46 @@ function econozel_is_edition() {
 }
 
 /**
+ * Check if current page is a taxononmy archive
+ *
+ * @since 1.0.0
+ *
+ * @return bool Is it a taxonomy archive?
+ */
+function econozel_is_tax_archive() {
+
+	// Assume false
+	$retval = false;
+
+	// Check Volume archive or Edition archive
+	if ( econozel_is_volume_archive() || econozel_is_edition_archive() ) {
+		$retval = true;
+	}
+
+	return (bool) $retval;
+}
+
+/**
+ * Check if current page is the Article archive
+ *
+ * @since 1.0.0
+ *
+ * @return bool Is it the Article archive?
+ */
+function econozel_is_article_archive() {
+
+	// Assume false
+	$retval = false;
+
+	// Article post type archive
+	if ( is_post_type_archive( econozel_get_article_post_type() ) ) {
+		$retval = true;
+	}
+
+	return (bool) $retval;
+}
+
+/**
  * Check if current page is an Article page
  *
  * @since 1.0.0
@@ -366,7 +406,7 @@ function econozel_is_article() {
 	// Assume false
 	$retval = false;
 
-	// Check query
+	// Single article
 	if ( is_singular( econozel_get_article_post_type() ) ) {
 		$retval = true;
 	}
@@ -453,6 +493,9 @@ function is_econozel() {
 		$retval = true;
 
 	} elseif ( econozel_is_edition() ) {
+		$retval = true;
+
+	} elseif ( econozel_is_article_archive() ) {
 		$retval = true;
 
 	} elseif ( econozel_is_article() ) {
@@ -634,7 +677,7 @@ function econozel_have_archive() {
 		$retval = true;
 
 	// Edition Archive
-	} elseif ( econozel_is_volume() && econozel_has_editions() ) {
+	} elseif ( econozel_is_edition_archive() && econozel_has_editions() ) {
 		$retval = true;
 	}
 
@@ -761,7 +804,7 @@ function econozel_get_the_archive_description( $description = '' ) {
 		$description = esc_html__( 'This page lists all Econozel Volumes with their respective Editions. You can browse here to find articles that have been archived or published on this site.', 'econozel' );
 
 	// Article archive
-	} elseif ( is_post_type_archive( econozel_get_article_post_type() ) ) {
+	} elseif ( econozel_is_article_archive() ) {
 		$description = esc_html__( 'This page shows all Econozel articles archived on this site. You can browse them here or through the registered Volumes and Editions in which they have been published.', 'econozel' );
 	}
 
@@ -804,7 +847,7 @@ function econozel_the_posts_navigation( $args = array() ) {
 			);
 
 		// Edition Archive
-		} elseif ( econozel_is_volume() ) {
+		} elseif ( econozel_is_edition_archive() ) {
 			$args = array(
 				'prev_text'          => esc_html__( 'Older editions',      'econozel' ),
 				'next_text'          => esc_html__( 'Newer editions',      'econozel' ),
@@ -812,7 +855,7 @@ function econozel_the_posts_navigation( $args = array() ) {
 			);
 
 		// Article Archive
-		} elseif ( is_post_type_archive( econozel_get_article_post_type() ) ) {
+		} elseif ( econozel_is_article_archive() ) {
 			$args = array(
 				'prev_text'          => esc_html__( 'Older articles',      'econozel' ),
 				'next_text'          => esc_html__( 'Newer articles',      'econozel' ),
