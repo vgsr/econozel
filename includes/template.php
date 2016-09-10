@@ -767,3 +767,58 @@ function econozel_get_the_archive_description( $description = '' ) {
 
 	return $description;
 }
+
+/** Template Tags *************************************************************/
+
+/**
+ * Output navigation markup to next/previous plugin pages
+ *
+ * @see the_posts_navigation()
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Arguments for {@see get_the_posts_navigation()}
+ */
+function econozel_the_posts_navigation( $args = array() ) {
+	echo econozel_get_the_posts_navigation( $args );
+}
+
+	/**
+	 * Return navigation markup to next/previous plugin pages
+	 *
+	 * @see get_the_posts_navigation()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $args Arguments for {@see get_the_posts_navigation()}
+	 * @return string Navigation markup
+	 */
+	function econozel_get_the_posts_navigation( $args = array() ) {
+
+		// Volume Archive
+		if ( econozel_is_volume_archive() ) {
+			$args = array(
+				'prev_text'          => esc_html__( 'Older volumes',      'econozel' ),
+				'next_text'          => esc_html__( 'Newer volumes',      'econozel' ),
+				'screen_reader_text' => esc_html__( 'Volumes navigation', 'econozel' )
+			);
+
+		// Edition Archive
+		} elseif ( econozel_is_volume() ) {
+			$args = array(
+				'prev_text'          => esc_html__( 'Older editions',      'econozel' ),
+				'next_text'          => esc_html__( 'Newer editions',      'econozel' ),
+				'screen_reader_text' => esc_html__( 'Editions navigation', 'econozel' )
+			);
+
+		// Article Archive
+		} elseif ( is_post_type_archive( econozel_get_article_post_type() ) ) {
+			$args = array(
+				'prev_text'          => esc_html__( 'Older articles',      'econozel' ),
+				'next_text'          => esc_html__( 'Newer articles',      'econozel' ),
+				'screen_reader_text' => esc_html__( 'Articles navigation', 'econozel' )
+			);
+		}
+
+		return get_the_posts_navigation( $args );
+	}
