@@ -413,12 +413,15 @@ function econozel_query_terms_default_args( $args, $taxonomies ) {
  *
  * @since 1.0.0
  *
+ * @global WPDB $wpdb
+ *
  * @param array $clauses Query clauses
  * @param array $taxonomies Queried taxonomies
  * @param array $args Query arguments
  * @return array Query clauses
  */
 function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
+	global $wpdb;
 
 	// When querying Editions ...
 	if ( array( econozel_get_edition_tax_id() ) == $taxonomies ) {
@@ -446,7 +449,6 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 
 		// ... by all Volumes, ordering by issue
 		} elseif ( 'meta_issue' === $args['orderby'] ) {
-			global $wpdb;
 
 			/**
 			 * Append clauses to join on Volume term relationships
@@ -472,6 +474,19 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 
 	// When querying Volumes ...
 	} elseif ( array( econozel_get_volume_tax_id() ) == $taxonomies ) {
+
+		// ... base Volume emptiness on its Editions
+		if ( $args['hide_empty'] ) {
+
+			// Require Volume to have at least one Edition with Articles
+			$clauses['where'] .= $wpdb->prepare( " AND EXISTS (
+				SELECT 1
+				FROM {$wpdb->term_taxonomy} editions
+				INNER JOIN {$wpdb->term_relationships} editions_tr ON ( editions.term_taxonomy_id = editions_tr.object_id )
+				WHERE ( editions.taxonomy = %s ) AND ( editions_tr.term_taxonomy_id = t.term_id ) AND editions.count > 0 )",
+				econozel_get_edition_tax_id()
+			);
+		}
 
 		// ... order by slug numerically
 		if ( 'slug' === $args['orderby'] ) {
