@@ -779,11 +779,11 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Volume page
 	} elseif ( econozel_is_volume() ) {
-		$title = sprintf( _x( 'Econozel %s', 'Volume archive title', 'econozel' ), econozel_get_volume_title() );
+		$title = sprintf( _x( 'Econozel %s', 'Single volume title', 'econozel' ), econozel_get_volume_title() );
 
 	// Edition page
 	} elseif ( econozel_is_edition() ) {
-		$title = sprintf( _x( 'Econozel %s', 'Edition archive title', 'econozel' ), econozel_get_edition_title() );
+		$title = sprintf( _x( 'Econozel %s', 'Single edition title', 'econozel' ), econozel_get_edition_title() );
 	}
 
 	return $title;
