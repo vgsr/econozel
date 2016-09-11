@@ -481,7 +481,7 @@ function econozel_the_edition_link( $edition = 0 ) {
 			$link = sprintf(
 				'<a href="%1$s" title="%2$s" rel="collection">%3$s</a>',
 				esc_url( econozel_get_edition_url( $edition ) ),
-				esc_attr( sprintf( esc_html__( 'Articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
+				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
 				econozel_get_edition_title( $edition )
 			);
 		}
