@@ -533,6 +533,10 @@ function econozel_template_include_theme_supports( $template = '' ) {
 	// Set included template file
 	if ( ! empty( $_template ) ) {
 		$template = econozel_set_template_included( $_template );
+
+		// Reset post, but theme compat is not active
+		econozel_theme_compat_reset_post();
+		econozel_set_theme_compat_active( false );
 	}
 
 	return $template;

@@ -10,8 +10,6 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-/** Theme Compat **************************************************************/
-
 /**
  * Return the path to the plugin's theme compat directory
  *
