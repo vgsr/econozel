@@ -377,7 +377,7 @@ function econozel_the_volume_link( $volume = 0 ) {
  * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
  */
 function econozel_the_volume_url( $volume = 0 ) {
-	echo econozel_get_volume_url( $volume );
+	echo esc_url( econozel_get_volume_url( $volume ) );
 }
 
 	/**

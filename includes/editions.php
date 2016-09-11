@@ -497,7 +497,7 @@ function econozel_the_edition_link( $edition = 0 ) {
  * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
  */
 function econozel_the_edition_url( $edition = 0 ) {
-	echo econozel_get_edition_url( $edition );
+	echo esc_url( econozel_get_edition_url( $edition ) );
 }
 
 	/**
