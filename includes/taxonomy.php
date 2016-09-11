@@ -456,9 +456,9 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			 * This is done not through `WP_Tax_Query` because it lacks alternate
 			 * table aliases when generating single level tax queries.
 			 */
-			$clauses['join']  .= " INNER JOIN {$wpdb->term_relationships} tr ON ( t.term_id = tr.object_id )";
-			$clauses['join']  .= " INNER JOIN {$wpdb->term_taxonomy} tt2 ON ( tr.term_taxonomy_id = tt2.term_taxonomy_id )";
-			$clauses['where'] .= $wpdb->prepare( " AND ( tt2.taxonomy = %s )", econozel_get_volume_tax_id() );
+			$clauses['join']  .= " INNER JOIN {$wpdb->term_relationships} volumes_tr ON ( t.term_id = volumes_tr.object_id )";
+			$clauses['join']  .= " INNER JOIN {$wpdb->term_taxonomy} volumes ON ( volumes_tr.term_taxonomy_id = volumes.term_taxonomy_id )";
+			$clauses['where'] .= $wpdb->prepare( " AND ( volumes.taxonomy = %s )", econozel_get_volume_tax_id() );
 
 			// Get all Volumes ID's, properly ordered
 			$volumes = get_terms( econozel_get_volume_tax_id(), array( 'fields' => 'ids' ) );
@@ -468,7 +468,7 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			 * Change order to list the latest issue in the latest Volume first
 			 * Thus: 1. Volume order DESC 2. Edition order DESC
 			 */
-			$clauses['orderby'] = str_replace( 'ORDER BY ', "ORDER BY FIELD( tr.term_taxonomy_id, $volumes ), ", $clauses['orderby'] );
+			$clauses['orderby'] = str_replace( 'ORDER BY ', "ORDER BY FIELD( volumes_tr.term_taxonomy_id, $volumes ), ", $clauses['orderby'] );
 			$clauses['order']   = 'DESC';
 		}
 
