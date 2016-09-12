@@ -179,11 +179,12 @@ function econozel_taxonomy_meta_display_single_field( $args = array() ) {
 
 	// Define field keys
 	$field     = '';
-	$field_key = "{$taxonomy}_{$meta_key}";
+	$field_key = "{$taxonomy}-{$meta_key}";
 	$nonce_key = $field_key . '_nonce';
 
 	// Define field attributes
 	$attrs         = isset( $args['attrs'] ) ? $args['attrs'] : array();
+	$attrs['id']   = isset( $attrs['id'] ) ? $attrs['id'] : $field_key;
 	$attrs['name'] = $field_key;
 
 	switch ( $args['type'] ) {
