@@ -63,6 +63,7 @@ class Econozel_Admin {
 		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
 		add_filter( "manage_edit-{$taxonomy}_columns",          array( $this, 'edition_columns'        ), 20    );
 		add_filter( "manage_{$taxonomy}_custom_column",         array( $this, 'edition_column_content' ), 10, 3 );
+		add_action( 'quick_edit_custom_box',                    array( $this, 'edition_inline_edit'    ), 10, 3 );
 
 		// Edit
 		add_action( "add_meta_boxes_{$post_type}",  array( $this, 'article_meta_boxes'            ), 99    );
@@ -138,7 +139,8 @@ class Econozel_Admin {
 			$styles[] = '.fixed .column-issue, .fixed .column-file { width: 10%; }';
 			$styles[] = ".fixed .column-taxonomy-{$this->volume_tax_id} { width: 15%; }";
 			$styles[] = ".form-field select#taxonomy-{$this->volume_tax_id}, .form-field select#{$this->edition_tax_id}-issue { width: 95%; max-width: 95%; }";
-			$styles[] = ".inline-edit-row .input-text-wrap select { width: 100%; }";
+			$styles[] = ".inline-edit-row fieldset + fieldset { margin-top: -3px; }";
+			$styles[] = ".inline-edit-row .input-text-wrap select { width: 100%; vertical-align: top; }";
 		}
 
 		// Attach styles to admin's common.css
@@ -399,6 +401,42 @@ class Econozel_Admin {
 				<p class="description"><?php esc_html_e( 'The Volume is the periodic collection an Edition belongs to.', 'econozel' ); ?></p>
 			</td>
 		</tr>
+
+		<?php
+	}
+
+	/**
+	 * Add fields to the Edition inline-edit form
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $column Column name
+	 * @param string $screen_type Screen name
+	 * @param string $taxonomy Taxonomy name
+	 */
+	public function edition_inline_edit( $column, $screen_type, $taxonomy = '' ) {
+
+		// Bail when we're not editing terms
+		if ( 'edit-tags' != $screen_type )
+			return;
+
+		// Bail when we're not editing Edition Volumes
+		if ( $taxonomy != $this->edition_tax_id || "taxonomy-{$this->volume_tax_id}" != $column )
+			return;
+
+		?>
+
+		<fieldset>
+			<div class="inline-edit-col">
+			<label>
+				<span class="title"><?php esc_html_e( 'Volume', 'econozel' ); ?></span>
+				<span class="input-text-wrap"><?php econozel_dropdown_volumes( array(
+					'name'       => "taxonomy-{$this->volume_tax_id}",
+					'hide_empty' => false,
+				) ); ?></span>
+			</label>
+			</div>
+		</fieldset>
 
 		<?php
 	}
