@@ -306,10 +306,31 @@ function econozel_get_edition_issue( $edition = 0 ) {
 
 	// Sanitize value
 	if ( $issue ) {
-		$issue = (int) $issue;
+		$issue = econozel_edition_whitelist_issue( $issue );
 	}
 
 	return $issue;	
+}
+
+/**
+ * Check the Edition issue against a set of whitelisted issues
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $issue Issue to whitelist
+ * @return mixed|false Whitelisted issue or False when invalid.
+ */
+function econozel_edition_whitelist_issue( $issue = '' ) {
+
+	// Get the Edition issue whitelist
+	$whitelist = econozel_get_edition_issue_whitelist();
+
+	// Invalidate non-whitelisted issue
+	if ( empty( $issue ) || ! in_array( $issue, $whitelist ) ) {
+		$issue = false;
+	}
+
+	return $issue;
 }
 
 /**

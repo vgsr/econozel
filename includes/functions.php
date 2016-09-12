@@ -353,5 +353,16 @@ function econozel_get_editions_per_page( $default = 0 ) {
  * @return bool Prepend Volume title
  */
 function econozel_prepend_volume_title() {
-	return apply_filters( 'econozel_prepend_volume_title', get_option( 'econozel_prepend_volume_title', true ) );
+	return (bool) apply_filters( 'econozel_prepend_volume_title', get_option( 'econozel_prepend_volume_title', true ) );
+}
+
+/**
+ * Return the whitelist of Edition issues
+ *
+ * @since 1.0.0
+ *
+ * @return array Whitelist of Edition issues
+ */
+function econozel_get_edition_issue_whitelist() {
+	return (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', array( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ) ) );
 }
