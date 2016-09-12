@@ -345,8 +345,6 @@ function econozel_taxonomy_admin_column_content( $content, $column, $term_id ) {
  *
  * @since 1.0.0
  *
- * @todo Apply js update when selecting row, see wp-admin/js/inline-edit-tax.js
- *
  * @param string $column Column name
  * @param string $screen_type Screen type name
  * @param string $taxonomy Taxonomy name

@@ -73,8 +73,8 @@ class Econozel_Admin {
 		add_action( "created_{$taxonomy}",          array( $this, 'edition_save_fields'           )        );
 		add_action( "edited_{$taxonomy}",           array( $this, 'edition_save_fields'           )        );
 
-		// Styles
-		add_action( 'admin_print_styles', array( $this, 'add_admin_styles' ) );
+		// Scripts & Styles
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 	}
 
 	/** Public methods **************************************************/
@@ -112,11 +112,14 @@ class Econozel_Admin {
 	}
 
 	/**
-	 * Print additional admin styles
+	 * Enqueue additional admin scripts and styles
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_admin_styles() {
+	public function enqueue_admin_scripts() {
+
+		// Get Econozel
+		$eco    = econozel();
 
 		// Get the current screen
 		$screen = get_current_screen();
@@ -126,16 +129,31 @@ class Econozel_Admin {
 
 		// Article edit.php
 		if ( "edit-{$this->article_post_type}" == $screen->id ) {
+
+			// Define additional styles
 			$styles[] = ".fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
 		}
 
 		// Article post.php
 		if ( 'post' == $screen->base && $this->article_post_type == $screen->id ) {
+
+			// Define additional styles
 			$styles[] = "#econozel-edition select#taxonomy-{$this->edition_tax_id} { width: 100%; max-width: 100%; }";
 		}
 
 		// Edition edit-tags.php
 		if ( "edit-{$this->edition_tax_id}" == $screen->id ) {
+
+			// Enqueue admin script
+			wp_enqueue_script( 'econozel-admin', $eco->includes_url . 'assets/js/admin.js', array( 'jquery' ), $eco->version, true );
+			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
+				'settings' => array(
+					'editionTaxId' => econozel_get_edition_tax_id(),
+					'volumeTaxId'  => econozel_get_volume_tax_id()
+				)
+			) );
+
+			// Define additional styles
 			$styles[] = '.fixed .column-issue, .fixed .column-file { width: 10%; }';
 			$styles[] = ".fixed .column-taxonomy-{$this->volume_tax_id} { width: 15%; }";
 			$styles[] = ".form-field select#taxonomy-{$this->volume_tax_id}, .form-field select#{$this->edition_tax_id}-issue { width: 95%; max-width: 95%; }";
@@ -343,6 +361,7 @@ class Econozel_Admin {
 			case "taxonomy-{$this->volume_tax_id}" :
 				if ( $volume = econozel_get_edition_volume( $term_id ) ) {
 					$content = econozel_get_volume_title( $volume );
+					$content .= sprintf( '<span id="%s" class="hidden">%s</span>', "inline_{$term_id}-{$column}", $volume );
 				} else {
 					$content = '<span aria-hidden="true">&#8212;</span><span class="screen-reader-text">' . get_taxonomy( $this->volume_tax_id )->labels->no_terms . '</span>';
 				}
