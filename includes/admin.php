@@ -363,7 +363,7 @@ class Econozel_Admin {
 			<label for="<?php echo "taxonomy-{$this->volume_tax_id}"; ?>"><?php esc_html_e( 'Volume', 'econozel' ); ?></label>
 			<?php econozel_dropdown_volumes( array(
 				'name'       => "taxonomy-{$this->volume_tax_id}",
-				'hide_empty' => 0
+				'hide_empty' => false
 			) ); ?>
 			<?php wp_nonce_field( 'edition_volume_field_save', 'edition_volume_field' ); ?>
 
@@ -390,7 +390,7 @@ class Econozel_Admin {
 			<td>
 				<?php econozel_dropdown_volumes( array(
 					'name'       => "taxonomy-{$this->volume_tax_id}",
-					'hide_empty' => 0,
+					'hide_empty' => false,
 					'selected'   => econozel_get_edition_volume( $term )
 				) ); ?>
 				<?php wp_nonce_field( 'edition_volume_field_save', 'edition_volume_field' ); ?>
