@@ -175,11 +175,9 @@ function econozel_add_edition_tax_meta( $meta ) {
 		'issue' => array(
 			'label'           => esc_html__( 'Issue', 'econozel' ),
 			'description'     => esc_html__( 'The nth number of this Edition within the Volume.', 'econozel' ),
-			'type'            => 'number',
-			'attrs'           => array(
-				'min' => 0
-			),
-			'sanitize_cb'     => 'intval',
+			'type'            => 'select',
+			'options'         => array_combine( econozel_get_edition_issue_whitelist(), econozel_get_edition_issue_whitelist() ),
+			'sanitize_cb'     => 'econozel_edition_whitelist_issue',
 			'admin_column_cb' => true,
 			'inline_edit'     => true
 		),

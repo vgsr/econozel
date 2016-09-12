@@ -137,7 +137,8 @@ class Econozel_Admin {
 		if ( "edit-{$this->edition_tax_id}" == $screen->id ) {
 			$styles[] = '.fixed .column-issue, .fixed .column-file { width: 10%; }';
 			$styles[] = ".fixed .column-taxonomy-{$this->volume_tax_id} { width: 15%; }";
-			$styles[] = ".form-field select#taxonomy-{$this->volume_tax_id} { width: 95%; max-width: 95%; }";
+			$styles[] = ".form-field select#taxonomy-{$this->volume_tax_id}, .form-field select#{$this->edition_tax_id}-issue { width: 95%; max-width: 95%; }";
+			$styles[] = ".inline-edit-row .input-text-wrap select { width: 100%; }";
 		}
 
 		// Attach styles to admin's common.css

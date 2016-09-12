@@ -198,6 +198,24 @@ function econozel_taxonomy_meta_display_single_field( $args = array() ) {
 			$field = '<input type="number" %s/>';
 
 			break;
+		case 'select':
+			$field = '<select %s>';
+
+			// Define no-option
+			if ( isset( $args['show_option_none'] ) && $args['show_option_none'] ) {
+				$field .= sprintf( '<option value="0">%s</option>',
+					is_string( $args['show_option_none'] ) ? esc_html( $args['show_option_none'] ) : esc_html__( '&mdash; Select &mdash;' )
+				);
+			}
+
+			// Get input options from callable or array
+			$options = is_callable( $args['options'] ) ? call_user_func( $args['options'] ) : $args['options'];
+			foreach ( (array) $options as $val => $label ) {
+				$field .= sprintf( '<option value="%s">%s</option>', esc_attr( $val ), esc_html( $label ) );
+			}
+
+			$field .= '</select>';
+			break;
 		case 'file':
 			// Load upload library
 			break;

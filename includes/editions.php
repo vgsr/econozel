@@ -459,7 +459,7 @@ function econozel_the_edition_label( $edition = 0 ) {
 			$issue = $volume ? econozel_get_edition_issue( $edition ) : false;
 
 			// Define the label
-			if ( $issue ) {
+			if ( is_numeric( $issue ) ) {
 				$label = sprintf( esc_html__( 'Issue %d', 'econozel' ), (int) $issue );
 			} else {
 				$label = econozel_get_edition_title( $edition );
