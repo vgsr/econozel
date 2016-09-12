@@ -266,7 +266,7 @@ function econozel_taxonomy_meta_save_fields( $term_id ) {
 	foreach ( $fields as $meta_key => $args ) {
 
 		// Define field keys
-		$field_key    = "{$term->taxonomy}_{$meta_key}";
+		$field_key    = "{$term->taxonomy}-{$meta_key}";
 		$nonce_key    = $field_key . '_nonce';
 
 		// Skip when nonce does not verify
@@ -334,6 +334,11 @@ function econozel_taxonomy_admin_column_content( $content, $column, $term_id ) {
 			default :
 				$content = get_term_meta( $term_id, $column, true );
 				break;
+		}
+
+		// Append content for inline editing
+		if ( isset( $meta['inline_edit'] ) && $meta['inline_edit'] ) {
+			$content .= sprintf( '<span id="%s" class="hidden">%s</span>', "inline_{$term_id}-{$column}", get_term_meta( $term_id, $column, true ) );
 		}
 	}
 

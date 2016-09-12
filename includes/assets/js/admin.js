@@ -17,7 +17,7 @@
 		var wp_inline_edit = inlineEditTax.edit;
 
 		/**
-		 * Redefine the inline edit method on the inlineEditTax object
+		 * Extend the inline edit method by redefining it
 		 *
 		 * @see wp-admin/js/inline-edit-tax.js
 		 */
@@ -39,8 +39,12 @@
 
 			// Assign data to edit fields
 			// Volume
-			val = $( '.taxonomy-' + settings.volumeTaxId + ' .hidden', rowData ).text();
+			val = $( '.column-taxonomy-' + settings.volumeTaxId + ' .hidden', rowData ).text();
 			$( ':input[name="taxonomy-' + settings.volumeTaxId + '"]', editRow ).val( val );
+
+			// Issue. Should be run through main Taxonomy Meta logic.
+			val = $( '.column-issue .hidden', rowData ).text();
+			$( ':input[name="' + settings.editionTaxId + '-issue"]', editRow ).val( val );
 		};
 	}
 
