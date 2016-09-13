@@ -307,18 +307,6 @@ function econozel_get_edition_issue_rewrite_id() {
 	return apply_filters( 'econozel_get_edition_issue_rewrite_id', econozel_get_edition_tax_id() . '_issue' );
 }
 
-/**
- * Return the Article rewrite ID
- *
- * @since 1.0.0
- *
- * @uses apply_filters() Calls 'econozel_get_article_rewrite_id'
- * @return string Article rewrite ID
- */
-function econozel_get_article_rewrite_id() {
-	return apply_filters( 'econozel_get_article_rewrite_id', econozel_get_article_post_type() . '_article' );
-}
-
 /** Options *******************************************************************/
 
 /**
