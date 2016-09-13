@@ -491,23 +491,52 @@ function econozel_the_edition_link( $edition = 0 ) {
 	 * @since 1.0.0
 	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+	 * @param bool $prepend_issue Optional. Whether to prepend the issue number. Defaults to false.
 	 * @return string Edition permalink
 	 */
-	function econozel_get_edition_link( $edition = 0 ) {
+	function econozel_get_edition_link( $edition = 0, $prepend_issue = false ) {
 
 		// Define return var
 		$link = '';
 
 		if ( $edition = econozel_get_edition( $edition ) ) {
+
+			// Get Edition issue
+			$issue = $prepend_issue ? econozel_get_edition_issue( $edition ) : false;
+
+			// Construct link
 			$link = sprintf(
 				'<a href="%1$s" title="%2$s" rel="collection">%3$s</a>',
 				esc_url( econozel_get_edition_url( $edition ) ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
-				econozel_get_edition_title( $edition )
+				sprintf( is_numeric( $issue ) ? '%2$s. %1$s' : '%1$s', econozel_get_edition_title( $edition ), $issue )
 			);
 		}
 
 		return $link;
+	}
+
+/**
+ * Output the Edition's issue permalink
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ */
+function econozel_the_edition_issue_link( $edition = 0 ) {
+	echo econozel_get_edition_issue_link( $edition );
+}
+
+	/**
+	 * Return the Edition's issue permalink
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+	 * @return string Edition permalink
+	 */
+	function econozel_get_edition_issue_link( $edition = 0 ) {
+		return econozel_get_edition_link( $edition, true );
 	}
 
 /**
