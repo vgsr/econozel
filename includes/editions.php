@@ -255,7 +255,7 @@ function econozel_get_edition_by_issue( $issue, $volume = 0, $object = false ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
  * @return WP_Term|int|bool Volume term object or ID when found, else False.
  */
@@ -430,7 +430,7 @@ function econozel_the_edition_title( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $edition Optional. Defaults to the current post's Edition.
+ * @param WP_Post|int $edition Optional. Defaults to the current Edition.
  */
 function econozel_the_edition_label( $edition = 0 ) {
 	echo econozel_get_edition_label( $edition );
@@ -441,7 +441,7 @@ function econozel_the_edition_label( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Post|int $edition Optional. Defaults to the current post's Edition.
+	 * @param WP_Post|int $edition Optional. Defaults to the current Edition.
 	 * @return string Edition label
 	 */
 	function econozel_get_edition_label( $edition = 0 ) {
@@ -479,7 +479,7 @@ function econozel_the_edition_label( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  */
 function econozel_the_edition_link( $edition = 0 ) {
 	echo econozel_get_edition_link( $edition );
@@ -490,7 +490,7 @@ function econozel_the_edition_link( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
 	 * @return string Edition permalink
 	 */
 	function econozel_get_edition_link( $edition = 0 ) {
@@ -515,7 +515,7 @@ function econozel_the_edition_link( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  */
 function econozel_the_edition_url( $edition = 0 ) {
 	echo esc_url( econozel_get_edition_url( $edition ) );
@@ -526,7 +526,7 @@ function econozel_the_edition_url( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
 	 * @return string Edition url
 	 */
 	function econozel_get_edition_url( $edition = 0 ) {
@@ -545,4 +545,36 @@ function econozel_the_edition_url( $edition = 0 ) {
 		}
 
 		return $url;
+	}
+
+/**
+ * Output the Edition's Article count
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ */
+function econozel_the_edition_article_count( $edition = 0 ) {
+	echo econozel_get_edition_article_count( $edition );
+}
+
+	/**
+	 * Return the Edition's Article count
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+	 * @return int Edition Article count
+	 */
+	function econozel_get_edition_article_count( $edition = 0 ) {
+
+		// Define return var
+		$count = 0;
+
+		// Get post count in term
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$count = $edition->count;
+		}
+
+		return $count;
 	}
