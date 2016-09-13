@@ -168,6 +168,9 @@ function econozel_get_edition_tax_labels() {
  */
 function econozel_add_edition_tax_meta( $meta ) {
 
+	// Get Edition issue whitelist
+	$issue_whitelist = econozel_get_edition_issue_whitelist();
+
 	// Append Edition meta
 	$meta[ econozel_get_edition_tax_id() ] = array(
 
@@ -176,7 +179,7 @@ function econozel_add_edition_tax_meta( $meta ) {
 			'label'           => esc_html__( 'Issue', 'econozel' ),
 			'description'     => esc_html__( 'The nth number of this Edition within the Volume.', 'econozel' ),
 			'type'            => 'select',
-			'options'         => array_combine( econozel_get_edition_issue_whitelist(), econozel_get_edition_issue_whitelist() ),
+			'options'         => array_combine( $issue_whitelist, $issue_whitelist ),
 			'sanitize_cb'     => 'econozel_edition_whitelist_issue',
 			'admin_column_cb' => true,
 			'inline_edit'     => true
@@ -362,5 +365,5 @@ function econozel_prepend_volume_title() {
  * @return array Whitelist of Edition issues
  */
 function econozel_get_edition_issue_whitelist() {
-	return (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', array( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ) ) );
+	return (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', range( 1, 12 ) ) );
 }
