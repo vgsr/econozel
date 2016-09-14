@@ -451,13 +451,16 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 		// ... by single Volume
 		if ( isset( $args['econozel_volume'] ) ) {
 
+			// Get Volume
+			$volume = econozel_get_volume( $args['econozel_volume'] );
+
 			/**
 			 * Setup tax query object to query by single Volume
 			 */
 			$tax_query = new WP_Tax_Query( array(
 				array(
 					'taxonomy' => econozel_get_volume_tax_id(),
-					'terms'    => array( (int) $args['econozel_volume'] ),
+					'terms'    => array( $volume ? $volume->term_id : 0 ),
 					'field'    => 'term_id'
 				)
 			) );
