@@ -89,8 +89,8 @@ function econozel_parse_query( $posts_query ) {
 		$the_volume  = econozel_get_volume( $is_volume, 'slug' );
 		$the_edition = econozel_get_edition_by_issue( $is_edition, $the_volume, true );
 
-		// 404 and bail when Volume or Edition does not exist
-		if ( ! $the_volume || ! $the_edition ) {
+		// 404 and bail when Volume or Edition does not exist or the Edition has no Articles
+		if ( ! $the_volume || ! $the_edition || ! econozel_get_edition_article_count( $the_edition ) ) {
 			$posts_query->set_404();
 			return;
 		}
