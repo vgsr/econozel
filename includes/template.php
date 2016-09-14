@@ -62,28 +62,25 @@ function econozel_parse_query( $posts_query ) {
 	// Volume Archive
 	} elseif ( ! empty( $is_volume_archive ) ) {
 
+		// 404 and bail when Volumes are not returned in query
+		if ( ! econozel_query_volumes() ) {
+			$posts_query->set_404();
+			return;
+		}
+
 		// Looking at the volume archive
 		$posts_query->econozel_is_volume_archive = true;
 		$posts_query->is_archive                 = true;
 
-		// Setup query object
-		if ( econozel_query_volumes() ) {
+		// Make sure 404 is not set
+		$posts_query->is_404 = false;
 
-			// Make sure 404 is not set
-			$posts_query->is_404 = false;
+		// Correct is_home variable
+		$posts_query->is_home = false;
 
-			// Correct is_home variable
-			$posts_query->is_home = false;
-
-			// Define query result
-			$posts_query->found_posts   = $eco->volume_query->found_terms;
-			$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
-
-		// Nothing found
-		} else {
-			$posts_query->set_404();
-			return;
-		}
+		// Define query result
+		$posts_query->found_posts   = $eco->volume_query->found_terms;
+		$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
 
 	// Edition Page
 	} elseif ( ! empty( $is_volume ) && ! empty( $is_edition ) ) {
@@ -134,42 +131,33 @@ function econozel_parse_query( $posts_query ) {
 		// Get Volume term
 		$the_volume = econozel_get_volume( $is_volume, 'slug' );
 
-		// 404 and bail when Volume does not exist
-		if ( ! $the_volume ) {
+		// 404 and bail when Volume does not exist or Editions are not returned in query
+		if ( ! $the_volume || ! econozel_query_editions( array( 'econozel_volume' => $the_volume->term_id ) ) ) {
 			$posts_query->set_404();
 			return;
 		}
+
+		// Set econozel_volume for future reference
+		$posts_query->set( 'econozel_volume', $the_volume->term_id );
 
 		// Looking at a single Volume
 		$posts_query->econozel_is_volume = true;
 		$posts_query->is_tax             = true;
 		$posts_query->is_archive         = true;
 
-		// Set econozel_volume for future reference
-		$posts_query->set( 'econozel_volume', $the_volume->term_id );
+		// Make sure 404 is not set
+		$posts_query->is_404 = false;
 
-		// Setup query object
-		if ( econozel_query_editions() ) {
+		// Correct is_home variable
+		$posts_query->is_home = false;
 
-			// Make sure 404 is not set
-			$posts_query->is_404 = false;
+		// Set queried object vars
+		$posts_query->queried_object    = $the_volume;
+		$posts_query->queried_object_id = $the_volume->term_id;
 
-			// Correct is_home variable
-			$posts_query->is_home = false;
-
-			// Set queried object vars
-			$posts_query->queried_object    = $the_volume;
-			$posts_query->queried_object_id = $the_volume->term_id;
-
-			// Define query result
-			$posts_query->found_posts   = $eco->edition_query->found_terms;
-			$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
-
-		// Nothing found
-		} else {
-			$posts_query->set_404();
-			return;
-		}
+		// Define query result
+		$posts_query->found_posts   = $eco->edition_query->found_terms;
+		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
 	}
 }
 
