@@ -600,12 +600,13 @@ function econozel_get_volume_archive_template() {
  */
 function econozel_get_edition_archive_template() {
 	$tax_id    = econozel_get_volume_tax_id();
-	$volume_id = econozel_get_volume_id();
+	$term_id   = econozel_get_volume_id();
 	$templates = array(
-		'taxonomy-' . $tax_id . '-' . $volume_id . '.php', // Single Volume ID
-		'taxonomy-' . $tax_id . '.php',                    // Generic Volume Taxonomy
-		'archive-econozel-edition.php',                    // Editions archive
-		'archive-econozel.php',                            // Econozel archive
+		'taxonomy-' . $tax_id . '-' . $term_id . '.php', // Single Volume ID
+		'taxonomy-' . $tax_id . '.php',                  // Generic Volume Taxonomy
+		'econozel-volume.php',                           // Single Volume
+		'archive-econozel-edition.php',                  // Editions archive
+		'archive-econozel.php',                          // Econozel archive
 	);
 
 	return econozel_get_query_template( 'econozel-editions', $templates );
@@ -640,6 +641,8 @@ function econozel_get_edition_template() {
  */
 function econozel_get_theme_compat_template() {
 	$templates = array(
+		'econozel-compat.php',
+		'econozel.php',
 		'generic.php',
 		'page.php',
 		'single.php',
