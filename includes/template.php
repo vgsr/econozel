@@ -485,13 +485,16 @@ function econozel_template_include_theme_supports( $template = '' ) {
 	$_template = '';
 
 	// Root Page
-	if     ( econozel_is_root()           && ( $_template = econozel_get_root_template()            ) ) :
+	if     ( econozel_is_root()            && ( $_template = econozel_get_root_template()            ) ) :
 
 	// Volume Archive
-	elseif ( econozel_is_volume_archive() && ( $_template = econozel_get_volume_archive_template()  ) ) :
+	elseif ( econozel_is_volume_archive()  && ( $_template = econozel_get_volume_archive_template()  ) ) :
 
-	// Volume Page
-	elseif ( econozel_is_volume()         && ( $_template = econozel_get_edition_archive_template() ) ) :
+	// Edition Archive
+	elseif ( econozel_is_edition_archive() && ( $_template = econozel_get_edition_archive_template() ) ) :
+
+	// Single Edition
+	elseif ( econozel_is_edition()         && ( $_template = econozel_get_edition_template()         ) ) :
 	endif;
 
 	// Set included template file
@@ -606,6 +609,26 @@ function econozel_get_edition_archive_template() {
 	);
 
 	return econozel_get_query_template( 'econozel-editions', $templates );
+}
+
+/**
+ * Locate and return the single Edition page template
+ *
+ * @since 1.0.0
+ *
+ * @return string Path to template file
+ */
+function econozel_get_edition_template() {
+	$tax_id     = econozel_get_edition_tax_id();
+	$term_id    = econozel_get_edition_id();
+	$templates  = array(
+		'taxonomy-' . $tax_id . '-' . $term_id . '.php', // Single Edition ID
+		'taxonomy-' . $tax_id . '.php',                  // Generic Edition Taxonomy
+		'single-econozel-edition.php',                   // Single Edition
+		'econozel-edition.php',                          // Single Edition
+	);
+
+	return econozel_get_query_template( 'econozel-edition', $templates );
 }
 
 /**
