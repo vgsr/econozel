@@ -32,6 +32,7 @@ function econozel_query_volumes( $args = array() ) {
 	$query->current_term = -1;
 	$query->term_count   = 0;
 	$query->term         = null;
+	$query->terms        = array();
 
 	// Define query args
 	$query_args = wp_parse_args( $args, array(
