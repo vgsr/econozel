@@ -17,8 +17,6 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  *
- * @todo Ordering by issue.
- *
  * @param array $args Query arguments.
  * @return bool Has the query returned any results?
  */
