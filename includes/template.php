@@ -181,7 +181,7 @@ function econozel_filter_wp_query( $request, $query ) {
 	if ( ! econozel_is_root() && ! econozel_have_archive() )
 		return $request;
 
-	// Query for nothing
+	// Query for nothing and your chicks for free
 	$request = "SELECT 1 FROM {$wpdb->posts} WHERE 0=1";
 
 	return $request;
