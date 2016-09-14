@@ -211,30 +211,6 @@ function econozel_bypass_wp_query( $retval, $query ) {
 }
 
 /**
- * Handle 404 errors for plugin pages manually
- *
- * @since 1.0.0
- *
- * @param bool $retval Whether to short-circuit
- * @param WP_Query $query Query object
- * @return bool Whether to short-circuit
- */
-function econozel_handle_404( $retval, $query ) {
-
-	// Bail when 404 was already issued
-	if ( is_404() )
-		return $retval;
-
-	// Don't 404 for plugin root or term archives
-	if ( econozel_is_root() || econozel_have_archive() ) {
-		status_header( 200 );
-		$retval = true;
-	}
-
-	return $retval;
-}
-
-/**
  * Check if current page is the root page
  *
  * @since 1.0.0
