@@ -93,16 +93,12 @@ final class Econozel {
 
 		/** Queries ***********************************************************/
 
-		// `WP_Term_Query` since WP 4.6
-		if ( class_exists( 'WP_Term_Query' ) ) {
-			$this->volume_query  = new WP_Term_Query(); // Main Volume query
-			$this->edition_query = new WP_Term_Query(); // Main Edition query
+		// Use `WP_Term_Query` since WP 4.6
+		$term_query = class_exists( 'WP_Term_Query' ) ? 'WP_Term_Query' : 'stdClass';
 
-		// Fallback for WP pre-4.6
-		} else {
-			$this->volume_query  = new stdClass(); // Main Volume query
-			$this->edition_query = new stdClass(); // Main Edition query
-		}
+		$this->volume_query  = new $term_query; // Main Volume query
+		$this->edition_query = new $term_query; // Main Edition query
+		$this->article_query = new WP_Query();  // Main Article query
 
 		/** Misc **************************************************************/
 

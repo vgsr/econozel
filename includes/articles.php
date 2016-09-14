@@ -10,6 +10,100 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Query *********************************************************************/
+
+/**
+ * Setup and run the Articles query
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Query arguments.
+ * @return bool Has the query returned any results?
+ */
+function econozel_query_articles( $args = array() ) {
+
+	// Get query object
+	$query = econozel()->article_query;
+
+	// Reset query defaults
+	$query->in_the_loop  = false;
+	$query->current_post = -1;
+	$query->post_count   = 0;
+	$query->post         = null;
+	$query->posts        = array();
+
+	// Define query args
+	$query_args = wp_parse_args( $args, array(
+		'econozel_edition' => econozel_get_edition_id(),
+		'post_type'        => econozel_get_article_post_type(),
+		'posts_per_page'   => -1,
+		'paged'            => econozel_get_paged(),
+		'fields'           => 'all'
+	) );
+
+	// Bail when Edition does not exist
+	if ( empty( $query_args['econozel_edition'] ) || ! ( $edition = econozel_get_edition( $query_args['econozel_edition'] ) ) ) {
+		return false;
+	} else {
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy'         => econozel_get_edition_tax_id(),
+				'terms'            => array( $edition->term_id ),
+				'field'            => 'term_id',
+				'include_children' => false
+			)
+		);
+	}
+
+	// Run query to get the posts
+	$query->query( $query_args );
+
+	// Return whether the query has returned results
+	return $query->have_posts();
+}
+
+/**
+ * Return whether the query has Articles to loop over
+ *
+ * @since 1.0.0
+ *
+ * @return bool Query has Articles
+ */
+function econozel_has_articles() {
+
+	// Has query a next post?
+	$has_next = econozel()->article_query->have_posts();
+
+	// Clean up after ourselves
+	if ( ! $has_next ) {
+		wp_reset_postdata();
+	}
+
+	return $has_next;
+}
+
+/**
+ * Setup next Article in the current loop
+ *
+ * @since 1.0.0
+ *
+ * @return bool Are we still in the loop?
+ */
+function econozel_the_article() {
+	return econozel()->article_query->the_post();
+}
+
+/**
+ * Return whether we're in the Article loop
+ *
+ * @since 1.0.0
+ *
+ * @return bool Are we in the Article loop?
+ */
+function econozel_in_the_article_loop() {
+	return econozel()->article_query->in_the_loop;
+}
+
 /** Template ******************************************************************/
 
 /**

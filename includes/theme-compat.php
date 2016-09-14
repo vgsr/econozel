@@ -384,4 +384,3 @@ function econozel_set_theme_compat_active( $set = true ) {
 
 	return (bool) econozel()->theme_compat->active;
 }
-
