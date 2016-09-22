@@ -298,10 +298,10 @@ final class Econozel {
 	 *
 	 * Setup rules to create the following structures:
 	 * - `/{root}/`
-	 * - `/{root}/volume/{volume}/`
-	 * - `/{root}/volume/{volume}/paged/{#}/`
-	 * - `/{root}/volume/{volume}/{issue}/`
-	 * - `/{root}/volume/{volume}/{issue}/paged/{#}/`
+	 * - `/{root}/{volumes}/{volume}/
+	 * - `/{root}/{volumes}/{volume}/page/{#}/`
+	 * - `/{root}/{volumes}/{volume}/{issue}/`
+	 * - `/{root}/{volumes}/{volume}/{issue}/page/{#}/`
 	 *
 	 * @since 1.0.0
 	 */
