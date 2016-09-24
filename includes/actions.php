@@ -39,4 +39,32 @@ add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 )
 
 if ( is_admin() ) {
 	add_action( 'init', 'econozel_admin' );
+
+	// Activation/Deactivation
+	add_action( 'econozel_activation',   'econozel_delete_rewrite_rules' );
+	add_action( 'econozel_deactivation', 'econozel_delete_rewrite_rules' );
+}
+
+/** Admin *********************************************************************/
+
+/**
+ * Run dedicated activation hook for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_activation'
+ */
+function econozel_activation() {
+	do_action( 'econozel_activation' );
+}
+
+/**
+ * Run dedicated deactivation hook for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_deactivation'
+ */
+function econozel_deactivation() {
+	do_action( 'econozel_deactivation' );
 }
