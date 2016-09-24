@@ -41,10 +41,8 @@ function econozel_query_articles( $args = array() ) {
 		'fields'           => 'all'
 	) );
 
-	// Bail when Edition does not exist
-	if ( empty( $query_args['econozel_edition'] ) || ! ( $edition = econozel_get_edition( $query_args['econozel_edition'] ) ) ) {
-		return false;
-	} else {
+	// Query by Edition
+	if ( $query_args['econozel_edition'] && ( $edition = econozel_get_edition( $query_args['econozel_edition'] ) ) ) {
 		$query_args['tax_query'] = array(
 			array(
 				'taxonomy'         => econozel_get_edition_tax_id(),

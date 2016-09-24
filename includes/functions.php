@@ -307,6 +307,16 @@ function econozel_get_edition_issue_rewrite_id() {
 	return apply_filters( 'econozel_get_edition_issue_rewrite_id', econozel_get_edition_tax_id() . '_issue' );
 }
 
+/**
+ * Delete a blogs rewrite rules, so that they are automatically rebuilt on
+ * the subsequent page load.
+ *
+ * @since 1.0.0
+ */
+function econozel_delete_rewrite_rules() {
+	delete_option( 'rewrite_rules' );
+}
+
 /** Options *******************************************************************/
 
 /**
@@ -354,4 +364,57 @@ function econozel_prepend_volume_title() {
  */
 function econozel_get_edition_issue_whitelist() {
 	return (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', range( 1, 12 ) ) );
+}
+
+/** Utility *******************************************************************/
+
+/**
+ * Determine if this plugin is being deactivated
+ *
+ * @since 1.0.0
+ *
+ * @param string $basename Optional. Plugin basename to check for.
+ * @return bool True if deactivating the plugin, false if not
+ */
+function econozel_is_deactivation( $basename = '' ) {
+	global $pagenow;
+
+	$eco    = econozel();
+	$action = false;
+
+	// Bail if not in admin/plugins
+	if ( ! ( is_admin() && ( 'plugins.php' === $pagenow ) ) ) {
+		return false;
+	}
+
+	if ( ! empty( $_REQUEST['action'] ) && ( '-1' !== $_REQUEST['action'] ) ) {
+		$action = $_REQUEST['action'];
+	} elseif ( ! empty( $_REQUEST['action2'] ) && ( '-1' !== $_REQUEST['action2'] ) ) {
+		$action = $_REQUEST['action2'];
+	}
+
+	// Bail if not deactivating
+	if ( empty( $action ) || ! in_array( $action, array( 'deactivate', 'deactivate-selected' ) ) ) {
+		return false;
+	}
+
+	// The plugin(s) being deactivated
+	if ( $action === 'deactivate' ) {
+		$plugins = isset( $_GET['plugin'] ) ? array( $_GET['plugin'] ) : array();
+	} else {
+		$plugins = isset( $_POST['checked'] ) ? (array) $_POST['checked'] : array();
+	}
+
+	// Set basename if empty
+	if ( empty( $basename ) && ! empty( $eco->basename ) ) {
+		$basename = $eco->basename;
+	}
+
+	// Bail if no basename
+	if ( empty( $basename ) ) {
+		return false;
+	}
+
+	// Is bbPress being deactivated?
+	return in_array( $basename, $plugins );
 }

@@ -136,8 +136,12 @@ final class Econozel {
 	 */
 	private function setup_actions() {
 
-		// Failsafe when VGSR is not active
-		if ( ! function_exists( 'vgsr' ) )
+		// Add actions to plugin activation and deactivation hooks
+		add_action( 'activate_'   . $this->basename, 'econozel_activation'   );
+		add_action( 'deactivate_' . $this->basename, 'econozel_deactivation' );
+
+		// Bail when VGSR is not acive or plugin is being deactivated
+		if ( ! function_exists( 'vgsr' ) || econozel_is_deactivation() )
 			return;
 
 		// Load textdomain
@@ -293,11 +297,11 @@ final class Econozel {
 	 * Register plugin rewrite rules
 	 *
 	 * Setup rules to create the following structures:
-	 * - `/{root}/`
-	 * - `/{root}/volume/{volume}/`
-	 * - `/{root}/volume/{volume}/paged/{#}/`
-	 * - `/{root}/volume/{volume}/{issue}/`
-	 * - `/{root}/volume/{volume}/{issue}/paged/{#}/`
+	 * - /{root}/
+	 * - /{root}/{volumes}/{volume}/
+	 * - /{root}/{volumes}/{volume}/page/{#}/
+	 * - /{root}/{volumes}/{volume}/{issue}/
+	 * - /{root}/{volumes}/{volume}/{issue}/page/{#}/
 	 *
 	 * @since 1.0.0
 	 */
@@ -354,7 +358,7 @@ function econozel() {
 	return Econozel::instance();
 }
 
-// Initiate when VGSR is loaded
-add_action( 'vgsr_loaded', 'econozel' );
+// Initiate plugin on load
+econozel();
 
 endif; // class_exists
