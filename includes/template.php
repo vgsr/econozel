@@ -808,6 +808,110 @@ function econozel_get_the_archive_description( $description = '' ) {
 /** Template Tags *************************************************************/
 
 /**
+ * Output the classes for the term div.
+ *
+ * @see post_class()
+ *
+ * @since 1.0.0
+ *
+ * @param string $class Optional. One or more classes to add to the class list.
+ * @param int|WP_Term $term_id Optional. Term ID or object. Defaults to the current object.
+ */
+function econozel_term_class( $class = '', $term_id = null ) {
+	echo 'class="' . join( ' ', econozel_get_term_class( $class, $term_id ) ) . '"';
+}
+
+/**
+ * Return the classes for the term div.
+ *
+ * @since 1.0.0
+ *
+ * @param string $class Optional. One or more classes to add to the class list.
+ * @param int|WP_Term $term_id Optional. Term ID or object. Defaults to the current object.
+ * @return array Classes
+ */
+function econozel_get_term_class( $class = '', $term_id = null ) {
+
+	// Get term object
+	if ( empty( $term_id ) ) {
+
+		// Looping Editions
+		if ( econozel_in_the_edition_loop() ) {
+			$term = econozel_get_edition();
+
+		// Looping Volumes
+		} elseif ( econozel_in_the_volume_loop() ) {
+			$term = econozel_get_volume();
+
+		// No idea
+		} else {
+			$term = false;
+		}
+	} else {
+		$term = get_term( $term_id );
+	}
+
+	// Define return var
+	$classes = array();
+
+	if ( $class ) {
+		if ( ! is_array( $class ) ) {
+			$class = preg_split( '#\s+#', $class );
+		}
+		$classes = array_map( 'esc_attr', $class );
+	} else {
+		// Ensure that we always coerce class to being an array.
+		$class = array();
+	}
+
+	if ( ! $term ) {
+		return $classes;
+	}
+
+	$classes[] = 'term-' . $term->term_id;
+	if ( ! is_admin() )
+		$classes[] = $term->taxonomy;
+	$classes[] = 'tax-' . $term->taxonomy;
+
+	// hentry for hAtom compliance
+	$classes[] = 'hentry';
+
+	// All public taxonomies
+	$taxonomies = get_taxonomies( array( 'public' => true ) );
+	foreach ( (array) $taxonomies as $taxonomy ) {
+		if ( is_object_in_taxonomy( $term->taxonomy, $taxonomy ) ) {
+			foreach ( (array) get_the_terms( $term->term_id, $taxonomy ) as $_term ) {
+				if ( empty( $_term->slug ) ) {
+					continue;
+				}
+
+				$_term_class = sanitize_html_class( $_term->slug, $_term->term_id );
+				if ( is_numeric( $_term_class ) || ! trim( $_term_class, '-' ) ) {
+					$_term_class = $_term->term_id;
+				}
+
+				$classes[] = sanitize_html_class( $taxonomy . '-' . $term_class, $taxonomy . '-' . $term->term_id );
+			}
+		}
+	}
+
+	$classes = array_map( 'esc_attr', $classes );
+
+	/**
+	 * Filter the list of CSS classes for the current term.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $classes An array of term classes.
+	 * @param array $class   An array of additional classes added to the term.
+	 * @param int   $term_id The term ID.
+	 */
+	$classes = apply_filters( 'econozel_term_class', $classes, $class, $term->term_id );
+
+	return array_unique( $classes );
+}
+
+/**
  * Output navigation markup to next/previous plugin pages
  *
  * @see the_posts_navigation()
