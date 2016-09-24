@@ -31,7 +31,7 @@ function econozel_get_articles( $args = array() ) {
 	) ) );
 
 	// Return false when no posts were found
-	if ( $query->have_posts() ) {
+	if ( ! $query->have_posts() ) {
 		$query = false;
 	}
 
