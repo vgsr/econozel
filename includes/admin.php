@@ -86,8 +86,9 @@ class Econozel_Admin {
 	 */
 	public function admin_menu() {
 
-		// Get taxonomy object
-		$tax = get_taxonomy( $this->volume_tax_id );
+		// Get Volume taxonomy
+		if ( ! $tax = get_taxonomy( $this->volume_tax_id ) )
+			return;
 
 		// Add Volume submenu page
 		$hook = add_submenu_page( "edit.php?post_type={$this->article_post_type}", '', $tax->labels->menu_name, $tax->cap->manage_terms, "edit-tags.php?taxonomy={$this->volume_tax_id}", null );
@@ -226,13 +227,13 @@ class Econozel_Admin {
 		if ( in_array( $this->edition_tax_id, get_object_taxonomies( get_post_type( $post ) ) ) ) {
 
 			// Get Edition taxonomy
-			$tax = get_taxonomy( $this->edition_tax_id );
+			if ( ! $tax = get_taxonomy( $this->edition_tax_id ) )
+				return;
 
 			// Add only when either the user is capable or there is something to show
 			if ( current_user_can( $tax->cap->assign_terms ) || econozel_get_article_edition( $post ) ) {
 				add_meta_box( 'econozel_edition', esc_html__( 'Volume & Edition', 'econozel' ), array( $this, 'article_edition_meta_box' ), null, 'side', 'high' );
 			}
-
 		}
 	}
 
@@ -247,7 +248,8 @@ class Econozel_Admin {
 	public function article_edition_meta_box( $post ) {
 
 		// Get Edition taxonomy
-		$tax = get_taxonomy( $this->edition_tax_id );
+		if ( ! $tax = get_taxonomy( $this->edition_tax_id ) )
+			return;
 
 		?>
 
