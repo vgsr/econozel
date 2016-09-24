@@ -10,6 +10,34 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Query *********************************************************************/
+
+/**
+ * Setup and return a query for Articles
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Query arguments
+ * @return WP_Query|bool Post query object when articles were found, else False.
+ */
+function econozel_get_articles( $args = array() ) {
+
+	// Define post query
+	$query = new WP_Query( wp_parse_args( $args, array(
+		'post_type'      => econozel_get_article_post_type(),
+		'posts_per_page' => 10,
+		'orderby'        => 'date',
+		'order'          => 'DESC'
+	) ) );
+
+	// Return false when no posts were found
+	if ( $query->have_posts() ) {
+		$query = false;
+	}
+
+	return $query;
+}
+
 /** Template ******************************************************************/
 
 /**
