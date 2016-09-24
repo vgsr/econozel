@@ -301,11 +301,11 @@ final class Econozel {
 	 * Register plugin rewrite rules
 	 *
 	 * Setup rules to create the following structures:
-	 * - `/{root}/`
-	 * - `/{root}/{volumes}/{volume}/
-	 * - `/{root}/{volumes}/{volume}/page/{#}/`
-	 * - `/{root}/{volumes}/{volume}/{issue}/`
-	 * - `/{root}/{volumes}/{volume}/{issue}/page/{#}/`
+	 * - /{root}/
+	 * - /{root}/{volumes}/{volume}/
+	 * - /{root}/{volumes}/{volume}/page/{#}/
+	 * - /{root}/{volumes}/{volume}/{issue}/
+	 * - /{root}/{volumes}/{volume}/{issue}/page/{#}/
 	 *
 	 * @since 1.0.0
 	 */
