@@ -20,7 +20,8 @@ add_filter( 'list_cats',                   'econozel_list_cats',                
 
 /** Query *********************************************************************/
 
-add_action( 'parse_query',                 'econozel_parse_query',                  2 ); // Early for overrides
+add_action( 'parse_query',                 'econozel_parse_query',               2    ); // Early for overrides
+add_action( 'posts_clauses',               'econozel_posts_clauses',            10, 2 );
 add_filter( 'posts_request',               'econozel_filter_wp_query',          10, 2 );
 add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          10, 2 ); // Since WP 4.6
 

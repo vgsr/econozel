@@ -162,6 +162,47 @@ function econozel_parse_query( $posts_query ) {
 }
 
 /**
+ * Add checks for plugin conditions to posts_clauses action
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb
+ *
+ * @param array $clauses SQL clauses
+ * @param WP_Query $query Post query object
+ * @return array SQL clauses
+ */
+function econozel_posts_clauses( $clauses, $query ) {
+	global $wpdb;
+
+	// Bail when filters are suppressed on this query
+	if ( true === $query->get( 'suppress_filters' ) )
+		return $clauses;
+
+	// Bail when in admin
+	if ( is_admin() )
+		return $clauses;
+
+	// Filter by comment activity
+	if ( $comment_activity = $query->get( 'comment_activity' ) ) {
+
+		// Define local variables
+		$days    = is_numeric( $comment_activity ) ? (int) $comment_activity : 10;
+		$since   = date( 'Y-m-d 00:00:00', strtotime( "{$days} days ago" ) );
+		$orderby = "{$wpdb->posts}.comment_count DESC";
+
+		if ( ! empty( $clauses['orderby'] ) )
+			$orderby .= ', ';
+
+		// Query posts that have commenst in the last X days, order by comment count
+		$clauses['where']  .= $wpdb->prepare( " AND EXISTS ( SELECT 1 FROM {$wpdb->comments} c WHERE c.comment_post_ID = {$wpdb->posts}.ID AND c.comment_approved = %s AND c.comment_date > %s )", 1, $since );
+		$clauses['orderby'] = $orderby . $clauses['orderby'];
+	}
+
+	return $clauses;
+}
+
+/**
  * Overwrite the main WordPress query
  *
  * @since 1.0.0
