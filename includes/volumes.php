@@ -401,3 +401,14 @@ function econozel_the_volume_url( $volume = 0 ) {
 
 		return $url;
 	}
+
+/**
+ * Return the Volume archive url
+ *
+ * @since 1.0.0
+ *
+ * @return string Volume archive url
+ */
+function econozel_get_volume_archive_url() {
+	return home_url( user_trailingslashit( econozel_get_volume_slug() ) );
+}
