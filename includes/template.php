@@ -195,6 +195,7 @@ function econozel_posts_clauses( $clauses, $query ) {
 			$orderby .= ', ';
 
 		// Query posts that have commenst in the last X days, order by comment count
+		// @todo Order really by recent comment activity, not by all-time comment count
 		$clauses['where']  .= $wpdb->prepare( " AND EXISTS ( SELECT 1 FROM {$wpdb->comments} c WHERE c.comment_post_ID = {$wpdb->posts}.ID AND c.comment_approved = %s AND c.comment_date > %s )", 1, $since );
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
 	}
