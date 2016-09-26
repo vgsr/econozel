@@ -249,14 +249,16 @@ class Econozel_Admin {
 		<?php
 
 		// Get Edition taxonomy
-		$tax   = get_taxonomy( $this->edition_tax_id );
-		$terms = $tax ? wp_count_terms( $tax->name ) : false;
+		$tax        = get_taxonomy( $this->edition_tax_id );
+		$terms      = $tax ? wp_count_terms( $tax->name ) : false;
+		$can_assign = $tax && current_user_can( $tax->cap->assign_terms );
 
 		// When either the user is capable or there is something to show
-		if ( $terms && ( current_user_can( $tax->cap->assign_terms ) || econozel_get_article_edition( $post ) ) ) : ?>
+		if ( $terms && ( $can_assign || econozel_get_article_edition( $post ) ) ) : ?>
 			<fieldset>
 				<legend><p><strong><?php esc_html_e( 'Volume & Edition', 'econozel' ); ?></strong></p></legend>
-				<?php if ( current_user_can( $tax->cap->assign_terms ) ) : ?>
+				<?php if ( $can_assign ) : ?>
+
 				<p><?php econozel_dropdown_editions( array(
 					'name'       => "taxonomy-{$this->edition_tax_id}",
 					'hide_empty' => 0,
@@ -264,13 +266,28 @@ class Econozel_Admin {
 				) ); ?></p>
 
 				<?php else : ?>
+
 				<p><?php econozel_the_article_edition_label( $post ); ?></p>
+
 				<?php endif; ?>
 			</fieldset>
+		<?php endif;
+
+		// When either the user is capable or there is something to show
+		if ( $can_assign || $post->menu_order ) : ?>
+			<p><strong><?php esc_html_e( 'Page Number', 'econozel' ); ?></strong></p>
+
+			<?php if ( $can_assign ) : ?>
+
+			<p><label class="screen-reader-text" for="menu_order"><?php esc_html_e( 'Page Number', 'econozel' ); ?></label><input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" /></p>
+
+			<?php else : ?>
+
+			<p><?php echo $post->menu_order; ?></p>
+
+			<?php endif; ?>
 		<?php endif; ?>
 
-			<p><strong><?php esc_html_e( 'Page Number', 'econozel' ); ?></strong></p>
-			<p><label class="screen-reader-text" for="menu_order"><?php esc_html_e( 'Page Number', 'econozel' ); ?></label><input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" /></p>
 		</div>
 
 		<?php
