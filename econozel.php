@@ -224,6 +224,7 @@ final class Econozel {
 				'capability_type'     => array( 'econozel', 'econozels' ),
 				'hierarchical'        => false,
 				'public'              => $is_user_vgsr,
+				'has_archive'         => true,
 				'rewrite'             => econozel_get_article_post_type_rewrite(),
 				'query_var'           => true,
 				'exclude_from_search' => ! $is_user_vgsr,
