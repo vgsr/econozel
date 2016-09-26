@@ -837,7 +837,7 @@ function econozel_get_the_archive_description( $description = '' ) {
 
 	// Root page
 	if ( econozel_is_root() ) {
-		$description = sprintf( __( 'This page lists recent Econozel activity on this site. You can browse the <a href="%s">Volume archive</a> to find all articles that have been archived or published on this site.', 'econozel' ), esc_url( econozel_get_volume_archive_url() ) );
+		$description = sprintf( __( 'This page lists recent Econozel activity on this site. You can browse the <a href="%1$s">Volume archives</a> or <a href="%2$s">Article archives</a> to find all articles that have been archived or published on this site.', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ) );
 
 	// Volume archive
 	} elseif ( econozel_is_volume_archive() ) {
