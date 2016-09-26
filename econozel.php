@@ -113,15 +113,23 @@ final class Econozel {
 	 * @since 1.0.0
 	 */
 	private function includes() {
+
+		// Core
 		require( $this->includes_dir . 'actions.php'      );
 		require( $this->includes_dir . 'articles.php'     );
 		require( $this->includes_dir . 'capabilities.php' );
 		require( $this->includes_dir . 'editions.php'     );
 		require( $this->includes_dir . 'functions.php'    );
 		require( $this->includes_dir . 'taxonomy.php'     );
+		require( $this->includes_dir . 'volumes.php'      );
+
+		// Theme
 		require( $this->includes_dir . 'template.php'     );
 		require( $this->includes_dir . 'theme-compat.php' );
-		require( $this->includes_dir . 'volumes.php'      );
+
+		// Widgets
+		require( $this->includes_dir . 'widgets/class-econozel-articles-widget.php' );
+		require( $this->includes_dir . 'widgets/class-econozel-comments-widget.php' );
 
 		// Administration
 		if ( is_admin() ) {

@@ -36,6 +36,13 @@ add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
 add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 );
 
+/** Widgets *******************************************************************/
+
+add_action( 'widgets_init', 'econozel_widgets_init' );
+
+add_action( 'econozel_widgets_init', array( 'Econozel_Articles_Widget', 'register_widget' ) );
+add_action( 'econozel_widgets_init', array( 'Econozel_Comments_Widget', 'register_widget' ) );
+
 /** Admin *********************************************************************/
 
 if ( is_admin() ) {
@@ -68,4 +75,15 @@ function econozel_activation() {
  */
 function econozel_deactivation() {
 	do_action( 'econozel_deactivation' );
+}
+
+/**
+ * Run dedicated widgets hook for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_widgets_init'
+ */
+function econozel_widgets_init() {
+	do_action( 'econozel_widgets_init' );
 }
