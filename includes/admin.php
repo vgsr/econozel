@@ -250,7 +250,7 @@ class Econozel_Admin {
 
 		// Get Edition taxonomy
 		$tax        = get_taxonomy( $this->edition_tax_id );
-		$terms      = $tax && wp_count_terms( $tax->name ) : false;
+		$terms      = $tax && wp_count_terms( $tax->name );
 		$can_assign = $tax && current_user_can( $tax->cap->assign_terms );
 
 		// When either the user is capable or there is something to show
