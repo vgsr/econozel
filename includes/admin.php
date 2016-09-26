@@ -227,6 +227,9 @@ class Econozel_Admin {
 		if ( $this->article_post_type !== $post->post_type )
 			return;
 
+		// Remove default page-attributes metabox
+		remove_meta_box( 'pageparentdiv', get_current_screen(), 'side' );
+
 		// Article Details metabox
 		add_meta_box( 'article_details', esc_html__( 'Article Details', 'econozel' ), array( $this, 'article_details_meta_box' ), null, 'side', 'high' );
 	}
@@ -266,6 +269,8 @@ class Econozel_Admin {
 			</fieldset>
 		<?php endif; ?>
 
+			<p><strong><?php esc_html_e( 'Page Number', 'econozel' ); ?></strong></p>
+			<p><label class="screen-reader-text" for="menu_order"><?php esc_html_e( 'Page Number', 'econozel' ); ?></label><input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" /></p>
 		</div>
 
 		<?php

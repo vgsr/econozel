@@ -78,7 +78,8 @@ function econozel_get_article_post_type_supports() {
 		'title',
 		'author',
 		'editor',
-		'comments'
+		'comments',
+		'page-attributes' // For custom menu_order
 	) );
 }
 
