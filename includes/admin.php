@@ -223,18 +223,12 @@ class Econozel_Admin {
 	 */
 	public function article_meta_boxes( $post ) {
 
-		// Add Edition metabox
-		if ( in_array( $this->edition_tax_id, get_object_taxonomies( get_post_type( $post ) ) ) ) {
+		// Bail when this is not an Article
+		if ( $this->article_post_type !== $post->post_type )
+			return;
 
-			// Get Edition taxonomy
-			if ( ! $tax = get_taxonomy( $this->edition_tax_id ) )
-				return;
-
-			// Add only when either the user is capable or there is something to show
-			if ( current_user_can( $tax->cap->assign_terms ) || econozel_get_article_edition( $post ) ) {
-				add_meta_box( 'econozel_edition', esc_html__( 'Volume & Edition', 'econozel' ), array( $this, 'article_edition_meta_box' ), null, 'side', 'high' );
-			}
-		}
+		// Article Details metabox
+		add_meta_box( 'article_details', esc_html__( 'Article Details', 'econozel' ), array( $this, 'article_details_meta_box' ), null, 'side', 'high' );
 	}
 
 	/**
@@ -245,7 +239,7 @@ class Econozel_Admin {
 	 * @todo List Editions as #s instead of a list of registered terms > distinct Edition # query helper
 	 * @param WP_Post $post Post object
 	 */
-	public function article_edition_meta_box( $post ) {
+	public function article_details_meta_box( $post ) {
 
 		// Get Edition taxonomy
 		if ( ! $tax = get_taxonomy( $this->edition_tax_id ) )
