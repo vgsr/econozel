@@ -239,33 +239,39 @@ class Econozel_Admin {
 	 * @todo List Editions as #s instead of a list of registered terms > distinct Edition # query helper
 	 * @param WP_Post $post Post object
 	 */
-	public function article_details_meta_box( $post ) {
-
-		// Get Edition taxonomy
-		if ( ! $tax = get_taxonomy( $this->edition_tax_id ) )
-			return;
-
-		?>
+	public function article_details_meta_box( $post ) { ?>
 
 		<div id="econozel-edition" class="categorydiv">
+
+		<?php
+
+		// Get Edition taxonomy
+		$tax   = get_taxonomy( $this->edition_tax_id );
+		$terms = $tax ? wp_count_terms( $tax->name ) : false;
+
+		// When either the user is capable or there is something to show
+		if ( $terms && ( current_user_can( $tax->cap->assign_terms ) || econozel_get_article_edition( $post ) ) ) : ?>
 			<fieldset>
-				<legend class="screen-reader-text"><?php esc_html_e( 'Edition', 'econozel' ); ?></legend>
+				<legend><p><strong><?php esc_html_e( 'Volume & Edition', 'econozel' ); ?></strong></p></legend>
 				<?php if ( current_user_can( $tax->cap->assign_terms ) ) : ?>
-				<?php econozel_dropdown_editions( array(
+				<p><?php econozel_dropdown_editions( array(
 					'name'       => "taxonomy-{$this->edition_tax_id}",
 					'hide_empty' => 0,
 					'selected'   => econozel_get_article_edition( $post )
-				) ); ?>
+				) ); ?></p>
 
 				<?php else : ?>
 				<p><?php econozel_the_article_edition_label( $post ); ?></p>
 				<?php endif; ?>
 			</fieldset>
+		<?php endif; ?>
+
 		</div>
 
-		<?php wp_nonce_field( 'econozel_edition_metabox_save', 'econozel_edition_metabox' ); ?>
-
 		<?php
+
+		// Metabox nonce
+		wp_nonce_field( 'econozel_edition_metabox_save', 'econozel_edition_metabox' );
 	}
 
 	/**
