@@ -486,7 +486,7 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			$clauses['where'] .= $wpdb->prepare( " AND ( volumes.taxonomy = %s )", econozel_get_volume_tax_id() );
 
 			// Get all Volumes ID's, properly ordered
-			$volumes = get_terms( econozel_get_volume_tax_id(), array( 'fields' => 'ids' ) );
+			$volumes = get_terms( econozel_get_volume_tax_id(), array( 'fields' => 'ids', 'hide_empty' => false ) );
 			$volumes = ! empty( $volumes ) ? implode( ', ', $volumes ) : '0';
 
 			/**
