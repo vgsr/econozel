@@ -250,7 +250,7 @@ class Econozel_Admin {
 
 		// Get Edition taxonomy
 		$tax        = get_taxonomy( $this->edition_tax_id );
-		$terms      = $tax ? wp_count_terms( $tax->name ) : false;
+		$terms      = $tax && wp_count_terms( $tax->name ) : false;
 		$can_assign = $tax && current_user_can( $tax->cap->assign_terms );
 
 		// When either the user is capable or there is something to show
@@ -328,13 +328,18 @@ class Econozel_Admin {
 		if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 			return;
 
-		// Set Article Edition
-		if ( isset( $_POST["taxonomy-{$this->edition_tax_id}"] ) ) {
-			wp_set_object_terms( $post_id, (int) $_POST["taxonomy-{$this->edition_tax_id}"], $this->edition_tax_id, false );
+		// Get Edition taxonomy. Assign when the user is capable
+		$tax = get_taxonomy( $this->edition_tax_id );
+		if ( $tax && current_user_can( $tax->cap->assign_terms ) ) {
 
-		// Remove Article Edition
-		} elseif ( $edition = econozel_get_article_edition( $post_id ) ) {
-			wp_remove_object_terms( $post_id, array( $edition ), $this->edition_tax_id );
+			// Set Article Edition
+			if ( isset( $_POST["taxonomy-{$this->edition_tax_id}"] ) ) {
+				wp_set_object_terms( $post_id, (int) $_POST["taxonomy-{$this->edition_tax_id}"], $this->edition_tax_id, false );
+
+			// Remove Article Edition
+			} elseif ( $edition = econozel_get_article_edition( $post_id ) ) {
+				wp_remove_object_terms( $post_id, array( $edition ), $this->edition_tax_id );
+			}
 		}
 	}
 
