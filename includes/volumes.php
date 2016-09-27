@@ -395,8 +395,7 @@ function econozel_the_volume_url( $volume = 0 ) {
 		$url = '';
 
 		if ( $volume = econozel_get_volume( $volume ) ) {
-			$url = sprintf( '/%s/%s', econozel_get_volume_slug(), $volume->slug );
-			$url = home_url( user_trailingslashit( $url ) );
+			$url = get_term_link( $volume );
 		}
 
 		return $url;

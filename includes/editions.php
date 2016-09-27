@@ -563,13 +563,8 @@ function econozel_the_edition_url( $edition = 0 ) {
 		$url = '';
 
 		// Get Edition identifiers
-		$edition = econozel_get_edition( $edition );
-		$volume  = econozel_get_edition_volume( $edition, true );
-		$issue   = econozel_get_edition_issue( $edition );
-
-		if ( $edition && $volume && $issue ) {
-			$url = sprintf( '/%s/%s/%s', econozel_get_volume_slug(), $volume->slug, $issue );
-			$url = home_url( user_trailingslashit( $url ) );
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$url = get_term_link( $edition );
 		}
 
 		return $url;
