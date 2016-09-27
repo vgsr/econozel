@@ -577,6 +577,41 @@ function econozel_list_cats( $label, $term = null ) {
 	return $label;
 }
 
+/**
+ * Modify the term link for the plugin's taxonomies
+ *
+ * @since 1.0.0
+ *
+ * @param string $link Term link
+ * @param WP_Term $term Term object
+ * @param string $taxonomy Taxonomy name
+ * @return string Term link
+ */
+function econozel_term_link( $link, $term, $taxonomy ) {
+
+	switch ( $taxonomy ) {
+
+		// Edition
+		case econozel_get_edition_tax_id() :
+
+			// Get Edition's Volume and issue
+			$volume = econozel_get_edition_volume( $term );
+			$issue  = econozel_get_edition_issue( $term );
+
+			if ( $volume && $issue ) {
+				$link = user_trailingslashit( trailingslashit( econozel_get_volume_url( $volume ) ) . $issue );
+			}
+			break;
+
+		// Volume
+		case econozel_get_volume_tax_id() :
+			$link = home_url( user_trailingslashit( trailingslashit( econozel_get_volume_slug() ) . $term->slug ) );
+			break;
+	}
+
+	return $link;
+}
+
 /** Template Tags *************************************************************/
 
 /**

@@ -27,11 +27,12 @@ add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          
 
 /** Template ******************************************************************/
 
-add_filter( 'document_title_parts',        'econozel_document_title_parts'            ); // Since WP 4.4
-add_filter( 'body_class',                  'econozel_body_class'                      );
-add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'           );
-add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description'     );
-add_filter( 'econozel_term_class',         'econozel_filter_term_class'               );
+add_filter( 'document_title_parts',        'econozel_document_title_parts'               ); // Since WP 4.4
+add_filter( 'body_class',                  'econozel_body_class'                         );
+add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'              );
+add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description'        );
+add_filter( 'econozel_term_class',         'econozel_filter_term_class'                  );
+add_filter( 'term_link',                   'econozel_term_link',                   10, 3 );
 
 // Theme Compat
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
