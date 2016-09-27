@@ -576,6 +576,30 @@ function econozel_the_edition_url( $edition = 0 ) {
 	}
 
 /**
+ * Output the Edition's Article count in a read-friendly format
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ * @param bool $echo Optional. Whether to output the return value.
+ * @return string Article count in read-friendly format.
+ */
+function econozel_edition_article_count( $edition = 0, $echo = false ) {
+
+	// Get Article count
+	$count  = econozel_get_edition_article_count( $edition );
+
+	// Define return var
+	$retval = sprintf( esc_html_x( '%d Article', '%d Articles', $count, 'econozel' ), $count );
+
+	if ( $echo ) {
+		echo $retval;
+	} else {
+		return $retval;
+	}
+}
+
+/**
  * Output the Edition's Article count
  *
  * @since 1.0.0
