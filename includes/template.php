@@ -936,7 +936,7 @@ function econozel_get_term_class( $class = '', $term_id = null ) {
 					$_term_class = $_term->term_id;
 				}
 
-				$classes[] = sanitize_html_class( $taxonomy . '-' . $term_class, $taxonomy . '-' . $term->term_id );
+				$classes[] = sanitize_html_class( $taxonomy . '-' . $_term_class, $taxonomy . '-' . $term->term_id );
 			}
 		}
 	}
