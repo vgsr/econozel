@@ -590,7 +590,7 @@ function econozel_edition_article_count( $edition = 0, $echo = true ) {
 	$count  = econozel_get_edition_article_count( $edition );
 
 	// Define return var
-	$retval = sprintf( esc_html_x( '%d Article', '%d Articles', $count, 'econozel' ), $count );
+	$retval = sprintf( esc_html( _n( '%d Article', '%d Articles', $count, 'econozel' ) ), $count ) ;
 
 	if ( $echo ) {
 		echo $retval;
