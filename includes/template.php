@@ -688,7 +688,7 @@ function econozel_get_theme_compat_template() {
 	);
 
 	// Use archive.php for Taxonomy archives
-	if ( econozel_is_tax_archive() ) {
+	if ( econozel_is_volume_archive() ) {
 		$templates[] = 'archive.php';
 	}
 
