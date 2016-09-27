@@ -576,15 +576,15 @@ function econozel_the_edition_url( $edition = 0 ) {
 	}
 
 /**
- * Output the Edition's Article count in a read-friendly format
+ * Output or return the Edition's Article count in a read-friendly format
  *
  * @since 1.0.0
  *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
- * @param bool $echo Optional. Whether to output the return value.
+ * @param bool $echo Optional. Whether to output the return value. Defaults to true.
  * @return string Article count in read-friendly format.
  */
-function econozel_edition_article_count( $edition = 0, $echo = false ) {
+function econozel_edition_article_count( $edition = 0, $echo = true ) {
 
 	// Get Article count
 	$count  = econozel_get_edition_article_count( $edition );
