@@ -69,13 +69,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'             => 0,
-			'post_author'    => 0,
-			'post_date'      => 0,
-			'post_content'   => econozel_buffer_template_part( 'content', 'econozel', false ),
-			'post_type'      => '',
-			'post_title'     => esc_html__( 'Econozel', 'econozel' ),
-			'is_single'      => true,
+			'ID'          => 0,
+			'post_author' => 0,
+			'post_date'   => 0,
+			'post_type'   => '',
+			'post_title'  => esc_html__( 'Econozel', 'econozel' ),
+			'is_single'   => true,
+			'template'    => array( 'content', 'econozel' ),
 		) );
 
 	// Volume Archive
@@ -83,13 +83,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'             => 0,
-			'post_author'    => 0,
-			'post_date'      => 0,
-			'post_content'   => econozel_buffer_template_part( 'content', 'archive-volume', false ),
-			'post_type'      => '',
-			'post_title'     => esc_html__( 'Econozel Volumes', 'econozel' ),
-			'is_archive'     => true,
+			'ID'          => 0,
+			'post_author' => 0,
+			'post_date'   => 0,
+			'post_type'   => '',
+			'post_title'  => esc_html__( 'Econozel Volumes', 'econozel' ),
+			'is_archive'  => true,
+			'template'    => array( 'content', 'archive-volume' ),
 		) );
 
 	// Volume Page
@@ -97,14 +97,14 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'             => 0,
-			'post_author'    => 0,
-			'post_date'      => 0,
-			'post_content'   => econozel_buffer_template_part( 'content', 'archive-edition', false ),
-			'post_type'      => '',
-			'post_title'     => econozel_get_volume_title( get_queried_object_id() ),
-			'is_archive'     => true,
-			'is_tax'         => true,
+			'ID'          => 0,
+			'post_author' => 0,
+			'post_date'   => 0,
+			'post_type'   => '',
+			'post_title'  => econozel_get_volume_title( get_queried_object_id() ),
+			'is_archive'  => true,
+			'is_tax'      => true,
+			'template'    => array( 'content', 'archive-edition' ),
 		) );
 	}
 
@@ -210,6 +210,15 @@ function econozel_theme_compat_reset_post( $args = array() ) {
 		return;
 	}
 
+	// If we are resetting a post, we are in theme compat
+	econozel_set_theme_compat_active( true );
+
+	// Render post content from template
+	if ( isset( $dummy['template'] ) ) {
+		$dummy['post_content'] = econozel_buffer_template_part( $dummy['template'][0], $dummy['template'][1], false );
+		unset( $dummy['template'] );
+	}
+
 	// Set the $post global
 	$post = new WP_Post( (object) $dummy );
 
@@ -236,9 +245,6 @@ function econozel_theme_compat_reset_post( $args = array() ) {
 	if ( ! $wp_query->is_404() ) {
 		status_header( 200 );
 	}
-
-	// If we are resetting a post, we are in theme compat
-	econozel_set_theme_compat_active( true );
 }
 
 /**
