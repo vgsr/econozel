@@ -425,6 +425,44 @@ function econozel_the_edition_title( $edition = 0 ) {
 	}
 
 /**
+ * Output the Edition's issue title
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+ */
+function econozel_the_edition_issue_title( $edition = 0 ) {
+	echo econozel_get_edition_issue_title( $edition );
+}
+
+	/**
+	 * Return the Edition's issue title
+	 *
+	 * Only prepends Edition issue when the issue is numeric.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+	 * @return string Edition issue title
+	 */
+	function econozel_get_edition_issue_title( $edition = 0 ) {
+
+		// Define return var
+		$title = '';
+
+		if ( $edition = econozel_get_edition( $edition ) ) {
+
+			// Get Edition issue
+			$issue = econozel_get_edition_issue( $edition );
+
+			// Construct Edition title
+			$title = sprintf( is_numeric( $issue ) ? '%2$s. %1$s' : '%1$s', econozel_get_edition_title( $edition ), $issue );
+		}
+
+		return $title;
+	}
+
+/**
  * Output the Edition's full label
  *
  * @since 1.0.0
@@ -490,25 +528,22 @@ function econozel_the_edition_link( $edition = 0 ) {
 	 * @since 1.0.0
 	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
-	 * @param bool $prepend_issue Optional. Whether to prepend the issue number. Defaults to false.
+	 * @param bool $issue_title Optional. Whether to use the issue title. Defaults to false.
 	 * @return string Edition permalink
 	 */
-	function econozel_get_edition_link( $edition = 0, $prepend_issue = false ) {
+	function econozel_get_edition_link( $edition = 0, $issue_title = false ) {
 
 		// Define return var
 		$link = '';
 
 		if ( $edition = econozel_get_edition( $edition ) ) {
 
-			// Get Edition issue
-			$issue = $prepend_issue ? econozel_get_edition_issue( $edition ) : false;
-
 			// Construct link
 			$link = sprintf(
 				'<a href="%1$s" title="%2$s" rel="collection">%3$s</a>',
 				esc_url( econozel_get_edition_url( $edition ) ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
-				sprintf( is_numeric( $issue ) ? '%2$s. %1$s' : '%1$s', econozel_get_edition_title( $edition ), $issue )
+				$issue_title ? econozel_get_edition_issue_title( $edition ) : econozel_get_edition_title( $edition )
 			);
 		}
 
