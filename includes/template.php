@@ -684,12 +684,21 @@ function econozel_get_edition_template() {
 function econozel_get_theme_compat_template() {
 	$templates = array(
 		'econozel-compat.php',
-		'econozel.php',
+		'econozel.php'
+	);
+
+	// Use archive.php for Taxonomy archives
+	if ( econozel_is_tax_archive() ) {
+		$templates[] = 'archive.php';
+	}
+
+	// Append generic templates
+	$templates = array_merge( $templates, array(
 		'generic.php',
 		'page.php',
 		'single.php',
-		'index.php',
-	);
+		'index.php'
+	) );
 
 	return econozel_get_query_template( 'econozel-compat', $templates );
 }
