@@ -200,6 +200,20 @@ function econozel_posts_clauses( $clauses, $query ) {
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
 	}
 
+	// Query by Edition
+	if ( $edition = econozel_get_edition( $query->get( 'econozel_edition' ) ) ) {
+
+		/**
+		 * Append clauses to join on Edition term relationships
+		 *
+		 * This is done not through `WP_Tax_Query` because it lacks alternate
+		 * table aliases when generating single level tax queries.
+		 */
+		$clauses['join']  .= " INNER JOIN {$wpdb->term_relationships} editions_tr ON ( {$wpdb->posts}.ID = editions_tr.object_id )";
+		$clauses['join']  .= " INNER JOIN {$wpdb->term_taxonomy} editions ON ( editions_tr.term_taxonomy_id = editions.term_taxonomy_id )";
+		$clauses['where'] .= $wpdb->prepare( " AND ( editions.taxonomy = %s ) AND editions.term_taxonomy_id = %d", econozel_get_edition_tax_id(), $edition->term_id );
+	}
+
 	return $clauses;
 }
 

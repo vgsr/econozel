@@ -41,18 +41,6 @@ function econozel_query_articles( $args = array() ) {
 		'fields'           => 'all'
 	) );
 
-	// Query by Edition
-	if ( $query_args['econozel_edition'] && ( $edition = econozel_get_edition( $query_args['econozel_edition'] ) ) ) {
-		$query_args['tax_query'] = array(
-			array(
-				'taxonomy'         => econozel_get_edition_tax_id(),
-				'terms'            => array( $edition->term_id ),
-				'field'            => 'term_id',
-				'include_children' => false
-			)
-		);
-	}
-
 	// Run query to get the posts
 	$query->query( $query_args );
 
