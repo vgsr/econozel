@@ -370,6 +370,17 @@ function econozel_get_edition_issue_whitelist() {
 /** Utility *******************************************************************/
 
 /**
+ * Return the current plugin's version
+ *
+ * @since 1.0.0
+ *
+ * @return string Plugin version
+ */
+function econozel_get_version() {
+	return econozel()->version;
+}
+
+/**
  * Determine if this plugin is being deactivated
  *
  * @since 1.0.0
