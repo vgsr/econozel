@@ -390,3 +390,23 @@ function econozel_set_theme_compat_active( $set = true ) {
 
 	return (bool) econozel()->theme_compat->active;
 }
+
+/**
+ * Load a custom Econozel functions file, similar to each theme's functions.php file.
+ *
+ * @since 1.0.0
+ *
+ * @global string $pagenow
+ */
+function econozel_load_theme_functions() {
+	global $pagenow;
+
+	// When Econozel is being deactivated, do not load any more files
+	if ( econozel_is_deactivation() )
+		return;
+
+	// Load file when not installing
+	if ( ! defined( 'WP_INSTALLING' ) || ( ! empty( $pagenow ) && ( 'wp-activate.php' !== $pagenow ) ) ) {
+		econozel_locate_template( 'econozel-functions.php', true );
+	}
+}

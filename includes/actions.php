@@ -10,6 +10,11 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Sub-actions ***************************************************************/
+
+add_action( 'widgets_init',                'econozel_widgets_init'      );
+add_action( 'after_theme_setup',           'econozel_after_theme_setup' );
+
 /** Taxonomy ******************************************************************/
 
 add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',      5    );
@@ -17,6 +22,7 @@ add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',   
 add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args', 10, 2 ); // Since WP 4.4
 add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      10, 3 );
 add_filter( 'list_cats',                   'econozel_list_cats',                10, 2 );
+add_filter( 'term_link',                   'econozel_term_link',                10, 3 );
 
 /** Query *********************************************************************/
 
@@ -27,20 +33,18 @@ add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          
 
 /** Template ******************************************************************/
 
-add_filter( 'document_title_parts',        'econozel_document_title_parts'               ); // Since WP 4.4
-add_filter( 'body_class',                  'econozel_body_class'                         );
-add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'              );
-add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description'        );
-add_filter( 'econozel_term_class',         'econozel_filter_term_class'                  );
-add_filter( 'term_link',                   'econozel_term_link',                   10, 3 );
+add_action( 'econozel_after_theme_setup',  'econozel_load_theme_functions'        );
+add_filter( 'document_title_parts',        'econozel_document_title_parts'        ); // Since WP 4.4
+add_filter( 'body_class',                  'econozel_body_class'                  );
+add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'       );
+add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description' );
+add_filter( 'econozel_term_class',         'econozel_filter_term_class'           );
 
 // Theme Compat
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
 add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 );
 
 /** Widgets *******************************************************************/
-
-add_action( 'widgets_init', 'econozel_widgets_init' );
 
 add_action( 'econozel_widgets_init', array( 'Econozel_Articles_Widget', 'register_widget' ) );
 add_action( 'econozel_widgets_init', array( 'Econozel_Comments_Widget', 'register_widget' ) );
@@ -88,4 +92,15 @@ function econozel_deactivation() {
  */
 function econozel_widgets_init() {
 	do_action( 'econozel_widgets_init' );
+}
+
+/**
+ * Run dedicated hook after theme setup for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_after_theme_setup'
+ */
+function econozel_after_theme_setup() {
+	do_action( 'econozel_after_theme_setup' );
 }
