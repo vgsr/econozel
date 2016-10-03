@@ -329,10 +329,22 @@ function econozel_taxonomy_admin_column_content( $content, $column, $term_id ) {
 
 	// Get the meta field
 	if ( $meta = econozel_get_taxonomy_meta( get_current_screen()->taxonomy, $column ) ) {
+
+		// Get meta value
+		$value = get_term_meta( $term_id, $column, true );
+
+		// Check meta type
 		switch ( $meta['type'] ) {
+			case 'select' :
+				if ( isset( $meta['options'][ $value ] ) ) {
+					$content = $meta['options'][ $value ];
+					break;
+				}
+
+			// Display value by default
 			case 'number' :
 			default :
-				$content = get_term_meta( $term_id, $column, true );
+				$content = $value;
 				break;
 		}
 
