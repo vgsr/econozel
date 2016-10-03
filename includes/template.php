@@ -179,9 +179,11 @@ function econozel_parse_query_vars( $posts_query ) {
 		);
 		$posts_query->set( 'tax_query', $tax_query );
 
-		// Order by page number
-		$posts_query->set( 'orderby', 'menu_order' );
-		$posts_query->set( 'order',   'ASC'        );
+		// Default to ordering by page number in menu_order
+		if ( ! $posts_query->get( 'orderby' ) ) {
+			$posts_query->set( 'orderby', 'menu_order' );
+			$posts_query->set( 'order',   'ASC'        );
+		}
 	}
 }
 
