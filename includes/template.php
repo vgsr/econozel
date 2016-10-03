@@ -164,7 +164,7 @@ function econozel_parse_query_vars( $posts_query ) {
 		return;
 
 	// Query by Edition
-	if ( $edition = econozel_get_edition( $posts_query->get( 'econozel_edition' ) ) ) {
+	if ( $edition = $posts_query->get( 'econozel_edition' ) ) {
 
 		// Post type
 		$posts_query->set( 'post_type', econozel_get_article_post_type() );
@@ -173,7 +173,7 @@ function econozel_parse_query_vars( $posts_query ) {
 		$tax_query   = $posts_query->get( 'tax_query', array() );
 		$tax_query[] = array(
 			'taxonomy'         => econozel_get_edition_tax_id(),
-			'terms'            => array( $edition->term_id ),
+			'terms'            => array( (int) $edition ),
 			'field'            => 'term_id',
 			'include_children' => false
 		);
