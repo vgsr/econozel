@@ -82,7 +82,7 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->found_posts   = $eco->volume_query->found_terms;
 		$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
 
-	// Edition Page
+	// Single Edition
 	} elseif ( ! empty( $is_volume ) && ! empty( $is_edition ) ) {
 
 		// Get Volume and Edition
@@ -114,18 +114,7 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->set( 'econozel_edition', $the_edition->term_id );
 		$posts_query->set( 'econozel_volume',  $the_volume->term_id  );
 
-		// Set main query vars
-		$posts_query->set( 'post_type', econozel_get_article_post_type() );
-		$posts_query->set( 'tax_query', array(
-			array(
-				'taxonomy'         => econozel_get_edition_tax_id(),
-				'terms'            => array( $the_edition->term_id ),
-				'field'            => 'term_id',
-				'include_children' => false
-			)
-		) );
-
-	// Volume Page
+	// Single Volume/Edition Archive
 	} elseif ( ! empty( $is_volume ) ) {
 
 		// Get Volume term
@@ -158,6 +147,41 @@ function econozel_parse_query( $posts_query ) {
 		// Define query result
 		$posts_query->found_posts   = $eco->edition_query->found_terms;
 		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
+	}
+}
+
+/**
+ * Handle custom query vars at parse_query action
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Query $posts_query
+ */
+function econozel_parse_query_vars( $posts_query ) {
+
+	// Bail when filters are suppressed on this query
+	if ( true === $posts_query->get( 'suppress_filters' ) )
+		return;
+
+	// Query by Edition
+	if ( $edition = econozel_get_edition( $posts_query->get( 'econozel_edition' ) ) ) {
+
+		// Post type
+		$posts_query->set( 'post_type', econozel_get_article_post_type() );
+
+		// Edition taxonomy
+		$tax_query   = $posts_query->get( 'tax_query', array() );
+		$tax_query[] = array(
+			'taxonomy'         => econozel_get_edition_tax_id(),
+			'terms'            => array( $edition->term_id ),
+			'field'            => 'term_id',
+			'include_children' => false
+		);
+		$posts_query->set( 'tax_query', $tax_query );
+
+		// Order by page number
+		$posts_query->set( 'orderby', 'menu_order' );
+		$posts_query->set( 'order',   'ASC'        );
 	}
 }
 
@@ -198,20 +222,6 @@ function econozel_posts_clauses( $clauses, $query ) {
 		// @todo Order really by recent comment activity, not by all-time comment count
 		$clauses['where']  .= $wpdb->prepare( " AND EXISTS ( SELECT 1 FROM {$wpdb->comments} c WHERE c.comment_post_ID = {$wpdb->posts}.ID AND c.comment_approved = %s AND c.comment_date > %s )", 1, $since );
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
-	}
-
-	// Query by Edition
-	if ( $edition = econozel_get_edition( $query->get( 'econozel_edition' ) ) ) {
-
-		/**
-		 * Append clauses to join on Edition term relationships
-		 *
-		 * This is done not through `WP_Tax_Query` because it lacks alternate
-		 * table aliases when generating single level tax queries.
-		 */
-		$clauses['join']  .= " INNER JOIN {$wpdb->term_relationships} editions_tr ON ( {$wpdb->posts}.ID = editions_tr.object_id )";
-		$clauses['join']  .= " INNER JOIN {$wpdb->term_taxonomy} editions ON ( editions_tr.term_taxonomy_id = editions.term_taxonomy_id )";
-		$clauses['where'] .= $wpdb->prepare( " AND ( editions.taxonomy = %s ) AND editions.term_taxonomy_id = %d", econozel_get_edition_tax_id(), $edition->term_id );
 	}
 
 	return $clauses;
