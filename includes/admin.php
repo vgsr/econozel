@@ -61,6 +61,7 @@ class Econozel_Admin {
 		// Columns
 		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
 		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
+		add_action( 'quick_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
 		add_filter( "manage_edit-{$taxonomy}_columns",          array( $this, 'edition_columns'        ), 20    );
 		add_filter( "manage_{$taxonomy}_custom_column",         array( $this, 'edition_column_content' ), 10, 3 );
 		add_action( 'quick_edit_custom_box',                    array( $this, 'edition_inline_edit'    ), 10, 3 );
@@ -120,16 +121,16 @@ class Econozel_Admin {
 	public function enqueue_admin_scripts() {
 
 		// Get Econozel
-		$eco    = econozel();
+		$eco = econozel();
 
-		// Get the current screen
-		$screen = get_current_screen();
-
-		// Define local var
-		$styles = array();
+		// Define local variable(s)
+		$screen      = get_current_screen();
+		$styles      = array();
+		$load_script = false;
 
 		// Article edit.php
 		if ( "edit-{$this->article_post_type}" == $screen->id ) {
+			$load_script = true;
 
 			// Define additional styles
 			$styles[] = ".fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
@@ -144,15 +145,7 @@ class Econozel_Admin {
 
 		// Edition edit-tags.php
 		if ( "edit-{$this->edition_tax_id}" == $screen->id ) {
-
-			// Enqueue admin script
-			wp_enqueue_script( 'econozel-admin', $eco->includes_url . 'assets/js/admin.js', array( 'jquery' ), $eco->version, true );
-			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
-				'settings' => array(
-					'editionTaxId' => econozel_get_edition_tax_id(),
-					'volumeTaxId'  => econozel_get_volume_tax_id()
-				)
-			) );
+			$load_script = true;
 
 			// Define additional styles
 			$styles[] = '.fixed .column-issue, .fixed .column-file { width: 10%; }';
@@ -160,6 +153,21 @@ class Econozel_Admin {
 			$styles[] = ".form-field select#taxonomy-{$this->volume_tax_id}, .form-field select#{$this->edition_tax_id}-issue { width: 95%; max-width: 95%; }";
 			$styles[] = ".inline-edit-row fieldset + fieldset { margin-top: -3px; }";
 			$styles[] = ".inline-edit-row .input-text-wrap select { width: 100%; vertical-align: top; }";
+		}
+
+		// Enqueue admin script
+		if ( $load_script ) {
+			wp_enqueue_script( 'econozel-admin', $eco->includes_url . 'assets/js/admin.js', array( 'jquery' ), econozel_get_version(), true );
+			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
+				'l10n' => array(
+					'articleMenuOrderLabel' => esc_html__( 'Page Number', 'econozel' )
+				),
+				'settings' => array(
+					'articlePostType' => $this->article_post_type,
+					'editionTaxId'    => $this->edition_tax_id,
+					'volumeTaxId'     => $this->volume_tax_id
+				)
+			) );
 		}
 
 		// Attach styles to admin's common.css
@@ -297,6 +305,52 @@ class Econozel_Admin {
 	}
 
 	/**
+	 * Add fields to the Article inline-edit form
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $column Column name
+	 * @param string $post_type Post type name
+	 */
+	public function article_inline_edit( $column, $post_type ) {
+
+		// Bail when we're not editing Articles
+		if ( $this->article_post_type !== $post_type )
+			return;
+
+		switch ( $column ) {
+
+			// Edition
+			case "taxonomy-{$this->edition_tax_id}" :
+
+				// Get Edition taxonomy
+				$tax = get_taxonomy( $this->edition_tax_id );
+
+				// Bail when the user is not capable
+				if ( ! $tax || ! current_user_can( $tax->cap->assign_terms ) )
+					return;
+		?>
+
+		<div class="inline-edit-col article-edition">
+			<label>
+				<span class="title"><?php esc_html_e( 'Edition', 'econozel' ); ?></span>
+				<span class="input-text-wrap"><?php econozel_dropdown_editions( array(
+					'name'              => "tax_input[{$this->edition_tax_id}]",
+					'class'             => "tax_input_{$this->edition_tax_id}",
+					'hide_empty'        => false,
+					'value_field'       => 'name', // Use default saving through non-hierarchical tax_input
+					'show_option_none'  => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
+					'option_none_value' => '', // NOTE: non-empty values are used to create new terms on the fly
+				) ); ?></span>
+			</label>
+		</div>
+
+		<?php
+				break;
+		}
+	}
+
+	/**
 	 * Save the input from the Edition meta box
 	 *
 	 * @since 1.0.0
@@ -328,8 +382,10 @@ class Econozel_Admin {
 		if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 			return;
 
-		// Get Edition taxonomy. Assign when the user is capable
+		// Get Edition taxonomy
 		$tax = get_taxonomy( $this->edition_tax_id );
+
+		// Continue when the user is capable
 		if ( $tax && current_user_can( $tax->cap->assign_terms ) ) {
 
 			// Set Article Edition
@@ -464,14 +520,14 @@ class Econozel_Admin {
 	 */
 	public function edition_inline_edit( $column, $screen_type, $taxonomy = '' ) {
 
-		// Bail when we're not editing terms
-		if ( 'edit-tags' != $screen_type )
+		// Bail when we're not editing Editions
+		if ( 'edit-tags' !== $screen_type || $this->edition_tax_id !== $taxonomy )
 			return;
 
-		// Bail when we're not editing Edition Volumes
-		if ( $taxonomy != $this->edition_tax_id || "taxonomy-{$this->volume_tax_id}" != $column )
-			return;
+		switch ( $column ) {
 
+			// Volume
+			case "taxonomy-{$this->volume_tax_id}" :
 		?>
 
 		<fieldset>
@@ -487,6 +543,9 @@ class Econozel_Admin {
 		</fieldset>
 
 		<?php
+				break;
+		}
+
 	}
 
 	/**
