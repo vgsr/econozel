@@ -208,19 +208,27 @@ function econozel_posts_clauses( $clauses, $query ) {
 		return $clauses;
 
 	// Filter by comment activity
-	if ( $comment_activity = $query->get( 'comment_activity' ) ) {
+	if ( $comment_activity = $query->get( 'comment_activity', false ) ) {
 
-		// Define local variables
+		// Define local variable(s)
 		$days    = is_numeric( $comment_activity ) ? (int) $comment_activity : 10;
 		$since   = date( 'Y-m-d 00:00:00', strtotime( "{$days} days ago" ) );
-		$orderby = "{$wpdb->posts}.comment_count DESC";
 
+		/**
+		 * Query posts that have commenst in the last X days, order by comment count
+		 *
+		 * To be able to order by comment count for the given period (not all-time),
+		 * that count needs to be included as a column in the 'fields' clause. This
+		 * requires a JOIN with the comments table, filtered for the last X days.
+		 */
+		$clauses['fields'] .= ', c.comment_count';
+		$clauses['join']   .= $wpdb->prepare( " INNER JOIN ( SELECT comment_post_ID, COUNT( * ) AS comment_count FROM {$wpdb->comments} WHERE comment_approved = %s AND comment_date > %s GROUP BY comment_post_ID ) AS c ON c.comment_post_ID = {$wpdb->posts}.ID", 1, $since );
+		$clauses['where']  .= " AND c.comment_count > 0";
+
+		$orderby = 'c.comment_count DESC';
 		if ( ! empty( $clauses['orderby'] ) )
 			$orderby .= ', ';
 
-		// Query posts that have commenst in the last X days, order by comment count
-		// @todo Order really by recent comment activity, not by all-time comment count
-		$clauses['where']  .= $wpdb->prepare( " AND EXISTS ( SELECT 1 FROM {$wpdb->comments} c WHERE c.comment_post_ID = {$wpdb->posts}.ID AND c.comment_approved = %s AND c.comment_date > %s )", 1, $since );
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
 	}
 
