@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /** Sub-actions ***************************************************************/
 
 add_action( 'widgets_init',                'econozel_widgets_init'      );
-add_action( 'after_theme_setup',           'econozel_after_theme_setup' );
+add_action( 'after_setup_theme',           'econozel_after_setup_theme' );
 
 /** Taxonomy ******************************************************************/
 
@@ -33,7 +33,7 @@ add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          
 
 /** Template ******************************************************************/
 
-add_action( 'econozel_after_theme_setup',  'econozel_load_theme_functions'        );
+add_action( 'econozel_after_setup_theme',  'econozel_load_theme_functions'        );
 add_filter( 'document_title_parts',        'econozel_document_title_parts'        ); // Since WP 4.4
 add_filter( 'body_class',                  'econozel_body_class'                  );
 add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'       );
@@ -99,8 +99,8 @@ function econozel_widgets_init() {
  *
  * @since 1.0.0
  *
- * @uses do_action() Calls 'econozel_after_theme_setup'
+ * @uses do_action() Calls 'econozel_after_setup_theme'
  */
-function econozel_after_theme_setup() {
-	do_action( 'econozel_after_theme_setup' );
+function econozel_after_setup_theme() {
+	do_action( 'econozel_after_setup_theme' );
 }
