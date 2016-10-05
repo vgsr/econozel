@@ -611,21 +611,21 @@ function econozel_the_edition_url( $edition = 0 ) {
 	}
 
 /**
- * Output or return the Edition's Article count in a read-friendly format
+ * Output or return the Edition's article count in a read-friendly format
  *
  * @since 1.0.0
  *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @param bool $echo Optional. Whether to output the return value. Defaults to true.
- * @return string Article count in read-friendly format.
+ * @return string Edition article count in read-friendly format.
  */
 function econozel_edition_article_count( $edition = 0, $echo = true ) {
 
-	// Get Article count
+	// Get article count
 	$count  = econozel_get_edition_article_count( $edition );
 
 	// Define return var
-	$retval = sprintf( esc_html( _n( '%d Article', '%d Articles', $count, 'econozel' ) ), $count ) ;
+	$retval = sprintf( esc_html( _n( '%d article', '%d articles', $count, 'econozel' ) ), $count ) ;
 
 	if ( $echo ) {
 		echo $retval;
@@ -635,7 +635,7 @@ function econozel_edition_article_count( $edition = 0, $echo = true ) {
 }
 
 /**
- * Output the Edition's Article count
+ * Output the Edition's article count
  *
  * @since 1.0.0
  *
@@ -646,12 +646,12 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 }
 
 	/**
-	 * Return the Edition's Article count
+	 * Return the Edition's article count
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
-	 * @return int Edition Article count
+	 * @return int Edition article count
 	 */
 	function econozel_get_edition_article_count( $edition = 0 ) {
 

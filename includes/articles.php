@@ -229,3 +229,64 @@ function econozel_the_article_id() {
 
 		return false;
 	}
+
+/**
+ * Output the current Article's page number in a read-friendly format
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param bool $echo Optional. Whether to output the return value. Defaults to true.
+ * @return string Article page number in read-friendly format.
+ */
+function econozel_article_page_number( $article = 0, $echo = true ) {
+
+	// Get page number
+	$page_number = econozel_get_article_page_number( $article );
+
+	// Define return var
+	$retval = '';
+
+	// Pages are only valid beyond 0
+	if ( $page_number > 0 ) {
+		$retval = sprintf( esc_html__( 'Page %d', 'econozel' ), $page_number );
+	}
+
+	if ( $echo ) {
+		echo $retval;
+	} else {
+		return $retval;
+	}
+}
+
+/**
+ * Output the current Article's page number
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ */
+function econozel_the_article_page_number( $article = 0 ) {
+	echo econozel_get_article_page_number( $article );
+}
+
+	/**
+	 * Return the current Article's page number
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @return int Article page number
+	 */
+	function econozel_get_article_page_number( $article = 0 ) {
+
+		// Define return var
+		$page_number = 0;
+
+		// Get the Article
+		if ( $article = econozel_get_article( $article ) ) {
+			$page_number = $article->menu_order;
+		}
+
+		return $page_number;
+	}
