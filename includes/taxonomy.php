@@ -590,6 +590,31 @@ function econozel_list_cats( $label, $term = null ) {
 }
 
 /**
+ * Modify the taxonomy dropdown HTML
+ *
+ * @since 1.0.0
+ *
+ * @param string $dd Dropdown HTML
+ * @param array $args Dropdown arguments
+ * @return string Dropdown HTML
+ */
+function econozel_dropdown_cats( $dd, $args ) {
+
+	/// Edition: Add option for the current Edition
+	if ( econozel_get_edition_tax_id() == $args['taxonomy'] && $args['show_option_current'] ) {
+
+		// Define option for the current Edition
+		$selected = selected( 'current', $r['selected'], false );
+		$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
+
+		// Insert new option before the first term item
+		$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+	}
+
+	return $dd;
+}
+
+/**
  * Modify the term link for the plugin's taxonomies
  *
  * @since 1.0.0
@@ -659,8 +684,9 @@ function econozel_dropdown_volumes( $args = array() ) {
  */
 function econozel_dropdown_editions( $args = array() ) {
 	return wp_dropdown_categories( wp_parse_args( $args, array(
-		'taxonomy'         => econozel_get_edition_tax_id(),
-		'show_option_none' => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
+		'taxonomy'            => econozel_get_edition_tax_id(),
+		'show_option_none'    => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
+		'show_option_current' => false,
 		/**
 		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
 		 */

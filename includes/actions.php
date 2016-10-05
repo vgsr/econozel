@@ -22,6 +22,7 @@ add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',   
 add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args', 10, 2 ); // Since WP 4.4
 add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      10, 3 );
 add_filter( 'list_cats',                   'econozel_list_cats',                10, 2 );
+add_filter( 'wp_dropdown_cats',            'econozel_dropdown_cats',            10, 2 );
 add_filter( 'term_link',                   'econozel_term_link',                10, 3 );
 
 /** Query *********************************************************************/
