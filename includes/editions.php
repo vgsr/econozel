@@ -271,6 +271,11 @@ function econozel_get_edition_volume( $edition = 0, $object = false ) {
 	if ( econozel_is_edition() ) {
 		$volume = get_query_var( 'econozel_volume' );
 
+		// Get the Volume object
+		if ( $volume && $object ) {
+			$volume = econozel_get_volume( $volume );
+		}
+
 	// Get the Edition's Volume terms
 	} else {
 		$term_args = array( 'fields' => $object ? 'all' : 'ids' );
