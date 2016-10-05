@@ -659,7 +659,8 @@ function econozel_dropdown_volumes( $args = array() ) {
  */
 function econozel_dropdown_editions( $args = array() ) {
 	return wp_dropdown_categories( wp_parse_args( $args, array(
-		'taxonomy'   => econozel_get_edition_tax_id(),
+		'taxonomy'         => econozel_get_edition_tax_id(),
+		'show_option_none' => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
 		/**
 		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
 		 */

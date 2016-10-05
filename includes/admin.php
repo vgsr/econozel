@@ -339,7 +339,6 @@ class Econozel_Admin {
 					'class'             => "tax_input_{$this->edition_tax_id}",
 					'hide_empty'        => false,
 					'value_field'       => 'name', // Use default saving through non-hierarchical tax_input
-					'show_option_none'  => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
 					'option_none_value' => '', // NOTE: non-empty values are used to create new terms on the fly
 				) ); ?></span>
 			</label>
