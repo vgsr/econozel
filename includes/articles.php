@@ -205,3 +205,27 @@ function econozel_the_article_edition_label( $article = 0 ) {
 
 		return $label;
 	}
+
+/**
+ * Output the current Article's ID
+ *
+ * @since 1.0.0
+ */
+function econozel_the_article_id() {
+	echo econozel_get_article_id();
+}
+
+	/**
+	 * Return the current Article's ID
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return int|bool Article ID or False when not found.
+	 */
+	function econozel_get_article_id() {
+		if ( $article = econozel_get_article() ) {
+			return $article->ID;
+		}
+
+		return false;
+	}
