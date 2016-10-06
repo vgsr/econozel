@@ -719,8 +719,8 @@ function econozel_get_theme_compat_template() {
 	// Append generic templates
 	$templates = array_merge( $templates, array(
 		'generic.php',
-		'page.php',
 		'single.php',
+		'page.php',
 		'index.php'
 	) );
 
