@@ -928,8 +928,8 @@ function econozel_get_the_archive_description( $description = '' ) {
  */
 function econozel_filter_object_class( $classes ) {
 
-	// When in Theme Compat mode
-	if ( econozel_is_theme_compat_active() ) {
+	// When in Theme Compat mode and looping objects on the page
+	if ( econozel_is_theme_compat_active() && econozel_in_the_loop() ) {
 
 		// Remove 'hentry' class, because when doing theme-compat
 		// it messes with the common logic of theme styling
