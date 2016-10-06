@@ -92,7 +92,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 			'template'    => array( 'content', 'archive-volume' ),
 		) );
 
-	// Volume Page
+	// Single Volume
 	} elseif ( econozel_is_volume() ) {
 
 		// Reset post

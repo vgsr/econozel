@@ -253,8 +253,8 @@ function econozel_filter_wp_query( $request, $query ) {
 	if ( ! $query->is_main_query() )
 		return $request;
 
-	// Bail when not displaying root or term archives
-	if ( ! econozel_is_root() && ! econozel_have_archive() )
+	// Bail when not displaying root or custom query results
+	if ( ! econozel_is_root() && ! econozel_has_custom_query() )
 		return $request;
 
 	// Query for nothing and your chicks for free
@@ -278,8 +278,8 @@ function econozel_bypass_wp_query( $retval, $query ) {
 	if ( ! $query->is_main_query() )
 		return $retval;
 
-	// Bail when not displaying root or term archives
-	if ( ! econozel_is_root() && ! econozel_have_archive() )
+	// Bail when not displaying root or custom query results
+	if ( ! econozel_is_root() && ! econozel_has_custom_query() )
 		return $retval;
 
 	// Return something other than a null value to bypass WP_Query
@@ -353,26 +353,6 @@ function econozel_is_volume() {
 }
 
 /**
- * Check if current page is an Edition archive
- *
- * @since 1.0.0
- *
- * @return bool Is it an Edition archive?
- */
-function econozel_is_edition_archive() {
-
-	// Assume false
-	$retval = false;
-
-	// Volume page
-	if ( econozel_is_volume() ) {
-		$retval = true;
-	}
-
-	return (bool) $retval;
-}
-
-/**
  * Check if current page is an Edition page
  *
  * @since 1.0.0
@@ -406,8 +386,8 @@ function econozel_is_tax_archive() {
 	// Assume false
 	$retval = false;
 
-	// Check Volume archive or Edition archive
-	if ( econozel_is_volume_archive() || econozel_is_edition_archive() ) {
+	// Check Volume archive or single Volume
+	if ( econozel_is_volume_archive() || econozel_is_volume() ) {
 		$retval = true;
 	}
 
@@ -561,23 +541,23 @@ function econozel_template_include_theme_supports( $template = '' ) {
 	$_template = '';
 
 	// Root Page
-	if     ( econozel_is_root()            && ( $_template = econozel_get_root_template()            ) ) :
+	if     ( econozel_is_root()           && ( $_template = econozel_get_root_template()           ) ) :
 
 	// Volume Archive
-	elseif ( econozel_is_volume_archive()  && ( $_template = econozel_get_volume_archive_template()  ) ) :
+	elseif ( econozel_is_volume_archive() && ( $_template = econozel_get_volume_archive_template() ) ) :
 
 	// Edition Archive
-	elseif ( econozel_is_edition_archive() && ( $_template = econozel_get_edition_archive_template() ) ) :
+	elseif ( econozel_is_volume()         && ( $_template = econozel_get_volume_template()         ) ) :
 
 	// Single Edition
-	elseif ( econozel_is_edition()         && ( $_template = econozel_get_edition_template()         ) ) :
+	elseif ( econozel_is_edition()        && ( $_template = econozel_get_edition_template()        ) ) :
 	endif;
 
 	// Set included template file
 	if ( ! empty( $_template ) ) {
 		$template = econozel_set_template_included( $_template );
 
-		// Reset post, but theme compat is not active
+		// Provide dummy post global, but theme compat is not active
 		econozel_theme_compat_reset_post();
 		econozel_set_theme_compat_active( false );
 	}
@@ -668,21 +648,20 @@ function econozel_get_volume_archive_template() {
 }
 
 /**
- * Locate and return the Edition archive page template
+ * Locate and return the single Volume page template
  *
  * @since 1.0.0
  *
  * @return string Path to template file
  */
-function econozel_get_edition_archive_template() {
+function econozel_get_volume_template() {
 	$tax_id    = econozel_get_volume_tax_id();
 	$term_id   = econozel_get_volume_id();
 	$templates = array(
 		'taxonomy-' . $tax_id . '-' . $term_id . '.php', // Single Volume ID
 		'taxonomy-' . $tax_id . '.php',                  // Generic Volume Taxonomy
+		'single-econozel-volume.php',                    // Single Volume
 		'econozel-volume.php',                           // Single Volume
-		'archive-econozel-edition.php',                  // Editions archive
-		'archive-econozel.php',                          // Econozel archive
 	);
 
 	return econozel_get_query_template( 'econozel-editions', $templates );
@@ -740,23 +719,27 @@ function econozel_get_theme_compat_template() {
 /** Archives ******************************************************************/
 
 /**
- * Return whether the current archive has query results
+ * Return whether the current page has custom query results
  *
  * @since 1.0.0
  *
  * @return bool Whether the current archive page has query results
  */
-function econozel_have_archive() {
+function econozel_has_custom_query() {
 
 	// Define return value
 	$retval = false;
 
 	// Volume Archive
-	if ( econozel_is_volume_archive() && econozel_has_volumes() ) {
+	if ( econozel_is_volume_archive() && econozel_has_volumes()  ) {
 		$retval = true;
 
-	// Edition Archive
-	} elseif ( econozel_is_edition_archive() && econozel_has_editions() ) {
+	// Single Volume
+	} elseif ( econozel_is_volume()   && econozel_has_editions() ) {
+		$retval = true;
+
+	// Single Edition
+	} elseif ( econozel_is_edition()  && econozel_has_articles() ) {
 		$retval = true;
 	}
 
@@ -1056,14 +1039,6 @@ function econozel_the_posts_navigation( $args = array() ) {
 				'prev_text'          => esc_html__( 'Older volumes',      'econozel' ),
 				'next_text'          => esc_html__( 'Newer volumes',      'econozel' ),
 				'screen_reader_text' => esc_html__( 'Volumes navigation', 'econozel' )
-			);
-
-		// Edition Archive
-		} elseif ( econozel_is_edition_archive() ) {
-			$args = array(
-				'prev_text'          => esc_html__( 'Older editions',      'econozel' ),
-				'next_text'          => esc_html__( 'Newer editions',      'econozel' ),
-				'screen_reader_text' => esc_html__( 'Editions navigation', 'econozel' )
 			);
 
 		// Article Archive
