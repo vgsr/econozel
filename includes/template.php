@@ -95,6 +95,13 @@ function econozel_parse_query( $posts_query ) {
 			return;
 		}
 
+		// Setup Article query
+		econozel_query_articles( array( 'econozel_edition' => $the_edition->term_id ) );
+
+		// Set term ID's for future reference
+		$posts_query->set( 'econozel_edition', $the_edition->term_id );
+		$posts_query->set( 'econozel_volume',  $the_volume->term_id  );
+
 		// Looking at a single Edition
 		$posts_query->econozel_is_edition = true;
 		$posts_query->is_tax              = true;
@@ -110,11 +117,11 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->queried_object    = $the_edition;
 		$posts_query->queried_object_id = $the_edition->term_id;
 
-		// Set term ID's for future reference
-		$posts_query->set( 'econozel_edition', $the_edition->term_id );
-		$posts_query->set( 'econozel_volume',  $the_volume->term_id  );
+		// Define query result
+		$posts_query->found_posts   = $eco->article_query->found_posts;
+		$posts_query->max_num_pages = $eco->article_query->max_num_pages;
 
-	// Single Volume/Edition Archive
+	// Single Volume
 	} elseif ( ! empty( $is_volume ) ) {
 
 		// Get Volume term
@@ -158,6 +165,10 @@ function econozel_parse_query( $posts_query ) {
  * @param WP_Query $posts_query
  */
 function econozel_parse_query_vars( $posts_query ) {
+
+	// Bail when this is the main loop
+	if ( $posts_query->is_main_query() )
+		return;
 
 	// Bail when filters are suppressed on this query
 	if ( true === $posts_query->get( 'suppress_filters' ) )
