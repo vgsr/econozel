@@ -169,9 +169,6 @@ function econozel_get_edition_tax_labels() {
  */
 function econozel_add_edition_tax_meta( $meta ) {
 
-	// Get Edition issue whitelist
-	$issue_whitelist = econozel_get_edition_issue_whitelist();
-
 	// Append Edition meta
 	$meta[ econozel_get_edition_tax_id() ] = array(
 
@@ -180,7 +177,7 @@ function econozel_add_edition_tax_meta( $meta ) {
 			'label'           => esc_html__( 'Issue', 'econozel' ),
 			'description'     => esc_html__( 'The nth number of this Edition within the Volume.', 'econozel' ),
 			'type'            => 'select',
-			'options'         => array_combine( $issue_whitelist, $issue_whitelist ),
+			'options'         => econozel_get_edition_issue_whitelist( false ),
 			'sanitize_cb'     => 'econozel_edition_whitelist_issue',
 			'admin_column_cb' => true,
 			'inline_edit'     => true
@@ -363,8 +360,17 @@ function econozel_prepend_volume_title() {
  *
  * @return array Whitelist of Edition issues
  */
-function econozel_get_edition_issue_whitelist() {
-	return (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', range( 1, 12 ) ) );
+function econozel_get_edition_issue_whitelist( $flat = true ) {
+
+	// Get the available issues
+	$issues = (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', range( 1, 12 ) ) );
+
+	// Setup array with sanitized keys
+	if ( ! $flat ) {
+		$issues = array_combine( array_map( 'sanitize_title', $issues ), $issues );
+	}
+
+	return $issues;
 }
 
 /** Utility *******************************************************************/

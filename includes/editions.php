@@ -327,10 +327,10 @@ function econozel_get_edition_issue( $edition = 0 ) {
 function econozel_edition_whitelist_issue( $issue = '' ) {
 
 	// Get the Edition issue whitelist
-	$whitelist = econozel_get_edition_issue_whitelist();
+	$whitelist = econozel_get_edition_issue_whitelist( false );
 
 	// Invalidate non-whitelisted issue
-	if ( empty( $issue ) || ! in_array( $issue, $whitelist ) ) {
+	if ( empty( $issue ) || ! isset( $whitelist[ $issue ] ) ) {
 		$issue = false;
 	}
 

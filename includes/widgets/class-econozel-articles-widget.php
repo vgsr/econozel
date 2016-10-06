@@ -27,7 +27,9 @@ class Econozel_Articles_Widget extends WP_Widget {
 	 */
 	public function __construct() {
 		parent::__construct( false, esc_html__( 'Econozel Recent Articles', 'econozel' ), array(
-			'description' => esc_html__( 'A list of the most recent articles.', 'econozel' )
+			'description' => esc_html__( 'A list of the most recent articles.', 'econozel' ),
+			'classname'   => 'widget_recent_entries',
+			'customize_selective_refresh' => true
 		) );
 	}
 
