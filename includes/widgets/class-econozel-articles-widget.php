@@ -59,6 +59,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 			'title'          => esc_html__( 'Recent Articles', 'econozel' ),
 			'description'    => false,
 			'none_found'     => esc_html__( 'There were no articles found.', 'econozel' ),
+			'item_spacing'   => 'preserve',
 
 			// Query args
 			'econozel_edition' => false,
