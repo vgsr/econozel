@@ -884,7 +884,14 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Edition page
 	} elseif ( econozel_is_edition() ) {
-		$title = sprintf( _x( 'Econozel %s', 'Single edition title', 'econozel' ), econozel_get_edition_title() );
+
+		// Get Edition title
+		$title = econozel_get_edition_title();
+
+		// Distinguish numeric issues
+		if ( econozel_is_edition_issue_numeric() ) {
+			$title = sprintf( _x( 'Econozel %s', 'Numeric issue edition title', 'econozel' ), $title );
+		}
 	}
 
 	return $title;
