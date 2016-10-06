@@ -758,6 +758,34 @@ function econozel_has_custom_query() {
 }
 
 /**
+ * Return whether we're in a custom query loop
+ *
+ * @since 1.0.0
+ *
+ * @return bool Are we in a custom query loop?
+ */
+function econozel_in_the_loop() {
+
+	// Define return value
+	$retval = false;
+
+	// Volume Archive
+	if ( econozel_is_volume_archive() && econozel_in_the_volume_loop()  ) {
+		$retval = true;
+
+	// Single Volume
+	} elseif ( econozel_is_volume()   && econozel_in_the_edition_loop() ) {
+		$retval = true;
+
+	// Single Edition
+	} elseif ( econozel_is_edition()  && econozel_in_the_article_loop() ) {
+		$retval = true;
+	}
+
+	return $retval;
+}
+
+/**
  * Return the currently queried page number
  *
  * @since 1.0.0
