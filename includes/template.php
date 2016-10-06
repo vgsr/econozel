@@ -895,20 +895,22 @@ function econozel_get_the_archive_description( $description = '' ) {
 }
 
 /**
- * Modify the term classes
+ * Modify the object's classes
+ *
+ * Applies to both post and term objects.
  *
  * @since 1.0.0
  *
- * @param array $classes Term classes
- * @return array Term classes
+ * @param array $classes Object classes
+ * @return array Object classes
  */
-function econozel_filter_term_class( $classes ) {
+function econozel_filter_object_class( $classes ) {
 
 	// When in Theme Compat mode
 	if ( econozel_is_theme_compat_active() ) {
 
-		// Remove 'hentry' term class, because when doing theme-compat
-		// it messes with the basic logic of theme styling
+		// Remove 'hentry' class, because when doing theme-compat
+		// it messes with the common logic of theme styling
 		if ( false !== ( $key = array_search( 'hentry', $classes ) ) ) {
 			unset( $classes[ $key ] );
 		}

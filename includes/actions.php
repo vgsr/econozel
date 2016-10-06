@@ -40,7 +40,8 @@ add_filter( 'document_title_parts',        'econozel_document_title_parts'      
 add_filter( 'body_class',                  'econozel_body_class'                  );
 add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'       );
 add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description' );
-add_filter( 'econozel_term_class',         'econozel_filter_term_class'           );
+add_filter( 'post_class',                  'econozel_filter_object_class'         );
+add_filter( 'econozel_term_class',         'econozel_filter_object_class'         );
 
 // Theme Compat
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
