@@ -267,26 +267,14 @@ function econozel_get_edition_volume( $edition = 0, $object = false ) {
 	// Define return var
 	$volume = false;
 
-	// Get Volume from query var
-	if ( econozel_is_edition() ) {
-		$volume = get_query_var( 'econozel_volume' );
-
-		// Get the Volume object
-		if ( $volume && $object ) {
-			$volume = econozel_get_volume( $volume );
-		}
-
 	// Get the Edition's Volume terms
-	} else {
-		$term_args = array( 'fields' => $object ? 'all' : 'ids' );
-		$terms     = wp_get_object_terms( $edition->term_id, econozel_get_volume_tax_id(), $term_args );
+	$term_args = array( 'fields' => $object ? 'all' : 'ids' );
+	$terms     = wp_get_object_terms( $edition->term_id, econozel_get_volume_tax_id(), $term_args );
 
-		// Assign term ID when found
-		if ( ! empty( $terms ) ) {
-			$volume = $terms[0];
-		}
+	// Assign term ID when found
+	if ( ! empty( $terms ) ) {
+		$volume = $terms[0];
 	}
-
 
 	return $volume;
 }
