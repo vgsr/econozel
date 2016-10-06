@@ -274,6 +274,65 @@ function econozel_get_volume_articles( $volume = 0, $object = false ) {
 }
 
 /**
+ * Return the current Volume's adjacent Volume
+ *
+ * @see get_adjacent_post()
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb
+ *
+ * @param bool $previous Whether to get the previous Volume. Defaults to False.
+ * @return WP_Term|bool The adjacent Volume or False when not found.
+ */
+function econozel_get_adjacent_volume( $previous = false ) {
+	global $wpdb;
+
+	// Define return value
+	$volume = false;
+
+	// Define local variable(s)
+	$_volume = econozel_get_volume();
+	$order   = $previous ? 'DESC' : 'ASC';
+	$op      = $previous ? '<' : '>';
+
+	/**
+	 * Define term query clauses.
+	 *
+	 * Volumes are ordered by numeric slug. Only non-empty Volumes with
+	 * Editions having Articles are valid to be listed.
+	 */
+	$join  = " INNER JOIN {$wpdb->term_taxonomy} tt ON ( t.term_id = tt.term_taxonomy_id )"; // Volume taxonomy
+	$join .= " INNER JOIN {$wpdb->term_relationships} AS editions_tr ON ( t.term_id = editions_tr.term_taxonomy_id )"; // Edition relationship
+	$join .= " INNER JOIN {$wpdb->term_taxonomy} AS editions ON ( editions_tr.object_id = editions.term_taxonomy_id )"; // Edition taxonomy
+	$where = $wpdb->prepare( "WHERE ( tt.taxonomy = %s ) AND editions.count > 0 AND ( CAST( t.slug AS SIGNED ) $op CAST( %d AS SIGNED ) )", econozel_get_volume_tax_id(), (int) $_volume->slug );
+	$sort  = "ORDER BY CAST( t.slug AS SIGNED ) $order LIMIT 1";
+
+	// Construct query, use caching as in `get_adjacent_post()`.
+	$query = "SELECT t.term_id FROM {$wpdb->terms} AS t $join $where $sort";
+	$query_key = 'econozel_adjacent_term_' . md5( $query );
+	$result = wp_cache_get( $query_key, 'counts' );
+	if ( false !== $result ) {
+		if ( $result ) {
+			$volume = econozel_get_volume( $result );
+		}
+	}
+
+	$result = $wpdb->get_var( $query );
+	if ( null === $result ) {
+		$result = '';
+	}
+
+	wp_cache_set( $query_key, $result, 'counts' );
+
+	if ( $result ) {
+		$volume = econozel_get_volume( $result );
+	}
+
+	return $volume;
+}
+
+/**
  * Output the current Volume's term ID
  *
  * @since 1.0.0

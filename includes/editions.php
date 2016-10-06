@@ -381,6 +381,75 @@ function econozel_get_edition_articles( $edition = 0, $object = false ) {
 }
 
 /**
+ * Return the current Edition's adjacent Edition
+ *
+ * @see get_adjacent_post()
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb
+ *
+ * @param bool $previous Whether to get the previous Edition. Defaults to False.
+ * @return WP_Term|bool The adjacent Edition or False when not found.
+ */
+function econozel_get_adjacent_edition( $previous = false ) {
+	global $wpdb;
+
+	// Define return value
+	$edition = false;
+
+	// Define local variable(s)
+	$_volume = econozel_get_edition_volume( 0, true );
+	$order   = $previous ? 'DESC' : 'ASC';
+	$op      = $previous ? '<' : '>';
+
+	/**
+	 * Define term query clauses.
+	 *
+	 * Editions are ordered by issue (meta) within their respective Volumes.
+	 * Only non-empty Editions with Articles are valid to be listed. The adjacent
+	 * Edition is either adjacent within its own Volume, or the first of the
+	 * following Volume.
+	 */
+	$join  = " INNER JOIN {$wpdb->term_taxonomy} tt ON ( t.term_id = tt.term_taxonomy_id )"; // Edition taxonomy
+	$join .= " INNER JOIN {$wpdb->termmeta} AS tm ON ( t.term_id = tm.term_id )"; // Edition meta
+	$join .= " INNER JOIN {$wpdb->term_relationships} AS volumes_tr ON ( t.term_id = volumes_tr.object_id )"; // Volume relationship
+	$join .= " INNER JOIN {$wpdb->term_taxonomy} AS volumes_tt ON ( volumes_tr.term_taxonomy_id = volumes_tt.term_taxonomy_id )"; // Volume term
+	$join .= " INNER JOIN {$wpdb->terms} AS volumes ON ( volumes_tt.term_taxonomy_id = volumes.term_id )"; // Volume taxonomy
+	$where = $wpdb->prepare( "WHERE ( tt.taxonomy = %s ) AND ( volumes_tt.taxonomy = %s ) AND tm.meta_key = %s AND tt.count > 0 AND ( CAST( volumes.slug AS SIGNED ) $op CAST( %d AS SIGNED ) OR ( CAST( volumes.slug AS SIGNED ) = CAST( %d AS SIGNED ) AND CAST( tm.meta_value AS SIGNED ) $op CAST( %s AS SIGNED ) ) )", econozel_get_edition_tax_id(), econozel_get_volume_tax_id(), 'issue', $_volume->slug, $_volume->slug, econozel_get_edition_issue()
+	);
+
+	// Get all Volumes ID's, properly ordered
+	$volumes = get_terms( econozel_get_volume_tax_id(), array( 'fields' => 'ids', 'hide_empty' => false, 'order' => $order ) );
+	$volumes = ! empty( $volumes ) ? implode( ', ', $volumes ) : '0';
+
+	$sort  = "ORDER BY FIELD( volumes_tr.term_taxonomy_id, $volumes ), CAST( tm.meta_value AS SIGNED ) $order LIMIT 1";
+
+	// Construct query, use caching as in `get_adjacent_post()`.
+	$query = "SELECT t.term_id FROM {$wpdb->terms} AS t $join $where $sort";
+	$query_key = 'econozel_adjacent_term_' . md5( $query );
+	$result = wp_cache_get( $query_key, 'counts' );
+	if ( false !== $result ) {
+		if ( $result ) {
+			$edition = econozel_get_edition( $result );
+		}
+	}
+
+	$result = $wpdb->get_var( $query );
+	if ( null === $result ) {
+		$result = '';
+	}
+
+	wp_cache_set( $query_key, $result, 'counts' );
+
+	if ( $result ) {
+		$edition = econozel_get_edition( $result );
+	}
+
+	return $edition;
+}
+
+/**
  * Output the current Edition's term ID
  *
  * @since 1.0.0

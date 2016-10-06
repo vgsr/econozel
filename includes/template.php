@@ -948,6 +948,50 @@ function econozel_filter_object_class( $classes ) {
 	return $classes;
 }
 
+/**
+ * Return url for the adjacent Volume/Edition
+ *
+ * @since 1.0.0
+ *
+ * @param string $output Adjacent link
+ * @param string $format Link anchor format
+ * @param string $link Link title format
+ * @param WP_Post $post The adjacent post
+ * @param string $adjacent Whether the link is previous or next
+ * @return string Adjacent link
+ */
+function econozel_adjacent_post_link( $output, $format, $link, $post, $adjacent ) {
+
+	// Define local variable(s)
+	$previous = ( 'next' === $adjacent ) ? false : true;
+	$term     = false;
+
+	// Single Volume
+	if ( econozel_is_volume() ) {
+		if ( $term = econozel_get_adjacent_volume( $previous ) ) {
+			$title = econozel_get_volume_title( $term );
+			$_url  = econozel_get_volume_url( $term );
+		}
+
+	// Single Edition
+	} elseif ( econozel_is_edition() ) {
+		if ( $term = econozel_get_adjacent_edition( $previous ) ) {
+			$title = econozel_get_edition_title( $term );
+			$_url  = econozel_get_edition_url( $term );
+		}
+	}
+
+	// Term was found
+	if ( $term ) {
+		$inlink = str_replace( '%title', $title, $link );
+		$inlink = str_replace( '%date', '', $inlink ); // There are no dates on Volumes/Editions
+		$inlink = sprintf( '<a href="%s" rel="%s">%s</a>', $_url, $previous ? 'prev' : 'next', $inlink );
+		$output = str_replace( '%link', $inlink, $format );
+	}
+
+	return $output;
+}
+
 /** Template Tags *************************************************************/
 
 /**
