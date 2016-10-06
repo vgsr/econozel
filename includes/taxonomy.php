@@ -422,7 +422,8 @@ function econozel_query_terms_default_args( $args, $taxonomies ) {
 				$args['meta_query'] = array(
 					'meta_issue' => array(
 						'key'     => 'issue',
-						'compare' => 'EXISTS'
+						'compare' => 'EXISTS',
+						'type'    => 'NUMERIC'
 					)
 				);
 
