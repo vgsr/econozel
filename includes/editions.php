@@ -338,6 +338,25 @@ function econozel_edition_whitelist_issue( $issue = '' ) {
 }
 
 /**
+ * Return whether the Edition's issue is numeric
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ * @return bool Edition issue is numeric.
+ */
+function econozel_is_edition_issue_numeric( $edition = 0 ) {
+
+	// Get Edition issue
+	$issue = econozel_get_edition_issue( $edition );
+
+	// Determine numeric-ness
+	$is_numeric = $issue && is_numeric( $issue );
+
+	return $is_numeric;
+}
+
+/**
  * Return the Edition's Articles
  *
  * @since 1.0.0
