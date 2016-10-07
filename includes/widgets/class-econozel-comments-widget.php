@@ -51,6 +51,11 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 	 * @uses register_widget()
 	 */
 	public static function register_widget() {
+
+		// Bail when current user is not VGSR
+		if ( ! is_user_vgsr() )
+			return;
+
 		register_widget( 'Econozel_Comments_Widget' );
 	}
 
