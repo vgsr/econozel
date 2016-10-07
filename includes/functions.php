@@ -33,20 +33,26 @@ function econozel_get_article_post_type() {
  */
 function econozel_get_article_post_type_labels() {
 	return apply_filters( 'econozel_get_article_post_type_labels', array(
-		'name'               => __( 'Econozel Articles',          'econozel' ),
-		'menu_name'          => __( 'Econozel',                   'econozel' ),
-		'singular_name'      => __( 'Econozel Article',           'econozel' ),
-		'all_items'          => __( 'All Articles',               'econozel' ),
-		'add_new'            => __( 'New Article',                'econozel' ),
-		'add_new_item'       => __( 'Create New Article',         'econozel' ),
-		'edit'               => __( 'Edit',                       'econozel' ),
-		'edit_item'          => __( 'Edit Article',               'econozel' ),
-		'new_item'           => __( 'New Article',                'econozel' ),
-		'view'               => __( 'View Article',               'econozel' ),
-		'view_item'          => __( 'View Article',               'econozel' ),
-		'search_items'       => __( 'Search Articles',            'econozel' ),
-		'not_found'          => __( 'No articles found',          'econozel' ),
-		'not_found_in_trash' => __( 'No articles found in Trash', 'econozel' ),
+		'name'                  => __( 'Econozel Articles',          'econozel' ),
+		'menu_name'             => __( 'Econozel',                   'econozel' ),
+		'singular_name'         => __( 'Econozel Article',           'econozel' ),
+		'all_items'             => __( 'All Articles',               'econozel' ),
+		'add_new'               => __( 'New Article',                'econozel' ),
+		'add_new_item'          => __( 'Create New Article',         'econozel' ),
+		'edit'                  => __( 'Edit',                       'econozel' ),
+		'edit_item'             => __( 'Edit Article',               'econozel' ),
+		'new_item'              => __( 'New Article',                'econozel' ),
+		'view'                  => __( 'View Article',               'econozel' ),
+		'view_item'             => __( 'View Article',               'econozel' ),
+		'view_items'            => __( 'View Articles',              'econozel' ), // Since WP 4.7
+		'search_items'          => __( 'Search Articles',            'econozel' ),
+		'not_found'             => __( 'No articles found',          'econozel' ),
+		'not_found_in_trash'    => __( 'No articles found in Trash', 'econozel' ),
+		'insert_into_item'      => __( 'Insert into article',        'econozel' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this article',   'econozel' ),
+		'filter_items_list'     => __( 'Filter articles list',       'econozel' ),
+		'items_list_navigation' => __( 'Articles list navigation',   'econozel' ),
+		'items_list'            => __( 'Articles list',              'econozel' ),
 	) );
 }
 
