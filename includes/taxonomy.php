@@ -10,6 +10,46 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Registration **************************************************************/
+
+/**
+ * Modify the taxonomy arguments on taxonomy registration
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Taxonomy arguments
+ * @param string $taxonomy Taxonomy id
+ * @param array $object_types Object types
+ * @return array Taxonomy arguments
+ */
+function econozel_register_taxonomy_args( $args, $taxonomy, $object_types ) {
+
+	// Registering Post Tags
+	if ( 'post_tag' === $taxonomy ) {
+
+		/**
+		 * Change caps definition when not already changed
+		 *
+		 * The following code is a hack to uniquely identify caps for the post_tag
+		 * taxonomy. Capabilities for the post_tag taxonomy default to the generic
+		 * 'manage_categories' and 'edit_posts' primitive caps. Since taxonomy cap
+		 * checks are not associated with term objects, we cannot find which taxonomy
+		 * is actually checked for. Alternatively, we would rather not extend
+		 * Econozel caps to managing categories and editing posts in general.
+		 */
+		if ( ! isset( $args['capabilities'] ) ) {
+			$args['capabilities'] = array(
+				'manage_terms' => 'manage_post_tags',
+				'edit_terms'   => 'edit_post_tags',
+				'delete_terms' => 'delete_post_tags',
+				'assign_terms' => 'assign_post_tags',
+			);
+		}
+	}
+
+	return $args;
+}
+
 /** Meta **********************************************************************/
 
 /**

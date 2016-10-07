@@ -20,6 +20,7 @@ add_filter( 'map_meta_cap',                'econozel_map_meta_caps',     10, 4 )
 
 add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',      5    );
 add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',   10, 3 );
+add_filter( 'register_taxonomy_args',      'econozel_register_taxonomy_args',   10, 3 );
 add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args', 10, 2 ); // Since WP 4.4
 add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      10, 3 );
 add_filter( 'list_cats',                   'econozel_list_cats',                10, 2 );
@@ -57,9 +58,10 @@ add_action( 'econozel_widgets_init', array( 'Econozel_Comments_Widget', 'registe
 
 /** User **********************************************************************/
 
-add_filter( 'econozel_map_meta_caps', 'econozel_map_article_meta_caps', 10, 4 );
-add_filter( 'econozel_map_meta_caps', 'econozel_map_edition_meta_caps', 10, 4 );
-add_filter( 'econozel_map_meta_caps', 'econozel_map_volume_meta_caps',  10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_article_meta_caps',  10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_edition_meta_caps',  10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_volume_meta_caps',   10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_post_tag_meta_caps', 10, 4 );
 
 /** Admin *********************************************************************/
 

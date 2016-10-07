@@ -52,7 +52,7 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 
 		case 'edit_econozel_articles' :
 
-			// All VGSR can edit Articles
+			// VGSR leden can edit one's own Articles
 			if ( is_user_lid( $user_id ) ) {
 				$caps = array( 'read' );
 			} else {
@@ -100,7 +100,7 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 
 		case 'econozel_articles_admin' :
 
-			// All VGSR can enter the admin
+			// VGSR leden can enter the admin
 			if ( is_user_lid( $user_id ) ) {
 				$caps = array( 'read' );
 			} else {
@@ -221,6 +221,64 @@ function econozel_map_volume_meta_caps( $caps = array(), $cap = '', $user_id = 0
 
 		case 'econozel_volume_admin' :
 			$caps = array( 'econozel_editor' );
+			break;
+	}
+
+	return $caps;
+}
+
+/** Post Tags *****************************************************************/
+
+/**
+ * Map caps for the Volume taxonomy
+ *
+ * @since 1.0.0
+ *
+ * @param array $caps Mapped caps
+ * @param string $cap Required capability name
+ * @param int $user_id User ID
+ * @param array $args Additional arguments
+ * @return array Mapped caps
+ */
+function econozel_map_post_tag_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+
+	// Check the required capability
+	switch ( $cap ) {
+
+		/** Management ********************************************************/
+
+		case 'manage_post_tags' :
+		case 'edit_post_tags' :
+		case 'delete_post_tags' :
+
+			// Allow Econozel Editors
+			if ( user_can( $user_id, 'econozel_editor' ) ) {
+				$caps = array( 'econozel_editor' );
+
+			// Or default to original manage_categories
+			} else {
+				$caps = array( 'manage_categories' );
+			}
+
+			break;
+
+		/** Assigning *********************************************************/
+
+		case 'assign_post_tags' :
+
+			// VGSR leden can assign tags
+			if ( is_user_lid( $user_id ) ) {
+				$caps = array( 'read' );
+
+			// Allow Econozel Editors
+			} elseif ( user_can( $user_id, 'econozel_editor' ) ) {
+				$caps = array( 'econozel_editor' );
+
+			// Or default to original edit_posts
+			} else {
+				$caps = array( 'edit_posts' );
+			}
+
 			break;
 	}
 
