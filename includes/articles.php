@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel Articles Functions
+ * Econozel Article Functions
  * 
  * @package Econozel
  * @subpackage Main
@@ -9,6 +9,85 @@
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
+
+/** Post Type *****************************************************************/
+
+/**
+ * Return the econozel Article post type
+ *
+ * @since 1.0.0
+ *
+ * @return string Post type name
+ */
+function econozel_get_article_post_type() {
+	return 'econozel';
+}
+
+/**
+ * Return the labels for the Article post type
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_article_post_type_labels'
+ * @return array Article post type labels
+ */
+function econozel_get_article_post_type_labels() {
+	return apply_filters( 'econozel_get_article_post_type_labels', array(
+		'name'                  => __( 'Econozel Articles',          'econozel' ),
+		'menu_name'             => __( 'Econozel',                   'econozel' ),
+		'singular_name'         => __( 'Econozel Article',           'econozel' ),
+		'all_items'             => __( 'All Articles',               'econozel' ),
+		'add_new'               => __( 'New Article',                'econozel' ),
+		'add_new_item'          => __( 'Create New Article',         'econozel' ),
+		'edit'                  => __( 'Edit',                       'econozel' ),
+		'edit_item'             => __( 'Edit Article',               'econozel' ),
+		'new_item'              => __( 'New Article',                'econozel' ),
+		'view'                  => __( 'View Article',               'econozel' ),
+		'view_item'             => __( 'View Article',               'econozel' ),
+		'view_items'            => __( 'View Articles',              'econozel' ), // Since WP 4.7
+		'search_items'          => __( 'Search Articles',            'econozel' ),
+		'not_found'             => __( 'No articles found',          'econozel' ),
+		'not_found_in_trash'    => __( 'No articles found in Trash', 'econozel' ),
+		'insert_into_item'      => __( 'Insert into article',        'econozel' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this article',   'econozel' ),
+		'filter_items_list'     => __( 'Filter articles list',       'econozel' ),
+		'items_list_navigation' => __( 'Articles list navigation',   'econozel' ),
+		'items_list'            => __( 'Articles list',              'econozel' ),
+	) );
+}
+
+/**
+ * Return the Article post type rewrite settings
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_article_post_type_rewrite'
+ * @return array Article post type support
+ */
+function econozel_get_article_post_type_rewrite() {
+	return apply_filters( 'econozel_get_article_post_type_rewrite', array(
+		'slug'       => econozel_get_article_slug(),
+		'with_front' => false
+	) );
+}
+
+/**
+ * Return an array of features the Article post type supports
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_article_post_type_supports'
+ * @return array Article post type support
+ */
+function econozel_get_article_post_type_supports() {
+	return apply_filters( 'econozel_get_article_post_type_supports', array(
+		'title',
+		'author',
+		'editor',
+		'comments',
+		'page-attributes' // For custom menu_order
+	) );
+}
 
 /** Query *********************************************************************/
 

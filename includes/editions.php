@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel Editions Functions
+ * Econozel Edition Functions
  * 
  * @package Econozel
  * @subpackage Main
@@ -9,6 +9,91 @@
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
+
+/** Taxonomy ******************************************************************/
+
+/**
+ * Return the Edition taxonomy id
+ *
+ * @since 1.0.0
+ *
+ * @return string Taxonomy id
+ */
+function econozel_get_edition_tax_id() {
+	return 'econozel_edition';
+}
+
+/**
+ * Return the labels for the Edition taxonomy
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_edition_tax_labels'
+ * @return array Edition taxonomy labels
+ */
+function econozel_get_edition_tax_labels() {
+	return apply_filters( 'econozel_get_edition_tax_labels', array(
+		'name'          => __( 'Econozel Editions',  'econozel' ),
+		'menu_name'     => __( 'Editions',           'econozel' ),
+		'singular_name' => __( 'Econozel Edition',   'econozel' ),
+		'search_items'  => __( 'Search Editions',    'econozel' ),
+		'popular_items' => null, // Disable tagcloud
+		'all_items'     => __( 'All Editions',       'econozel' ),
+		'no_items'      => __( 'No Edition',         'econozel' ),
+		'edit_item'     => __( 'Edit Edition',       'econozel' ),
+		'update_item'   => __( 'Update Edition',     'econozel' ),
+		'add_new_item'  => __( 'Add New Edition',    'econozel' ),
+		'new_item_name' => __( 'New Edition Name',   'econozel' ),
+		'view_item'     => __( 'View Edition',       'econozel' )
+	) );
+}
+
+/**
+ * Add Edition details for taxonomy meta registration
+ *
+ * @since 1.0.0
+ *
+ * @param array $meta Meta fields to register
+ * @return array Meta fields
+ */
+function econozel_add_edition_tax_meta( $meta ) {
+
+	// Append Edition meta
+	$meta[ econozel_get_edition_tax_id() ] = array(
+
+		// Issue number
+		'issue' => array(
+			'label'           => esc_html__( 'Issue', 'econozel' ),
+			'description'     => esc_html__( 'The nth number of this Edition within the Volume.', 'econozel' ),
+			'type'            => 'select',
+			'options'         => econozel_get_edition_issue_whitelist( false ),
+			'sanitize_cb'     => 'econozel_edition_whitelist_issue',
+			'admin_column_cb' => true,
+			'inline_edit'     => true
+		),
+
+		// Main file
+		'file' => array(
+			'label'           => esc_html__( 'File', 'econozel' ),
+			'description'     => esc_html__( 'The published Edition as a PDF file.', 'econozel' ),
+			'type'            => 'upload',
+			'mime_type'       => 'pdf',
+			'sanitize_cb'     => 'intval',
+			'admin_column_cb' => true
+		),
+
+		// Cover image
+		'cover_image' => array(
+			'label'           => esc_html__( 'Cover Image', 'econozel' ),
+			'description'     => esc_html__( 'The cover image of the published Edition.', 'econozel' ),
+			'type'            => 'upload',
+			'mime_type'       => 'image',
+			'sanitize_cb'     => 'intval'
+		)
+	);
+
+	return $meta;
+}
 
 /** Query *********************************************************************/
 

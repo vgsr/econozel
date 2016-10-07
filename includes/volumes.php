@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel Volumes Functions
+ * Econozel Volume Functions
  * 
  * @package Econozel
  * @subpackage Main
@@ -9,6 +9,44 @@
 
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
+
+/** Taxonomy ******************************************************************/
+
+/**
+ * Return the Volume taxonomy id
+ *
+ * @since 1.0.0
+ *
+ * @return string Taxonomy id
+ */
+function econozel_get_volume_tax_id() {
+	return 'econozel_volume';
+}
+
+/**
+ * Return the labels for the Volume taxonomy
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_volume_tax_labels'
+ * @return array Volume taxonomy labels
+ */
+function econozel_get_volume_tax_labels() {
+	return apply_filters( 'econozel_get_volume_tax_labels', array(
+		'name'          => __( 'Econozel Volumes',  'econozel' ),
+		'menu_name'     => __( 'Volumes',           'econozel' ),
+		'singular_name' => __( 'Econozel Volume',   'econozel' ),
+		'search_items'  => __( 'Search Volumes',    'econozel' ),
+		'popular_items' => null, // Disable tagcloud
+		'all_items'     => __( 'All Volumes',       'econozel' ),
+		'no_items'      => __( 'No Volume',         'econozel' ),
+		'edit_item'     => __( 'Edit Volume',       'econozel' ),
+		'update_item'   => __( 'Update Volume',     'econozel' ),
+		'add_new_item'  => __( 'Add New Volume',    'econozel' ),
+		'new_item_name' => __( 'New Volume Name',   'econozel' ),
+		'view_item'     => __( 'View Volume',       'econozel' )
+	) );
+}
 
 /** Query *********************************************************************/
 
