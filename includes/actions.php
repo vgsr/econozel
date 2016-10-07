@@ -12,8 +12,9 @@ defined( 'ABSPATH' ) || exit;
 
 /** Sub-actions ***************************************************************/
 
-add_action( 'widgets_init',                'econozel_widgets_init'      );
-add_action( 'after_setup_theme',           'econozel_after_setup_theme' );
+add_action( 'widgets_init',                'econozel_widgets_init'             );
+add_action( 'after_setup_theme',           'econozel_after_setup_theme'        );
+add_filter( 'map_meta_cap',                'econozel_map_meta_caps',     10, 4 );
 
 /** Taxonomy ******************************************************************/
 
@@ -53,6 +54,12 @@ add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 )
 
 add_action( 'econozel_widgets_init', array( 'Econozel_Articles_Widget', 'register_widget' ) );
 add_action( 'econozel_widgets_init', array( 'Econozel_Comments_Widget', 'register_widget' ) );
+
+/** User **********************************************************************/
+
+add_filter( 'econozel_map_meta_caps', 'econozel_map_article_meta_caps', 10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_edition_meta_caps', 10, 4 );
+add_filter( 'econozel_map_meta_caps', 'econozel_map_volume_meta_caps',  10, 4 );
 
 /** Admin *********************************************************************/
 
@@ -108,4 +115,21 @@ function econozel_widgets_init() {
  */
 function econozel_after_setup_theme() {
 	do_action( 'econozel_after_setup_theme' );
+}
+
+/**
+ * Run dedicated map meta caps filter for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_map_meta_caps'
+ *
+ * @param array $caps Mapped caps
+ * @param string $cap Required capability name
+ * @param int $user_id User ID
+ * @param array $args Additional arguments
+ * @return array Mapped caps
+ */
+function econozel_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+	return apply_filters( 'econozel_map_meta_caps', $caps, $cap, $user_id, $args );
 }
