@@ -161,15 +161,25 @@ class Econozel_Admin {
 
 		// Enqueue admin script
 		if ( $load_script ) {
+
+			// Get Edition taxonomy
+			$tax_edition = get_taxonomy( $this->edition_tax_id );
+
+			// Enqueue and localize admin script
 			wp_enqueue_script( 'econozel-admin', $eco->includes_url . 'assets/js/admin.js', array( 'jquery' ), econozel_get_version(), true );
 			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
 				'l10n' => array(
 					'articleMenuOrderLabel' => esc_html__( 'Page Number', 'econozel' )
 				),
 				'settings' => array(
-					'articlePostType' => $this->article_post_type,
-					'editionTaxId'    => $this->edition_tax_id,
-					'volumeTaxId'     => $this->volume_tax_id
+
+					// Identifiers
+					'articlePostType'       => $this->article_post_type,
+					'editionTaxId'          => $this->edition_tax_id,
+					'volumeTaxId'           => $this->volume_tax_id,
+
+					// Capabilities
+					'userCanAssignEditions' => current_user_can( $tax_edition->cap->assign_terms ),
 				)
 			) );
 		}

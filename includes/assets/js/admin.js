@@ -66,7 +66,7 @@
 			/*
 			 * From here on the custom logic kicks in.
 			 */
-			var editRow, rowData, val, t = this, edition;
+			var editRow, rowData, val, t = this, $order, edition;
 
 			if ( typeof( id ) === 'object' ) {
 				id = t.getId( id );
@@ -74,17 +74,29 @@
 
 			editRow = $( '#edit-' + id ), rowData = $( '#post-' + id );
 
-			// Hacky: replace menu_order label for Articles
-			editRow.filter( '.inline-edit-' + settings.articlePostType ).find( '.inline-edit-menu-order-input' ).parents( 'label' ).first().find( '.title' ).text( l10n.articleMenuOrderLabel );
+			// Get menu_order parent element
+			$order = editRow.filter( '.inline-edit-' + settings.articlePostType ).find( '.inline-edit-menu-order-input' ).parents( 'label' ).first();
 
-			// Handle Edition
-			edition = $( '#' + settings.editionTaxId + '_' + id, rowData ).text();
-			// Remove default flat-taxonomy Edition input field (textarea)
-			$( '.tax_input_' + settings.editionTaxId, editRow ).eq(0).parents( 'label' ).first().remove();
-			// Position Edition field before Page Number and set its value
-			$( '.article-edition label', editRow )
-				.prependTo( $( '.inline-edit-col-right .inline-edit-col', editRow ).first() )
-				.find( 'select option[value="' + edition + '"]' ).prop( 'selected', true );
+			// User is capable to assign Editions
+			if ( settings.userCanAssignEditions ) {
+
+				// Hacky: replace menu_order label for Articles
+				$order.find( '.title' ).text( l10n.articleMenuOrderLabel );
+
+				// Handle Edition
+				edition = $( '#' + settings.editionTaxId + '_' + id, rowData ).text();
+				// Remove default flat-taxonomy Edition input field (textarea)
+				$( '.tax_input_' + settings.editionTaxId, editRow ).eq(0).parents( 'label' ).first().remove();
+				// Position Edition field before Page Number and set its value
+				$( '.article-edition label', editRow )
+					.prependTo( $( '.inline-edit-col-right .inline-edit-col', editRow ).first() )
+					.find( 'select option[value="' + edition + '"]' ).prop( 'selected', true );
+
+			} else {
+
+				// Remove Page Number input
+				$order.remove();
+			}
 		};
 	}
 
