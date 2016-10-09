@@ -43,7 +43,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 	public static function register_widget() {
 
 		// Bail when current user is not VGSR
-		if ( ! is_user_vgsr() )
+		if ( ! function_exists( 'vgsr' ) || ! is_user_vgsr() )
 			return;
 
 		register_widget( 'Econozel_Articles_Widget' );
