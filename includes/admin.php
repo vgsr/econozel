@@ -620,7 +620,7 @@ class Econozel_Admin {
 
 							<?php foreach ( econozel_get_dynamic_roles() as $role => $args ) : ?>
 
-							<option <?php selected( $role, $eco_role ); ?> value="<?php echo esc_attr( $role ); ?>"><?php echo $args['name']; ?></
+							<option <?php selected( $role, $eco_role ); ?> value="<?php echo esc_attr( $role ); ?>"><?php echo $args['name']; ?></option>
 
 							<?php endforeach; ?>
 						</select>
