@@ -58,21 +58,25 @@ class Econozel_Admin {
 		add_action( 'admin_menu',  array( $this, 'admin_menu'             ) );
 		add_action( 'parent_file', array( $this, 'admin_menu_parent_file' ) );
 
-		// Columns
+		// Article
 		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
 		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
 		add_action( 'quick_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
-		add_filter( "manage_edit-{$taxonomy}_columns",          array( $this, 'edition_columns'        ), 20    );
-		add_filter( "manage_{$taxonomy}_custom_column",         array( $this, 'edition_column_content' ), 10, 3 );
-		add_action( 'quick_edit_custom_box',                    array( $this, 'edition_inline_edit'    ), 10, 3 );
+		add_action( "add_meta_boxes_{$post_type}",              array( $this, 'article_meta_boxes'     ), 99    );
+		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
 
-		// Edit
-		add_action( "add_meta_boxes_{$post_type}",  array( $this, 'article_meta_boxes'            ), 99    );
-		add_action( "save_post_{$post_type}",       array( $this, 'article_edition_save_meta_box' )        );
-		add_action( "{$taxonomy}_add_form_fields",  array( $this, 'edition_add_fields'            ),  5    );
-		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'edition_edit_fields'           ),  5, 2 );
-		add_action( "created_{$taxonomy}",          array( $this, 'edition_save_fields'           )        );
-		add_action( "edited_{$taxonomy}",           array( $this, 'edition_save_fields'           )        );
+		// Edition
+		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
+		add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'edition_column_content' ), 10, 3 );
+		add_action( 'quick_edit_custom_box',            array( $this, 'edition_inline_edit'    ), 10, 3 );
+		add_action( "{$taxonomy}_add_form_fields",      array( $this, 'edition_add_fields'     ),  5    );
+		add_action( "{$taxonomy}_edit_form_fields",     array( $this, 'edition_edit_fields'    ),  5, 2 );
+		add_action( "created_{$taxonomy}",              array( $this, 'edition_save_fields'    )        );
+		add_action( "edited_{$taxonomy}",               array( $this, 'edition_save_fields'    )        );
+
+		// User
+		add_action( 'edit_user_profile',        array( $this, 'user_profile_settings'      ) );
+		add_action( 'edit_user_profile_update', array( $this, 'user_save_profile_settings' ) );
 
 		// Scripts & Styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -328,8 +332,7 @@ class Econozel_Admin {
 
 				// Bail when the user is not capable
 				if ( ! $tax || ! current_user_can( $tax->cap->assign_terms ) )
-					return;
-		?>
+					return; ?>
 
 		<div class="inline-edit-col article-edition">
 			<label>
@@ -344,7 +347,7 @@ class Econozel_Admin {
 			</label>
 		</div>
 
-		<?php
+			<?php
 				break;
 		}
 	}
@@ -356,7 +359,7 @@ class Econozel_Admin {
 	 *
 	 * @param int $post_id Post ID
 	 */
-	public function article_edition_save_meta_box( $post_id ) {
+	public function article_save_meta_box( $post_id ) {
 
 		// Bail when doing an autosave
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
@@ -526,8 +529,7 @@ class Econozel_Admin {
 		switch ( $column ) {
 
 			// Volume
-			case "taxonomy-{$this->volume_tax_id}" :
-		?>
+			case "taxonomy-{$this->volume_tax_id}" : ?>
 
 		<fieldset>
 			<div class="inline-edit-col">
@@ -541,7 +543,7 @@ class Econozel_Admin {
 			</div>
 		</fieldset>
 
-		<?php
+			<?php
 				break;
 		}
 
@@ -574,6 +576,69 @@ class Econozel_Admin {
 		// Remove Edition Volume
 		} elseif ( $volume = econozel_get_edition_volume( $term_id ) ) {
 			wp_remove_object_terms( $term_id, array( $volume ), $this->volume_tax_id );
+		}
+	}
+
+	/** User ******************************************************************/
+
+	/**
+	 * Output the plugin settings fields for the user profile
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_User $profileuser User data
+	 */
+	function user_profile_settings( $profileuser ) {
+
+		// Bail when user is not capable
+		if ( ! current_user_can( 'edit_user', $profileuser->ID ) )
+			return;
+
+		// Get user's current role
+		$eco_role = econozel_get_user_role( $profileuser->ID ); ?>
+
+		<h2><?php esc_html_e( 'Econozel', 'econozel' ); ?></h2>
+
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th><label for="econozel-role"><?php esc_html_e( 'Econozel Role', 'econozel' ); ?></label></th>
+					<td>
+						<select id="econozel-role" name="econozel-role">
+							<option value=""><?php esc_html_e( '&mdash; No Econozel role &mdash;', 'econozel' ); ?></option>
+
+							<?php foreach ( econozel_get_dynamic_roles() as $role => $args ) : ?>
+
+							<option <?php selected( $role, $eco_role ); ?> value="<?php echo esc_attr( $role ); ?>"><?php echo $args['name']; ?></
+
+							<?php endforeach; ?>
+						</select>
+					</td>
+			</tbody>
+		</table>
+
+		<?php
+	}
+
+	/**
+	 * Save user profile settings
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $user_id User ID
+	 */
+	function user_save_profile_settings( $user_id ) {
+
+		// Bail when user is not capable
+		if ( ! current_user_can( 'edit_user', $user_id ) )
+			return;
+
+		// Get the saved data
+		$role = isset( $_POST['econozel-role'] ) ? $_POST['econozel-role'] : null;
+
+		// Assign role when provided
+		if ( null !== $role ) {
+			econozel_set_user_role( $user_id, $role );
 		}
 	}
 }

@@ -63,6 +63,11 @@ add_filter( 'econozel_map_meta_caps', 'econozel_map_edition_meta_caps',  10, 4 )
 add_filter( 'econozel_map_meta_caps', 'econozel_map_volume_meta_caps',   10, 4 );
 add_filter( 'econozel_map_meta_caps', 'econozel_map_post_tag_meta_caps', 10, 4 );
 
+// Dynamic roles
+add_filter( 'plugins_loaded',         'econozel_filter_user_roles_option'      );
+add_filter( 'editable_roles',         'econozel_filter_editable_roles'         );
+add_action( 'set_user_role',          'econozel_handle_set_user_role',   10, 3 );
+
 /** Admin *********************************************************************/
 
 if ( is_admin() ) {
