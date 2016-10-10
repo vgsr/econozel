@@ -19,6 +19,14 @@ if ( ! class_exists( 'Econozel_Admin' ) ) :
 class Econozel_Admin {
 
 	/**
+	 * Minimum capability to access plugin settings
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	private $minimum_capability = 'econozel_editor';
+
+	/**
 	 * Class constructor
 	 *
 	 * @since 1.0.0
@@ -59,7 +67,8 @@ class Econozel_Admin {
 		add_action( 'parent_file', array( $this, 'admin_menu_parent_file' ) );
 
 		// Settings
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_init',             array( $this, 'register_settings'      )        );
+		add_filter( 'econozel_map_meta_caps', array( $this, 'map_settings_meta_caps' ), 10, 4 );
 
 		// Article
 		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
@@ -265,6 +274,33 @@ class Econozel_Admin {
 				register_setting( $page, $field_id, $field['sanitize_callback'] );
 			}
 		}
+	}
+
+	/**
+	 * Map caps for the plugin settings
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $caps Mapped caps
+	 * @param string $cap Required capability name
+	 * @param int $user_id User ID
+	 * @param array $args Additional arguments
+	 * @return array Mapped caps
+	 */
+	public function map_settings_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
+
+		// Check the required capability
+		switch ( $cap ) {
+
+			// Econozel Settings
+			case 'econozel_settings_general' :
+			case 'econozel_settings_per_page' :
+			case 'econozel_settings_slugs' :
+				$caps = array( $this->minimum_capability );
+				break;
+		}
+
+		return $caps;
 	}
 
 	/** Article ***************************************************************/
