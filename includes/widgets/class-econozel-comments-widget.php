@@ -33,7 +33,7 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 	 */
 	public function __construct() {
 		WP_Widget::__construct( false, esc_html__( 'Econozel Recent Comments', 'econozel' ), array(
-			'class_name' => 'widget_recent_comments',
+			'classname' => 'widget_recent_comments',
 			'description' => esc_html__( 'A list of the most recent article comments.', 'econozel' ),
 			'customize_selective_refresh' => true,
 		) );
