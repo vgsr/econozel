@@ -73,7 +73,7 @@ function econozel_query_volumes( $args = array() ) {
 	$query->terms        = array();
 
 	// Define query args
-	$query_args = wp_parse_args( $args, array(
+	$r = wp_parse_args( $args, array(
 		'taxonomy'        => econozel_get_volume_tax_id(),
 		'number'          => econozel_get_volumes_per_page(),
 		'paged'           => econozel_get_paged(),
@@ -82,19 +82,19 @@ function econozel_query_volumes( $args = array() ) {
 	) );
 
 	// Pagination
-	if ( $query_args['number'] != -1 ) {
-		$query_args['paged'] = absint( $query_args['paged'] );
-		if ( $query_args['paged'] == 0 ) {
-			$query_args['paged'] = 1;
+	if ( $r['number'] != -1 ) {
+		$r['paged'] = absint( $r['paged'] );
+		if ( $r['paged'] == 0 ) {
+			$r['paged'] = 1;
 		}
-		$query_args['offset'] = absint( ( $query_args['paged'] - 1 ) * $query_args['number'] );
+		$r['offset'] = absint( ( $r['paged'] - 1 ) * $r['number'] );
 	}
 
 	// Run query to get the taxonomy terms
 	if ( class_exists( 'WP_Term_Query' ) ) {
-		$query->query( $query_args );
+		$query->query( $r );
 	} else {
-		$query->terms = get_terms( $query_args['taxonomy'], $query_args );
+		$query->terms = get_terms( $r['taxonomy'], $r );
 	}
 
 	// Set query results
@@ -104,13 +104,13 @@ function econozel_query_volumes( $args = array() ) {
 	}
 
 	// Determine the total term count
-	if ( isset( $query_args['offset'] ) && ! $query->term_count < $query_args['number'] ) {
-		$query->found_terms = econozel_query_terms_found_rows( $query_args );
+	if ( isset( $r['offset'] ) && ! $query->term_count < $r['number'] ) {
+		$query->found_terms = econozel_query_terms_found_rows( $r );
 	} else {
 		$query->found_terms = $query->term_count;
 	}
 	if ( $query->found_terms > $query->term_count ) {
-		$query->max_num_pages = (int) ceil( $query->found_terms / $query_args['number'] );
+		$query->max_num_pages = (int) ceil( $query->found_terms / $r['number'] );
 	} else {
 		$query->max_num_pages = 1;
 	}
