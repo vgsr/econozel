@@ -58,6 +58,9 @@ class Econozel_Admin {
 		add_action( 'admin_menu',  array( $this, 'admin_menu'             ) );
 		add_action( 'parent_file', array( $this, 'admin_menu_parent_file' ) );
 
+		// Settings
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+
 		// Article
 		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
 		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
@@ -92,11 +95,14 @@ class Econozel_Admin {
 	public function admin_menu() {
 
 		// Get Volume taxonomy
-		if ( ! $tax = get_taxonomy( $this->volume_tax_id ) )
-			return;
+		if ( $tax = get_taxonomy( $this->volume_tax_id ) ) {
 
-		// Add Volume submenu page
-		$hook = add_submenu_page( "edit.php?post_type={$this->article_post_type}", '', $tax->labels->menu_name, $tax->cap->manage_terms, "edit-tags.php?taxonomy={$this->volume_tax_id}", null );
+			// Add Volume submenu page
+			add_submenu_page( "edit.php?post_type={$this->article_post_type}", '', $tax->labels->menu_name, $tax->cap->manage_terms, "edit-tags.php?taxonomy={$this->volume_tax_id}", null );
+		}
+
+		// Add settings page
+		add_submenu_page( "edit.php?post_type={$this->article_post_type}", esc_html__( 'Econozel Settings', 'econozel' ), esc_html__( 'Settings', 'econozel' ), 'econozel_editor', 'econozel_settings', array( $this, 'admin_settings_page' ) );
 	}
 
 	/**
@@ -115,6 +121,27 @@ class Econozel_Admin {
 		}
 
 		return $parent_file;
+	}
+
+	/**
+	 * Output the contents of the admin settings page
+	 *
+	 * @since 1.0.0
+	 */
+	public function admin_settings_page() { ?>
+
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Econozel Settings', 'econozel' ); ?></h1>
+
+			<form action="options.php" method="post">
+				<?php settings_fields( 'econozel' ); ?>
+				<?php do_settings_sections( 'econozel' ); ?>
+
+				<?php submit_button(); ?>
+			</form>
+		</div>
+
+		<?php
 	}
 
 	/**
@@ -187,6 +214,56 @@ class Econozel_Admin {
 		// Attach styles to admin's common.css
 		if ( ! empty( $styles ) ) {
 			wp_add_inline_style( 'common', implode( "\n", $styles ) );
+		}
+	}
+
+	/** Settings **************************************************************/
+
+	/**
+	 * Register plugin settings
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_settings() {
+
+		// Bail if no sections available
+		$sections = econozel_admin_get_settings_sections();
+		if ( empty( $sections ) )
+			return false;
+
+		// Loop through sections
+		foreach ( (array) $sections as $section_id => $section ) {
+
+			// Only proceed if current user can see this section
+			if ( ! current_user_can( $section_id ) )
+				continue;
+
+			// Only add section and fields if section has fields
+			$fields = econozel_admin_get_settings_fields_for_section( $section_id );
+			if ( empty( $fields ) )
+				continue;
+
+			// Define section page
+			if ( ! empty( $section['page'] ) ) {
+				$page = $section['page'];
+			} else {
+				$page = 'econozel';
+			}
+
+			// Add the section
+			add_settings_section( $section_id, $section['title'], $section['callback'], $page );
+
+			// Loop through fields for this section
+			foreach ( (array) $fields as $field_id => $field ) {
+
+				// Add the field
+				if ( ! empty( $field['callback'] ) && ! empty( $field['title'] ) ) {
+					add_settings_field( $field_id, $field['title'], $field['callback'], $page, $section_id, $field['args'] );
+				}
+
+				// Register the setting
+				register_setting( $page, $field_id, $field['sanitize_callback'] );
+			}
 		}
 	}
 
