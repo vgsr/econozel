@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string Root rewrite slug
  */
 function econozel_get_root_slug() {
-	return apply_filters( 'econozel_get_root_slug', econozel_get_article_post_type() );
+	return apply_filters( 'econozel_get_root_slug', get_option( '_econozel_root_slug', 'econozel' ) );
 }
 
 /**
@@ -33,7 +33,7 @@ function econozel_get_root_slug() {
  * @return string Article rewrite slug
  */
 function econozel_get_article_slug() {
-	return apply_filters( 'econozel_get_article_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'articles', 'Article rewrite slug', 'econozel' ) );
+	return apply_filters( 'econozel_get_article_slug', trailingslashit( econozel_get_root_slug() ) . get_option( '_econozel_article_slug', _x( 'articles', 'Article rewrite slug', 'econozel' ) ) );
 }
 
 /**
@@ -45,7 +45,7 @@ function econozel_get_article_slug() {
  * @return string Volume rewrite slug
  */
 function econozel_get_volume_slug() {
-	return apply_filters( 'econozel_get_volume_slug', trailingslashit( econozel_get_root_slug() ) . _x( 'volumes', 'Volume rewrite slug', 'econozel' ) );
+	return apply_filters( 'econozel_get_volume_slug', trailingslashit( econozel_get_root_slug() ) . get_option( '_econozel_volume_slug', _x( 'volumes', 'Volume rewrite slug', 'econozel' ) ) );
 }
 
 /**
@@ -130,7 +130,7 @@ function econozel_delete_rewrite_rules() {
  * @return int Volumes per page
  */
 function econozel_get_volumes_per_page( $default = 5 ) {
-	return (int) apply_filters( 'econozel_get_volumes_per_page', get_option( 'econozel_volumes_per_page', $default ) );
+	return (int) apply_filters( 'econozel_get_volumes_per_page', get_option( '_econozel_volumes_per_page', $default ) );
 }
 
 /**
@@ -142,7 +142,7 @@ function econozel_get_volumes_per_page( $default = 5 ) {
  * @return int Editions per page
  */
 function econozel_get_editions_per_page( $default = 0 ) {
-	return (int) apply_filters( 'econozel_get_editions_per_page', get_option( 'econozel_editions_per_page', $default ) );
+	return (int) apply_filters( 'econozel_get_editions_per_page', get_option( '_econozel_editions_per_page', $default ) );
 }
 
 /**
@@ -154,7 +154,7 @@ function econozel_get_editions_per_page( $default = 0 ) {
  * @return bool Prepend Volume title
  */
 function econozel_prepend_volume_title() {
-	return (bool) apply_filters( 'econozel_prepend_volume_title', get_option( 'econozel_prepend_volume_title', true ) );
+	return (bool) apply_filters( 'econozel_prepend_volume_title', get_option( '_econozel_prepend_volume_title', true ) );
 }
 
 /**
@@ -167,7 +167,7 @@ function econozel_prepend_volume_title() {
 function econozel_get_edition_issue_whitelist( $flat = true ) {
 
 	// Get the available issues
-	$issues = (array) apply_filters( 'econozel_get_edition_issue_whitelist', get_option( 'econozel_edition_issue_whitelist', range( 1, 12 ) ) );
+	$issues = (array) apply_filters( 'econozel_get_edition_issue_whitelist', explode( ',', get_option( '_econozel_edition_issue_whitelist', '1,2,3,4,5,6,7,8,9,10,11,12' ) ) );
 
 	// Setup array with sanitized keys
 	if ( ! $flat ) {
