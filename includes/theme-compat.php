@@ -375,6 +375,143 @@ function econozel_locate_template( $template_names, $load = false, $require_once
 }
 
 /**
+ * Enqueue a script from the highest priority location in the template stack.
+ *
+ * Registers the style if file provided (does NOT overwrite) and enqueues.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $handle Name of the stylesheet.
+ * @param string|bool $file   Relative path to stylesheet. Example: '/css/mystyle.css'.
+ * @param array       $deps   An array of registered style handles this stylesheet depends on. Default empty array.
+ * @param string|bool $ver    String specifying the stylesheet version number, if it has one. This parameter is used
+ *                            to ensure that the correct version is sent to the client regardless of caching, and so
+ *                            should be included if a version number is available and makes sense for the stylesheet.
+ * @param string      $media  Optional. The media for which this stylesheet has been defined.
+ *                            Default 'all'. Accepts 'all', 'aural', 'braille', 'handheld', 'projection', 'print',
+ *                            'screen', 'tty', or 'tv'.
+ *
+ * @return string The style filename if one is located.
+ */
+function econozel_enqueue_style( $handle = '', $file = '', $dependencies = array(), $version, $media = 'all' ) {
+
+	// No file found yet
+	$located = false;
+
+	// Trim off any slashes from the template name
+	$file = ltrim( $file, '/' );
+
+	// Make sure there is always a version
+	if ( empty( $version ) ) {
+		$version = econozel_get_version();
+	}
+
+	// Loop through template stack
+	foreach ( (array) econozel_get_template_stack() as $template_location ) {
+
+		// Continue if $template_location is empty
+		if ( empty( $template_location ) ) {
+			continue;
+		}
+
+		// Check child theme first
+		if ( file_exists( trailingslashit( $template_location ) . $file ) ) {
+			$located = trailingslashit( $template_location ) . $file;
+			break;
+		}
+	}
+
+	// Enqueue if located
+	if ( !empty( $located ) ) {
+
+		$content_dir = constant( 'WP_CONTENT_DIR' );
+
+		// IIS (Windows) here
+		// Replace back slashes with forward slash
+		if ( strpos( $located, '\\' ) !== false ) {
+			$located     = str_replace( '\\', '/', $located     );
+			$content_dir = str_replace( '\\', '/', $content_dir );
+		}
+
+		// Make path to file relative to site URL
+		$located = str_replace( $content_dir, content_url(), $located );
+
+		// Enqueue the style
+		wp_enqueue_style( $handle, $located, $dependencies, $version, $media );
+	}
+
+	return $located;
+}
+
+/**
+ * Enqueue a script from the highest priority location in the template stack.
+ *
+ * Registers the style if file provided (does NOT overwrite) and enqueues.
+ *
+ * @since 1.0.0
+ *
+ * @param string      $handle    Name of the script.
+ * @param string|bool $file      Relative path to the script. Example: '/js/myscript.js'.
+ * @param array       $deps      An array of registered handles this script depends on. Default empty array.
+ * @param string|bool $ver       Optional. String specifying the script version number, if it has one. This parameter
+ *                               is used to ensure that the correct version is sent to the client regardless of caching,
+ *                               and so should be included if a version number is available and makes sense for the script.
+ * @param bool        $in_footer Optional. Whether to enqueue the script before </head> or before </body>.
+ *                               Default 'false'. Accepts 'false' or 'true'.
+ *
+ * @return string The script filename if one is located.
+ */
+function econozel_enqueue_script( $handle = '', $file = '', $dependencies = array(), $version = false, $in_footer = 'all' ) {
+
+	// No file found yet
+	$located = false;
+
+	// Trim off any slashes from the template name
+	$file = ltrim( $file, '/' );
+
+	// Make sure there is always a version
+	if ( empty( $version ) ) {
+		$version = econozel_get_version();
+	}
+
+	// Loop through template stack
+	foreach ( (array) econozel_get_template_stack() as $template_location ) {
+
+		// Continue if $template_location is empty
+		if ( empty( $template_location ) ) {
+			continue;
+		}
+
+		// Check child theme first
+		if ( file_exists( trailingslashit( $template_location ) . $file ) ) {
+			$located = trailingslashit( $template_location ) . $file;
+			break;
+		}
+	}
+
+	// Enqueue if located
+	if ( !empty( $located ) ) {
+
+		$content_dir = constant( 'WP_CONTENT_DIR' );
+
+		// IIS (Windows) here
+		// Replace back slashes with forward slash
+		if ( strpos( $located, '\\' ) !== false ) {
+			$located     = str_replace( '\\', '/', $located     );
+			$content_dir = str_replace( '\\', '/', $content_dir );
+		}
+
+		// Make path to file relative to site URL
+		$located = str_replace( $content_dir, content_url(), $located );
+
+		// Enqueue the style
+		wp_enqueue_script( $handle, $located, $dependencies, $version, $in_footer );
+	}
+
+	return $located;
+}
+
+/**
  * Return whether the current page is inside theme compatibility
  *
  * @since 1.0.0
