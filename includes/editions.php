@@ -313,7 +313,7 @@ function econozel_get_edition_by_issue( $issue, $volume = 0, $object = false ) {
 	if ( ! $volume = econozel_get_volume( $volume ) )
 		return false;
 
-	// Define return var
+	// Define return value
 	$edition = false;
 
 	// Use `get_terms()` to enable query filtering
@@ -342,6 +342,8 @@ function econozel_get_edition_by_issue( $issue, $volume = 0, $object = false ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_get_edition_volume'
+ *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
  * @return WP_Term|int|bool Volume term object or ID when found, else False.
@@ -352,7 +354,7 @@ function econozel_get_edition_volume( $edition = 0, $object = false ) {
 	if ( ! $edition = econozel_get_edition( $edition ) )
 		return false;
 
-	// Define return var
+	// Define return value
 	$volume = false;
 
 	// Get the Edition's Volume terms
@@ -364,13 +366,15 @@ function econozel_get_edition_volume( $edition = 0, $object = false ) {
 		$volume = $terms[0];
 	}
 
-	return $volume;
+	return apply_filters( 'econozel_get_edition_volume', $volume, $edition, $object );
 }
 
 /**
  * Return the Edition's issue number
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_edition_issue'
  *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @return int|bool Edition issue or False when empty.
@@ -389,7 +393,7 @@ function econozel_get_edition_issue( $edition = 0 ) {
 		$issue = econozel_edition_whitelist_issue( $issue );
 	}
 
-	return $issue;	
+	return apply_filters( 'econozel_get_edition_issue', $issue, $edition );
 }
 
 /**
@@ -437,13 +441,15 @@ function econozel_is_edition_issue_numeric( $edition = 0 ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_get_edition_articles'
+ *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @param bool $object Optional. Whether to return post objects. Defaults to false.
  * @return array Edition Article post objects or ID's.
  */
 function econozel_get_edition_articles( $edition = 0, $object = false ) {
 
-	// Define return var
+	// Define return value
 	$articles = array();
 
 	// Get Edition term object
@@ -465,7 +471,7 @@ function econozel_get_edition_articles( $edition = 0, $object = false ) {
 		}
 	}
 
-	return $articles;
+	return (array) apply_filters( 'econozel_get_edition_articles', $articles, $edition, $object );
 }
 
 /**
@@ -476,6 +482,8 @@ function econozel_get_edition_articles( $edition = 0, $object = false ) {
  * @since 1.0.0
  *
  * @global WPDB $wpdb
+ *
+ * @uses apply_filters() Calls 'econozel_get_adjacent_edition'
  *
  * @param bool $previous Whether to get the previous Edition. Defaults to False.
  * @return WP_Term|bool The adjacent Edition or False when not found.
@@ -519,7 +527,7 @@ function econozel_get_adjacent_edition( $previous = false ) {
 	$result = wp_cache_get( $query_key, 'counts' );
 	if ( false !== $result ) {
 		if ( $result ) {
-			$edition = econozel_get_edition( $result );
+			return apply_filters( 'econozel_get_adjacent_edition', econozel_get_edition( $result ), $previous );
 		}
 	}
 
@@ -534,7 +542,7 @@ function econozel_get_adjacent_edition( $previous = false ) {
 		$edition = econozel_get_edition( $result );
 	}
 
-	return $edition;
+	return apply_filters( 'econozel_get_adjacent_edition', $edition, $previous );
 }
 
 /**
@@ -582,7 +590,7 @@ function econozel_the_edition_title( $edition = 0 ) {
 	 */
 	function econozel_get_edition_title( $edition = 0 ) {
 
-		// Define return var
+		// Define return value
 		$title = '';
 
 		// Get Edition term object
@@ -590,7 +598,7 @@ function econozel_the_edition_title( $edition = 0 ) {
 			$title = $edition->name;
 		}
 
-		return $title;
+		return apply_filters( 'econozel_get_edition_title', $title, $edition );
 	}
 
 /**
@@ -611,12 +619,14 @@ function econozel_the_edition_issue_title( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_issue_title'
+	 *
 	 * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
 	 * @return string Edition issue title
 	 */
 	function econozel_get_edition_issue_title( $edition = 0 ) {
 
-		// Define return var
+		// Define return value
 		$title = '';
 
 		if ( $edition = econozel_get_edition( $edition ) ) {
@@ -628,7 +638,7 @@ function econozel_the_edition_issue_title( $edition = 0 ) {
 			$title = sprintf( is_numeric( $issue ) ? '%2$s. %1$s' : '%1$s', econozel_get_edition_title( $edition ), $issue );
 		}
 
-		return $title;
+		return apply_filters( 'econozel_get_edition_issue_title', $title, $edition );
 	}
 
 /**
@@ -647,12 +657,14 @@ function econozel_the_edition_label( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_label'
+	 *
 	 * @param WP_Post|int $edition Optional. Defaults to the current Edition.
 	 * @return string Edition label
 	 */
 	function econozel_get_edition_label( $edition = 0 ) {
 
-		// Define return var
+		// Define return value
 		$label = '';
 
 		// Get Edition term object
@@ -677,7 +689,7 @@ function econozel_the_edition_label( $edition = 0 ) {
 			}
 		}
 
-		return $label;
+		return apply_filters( 'econozel_get_edition_label', $label, $edition );
 	}
 
 /**
@@ -696,13 +708,15 @@ function econozel_the_edition_link( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_link'
+	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
 	 * @param bool $issue_title Optional. Whether to use the issue title. Defaults to false.
 	 * @return string Edition permalink
 	 */
 	function econozel_get_edition_link( $edition = 0, $issue_title = false ) {
 
-		// Define return var
+		// Define return value
 		$link = '';
 
 		if ( $edition = econozel_get_edition( $edition ) ) {
@@ -716,7 +730,7 @@ function econozel_the_edition_link( $edition = 0 ) {
 			);
 		}
 
-		return $link;
+		return apply_filters( 'econozel_get_edition_link', $link, $edition, $issue_title );
 	}
 
 /**
@@ -758,12 +772,14 @@ function econozel_the_edition_url( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_url'
+	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
 	 * @return string Edition url
 	 */
 	function econozel_get_edition_url( $edition = 0 ) {
 
-		// Define return var
+		// Define return value
 		$url = '';
 
 		// Get Edition identifiers
@@ -771,13 +787,15 @@ function econozel_the_edition_url( $edition = 0 ) {
 			$url = get_term_link( $edition );
 		}
 
-		return $url;
+		return apply_filters( 'econozel_get_edition_url', $url, $edition );
 	}
 
 /**
  * Output or return the Edition's article count in a read-friendly format
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_edition_article_count'
  *
  * @param WP_Term|int $edition Optional. Defaults to the current Edition.
  * @param bool $echo Optional. Whether to output the return value. Defaults to true.
@@ -788,9 +806,13 @@ function econozel_edition_article_count( $edition = 0, $echo = true ) {
 	// Get article count
 	$count  = econozel_get_edition_article_count( $edition );
 
-	// Define return var
-	$retval = sprintf( esc_html( _n( '%d article', '%d articles', $count, 'econozel' ) ), $count ) ;
+	// Define return value
+	$retval = sprintf( esc_html( _n( '%d article', '%d articles', $count, 'econozel' ) ), $count );
 
+	// Enable plugin filtering
+	$retval = apply_filters( 'econozel_edition_article_count', $retval, $edition, $count );
+
+	// Output or return
 	if ( $echo ) {
 		echo $retval;
 	} else {
@@ -814,12 +836,14 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_article_count'
+	 *
 	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
 	 * @return int Edition article count
 	 */
 	function econozel_get_edition_article_count( $edition = 0 ) {
 
-		// Define return var
+		// Define return value
 		$count = 0;
 
 		// Get post count in term
@@ -827,5 +851,5 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 			$count = $edition->count;
 		}
 
-		return $count;
+		return apply_filters( 'econozel_get_edition_article_count', $count, $edition );
 	}
