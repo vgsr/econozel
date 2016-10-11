@@ -1011,6 +1011,8 @@ function econozel_term_class( $class = '', $term_id = null ) {
 /**
  * Return the classes for the term div.
  *
+ * @see get_post_class()
+ *
  * @since 1.0.0
  *
  * @param string $class Optional. One or more classes to add to the class list.

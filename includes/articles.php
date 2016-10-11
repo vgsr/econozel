@@ -84,6 +84,7 @@ function econozel_get_article_post_type_supports() {
 		'title',
 		'author',
 		'editor',
+		'excerpt',
 		'comments',
 		'page-attributes' // For custom menu_order
 	) );
@@ -310,6 +311,199 @@ function econozel_the_article_id() {
 	}
 
 /**
+ * Output the Article's description
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ */
+function econozel_the_article_description( $article = 0 ) {
+	echo econozel_get_article_description( $article = 0 );
+}
+
+	/**
+	 * Return the Article's description
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @return string Article description
+	 */
+	function econozel_get_article_description( $article = 0 ) {
+
+		// Define return value
+		$description = '';
+
+		// Get the Article
+		if ( $article = econozel_get_article( $article ) ) {
+
+			// Use the Article's excerpt
+			if ( ! empty( $article->post_excerpt ) ) {
+				$description = get_the_excerpt( $article );
+			}
+
+			// Default to a trimmed content
+			if ( empty( $description ) ) {
+				$description = wp_html_excerpt( $article->post_content, 200, "&#8230;" );
+			}
+		}
+
+		return $description;
+	}
+
+/**
+ * Return the Article's author(s)
+ *
+ * Considers to return multiple authors by way of an array.
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_article_author'
+ *
+ * @param WP_Post|int Optional. Defaults to the current Article.
+ * @return array Article author user ID(s)
+ */
+function econozel_get_article_author( $article = 0 ) {
+
+	// Define return value
+	$author = array();
+
+	// Get author from post object
+	if ( $article = econozel_get_article( $article ) ) {
+		$author[] = $article->post_author;
+	}
+
+	return (array) apply_filters( 'econozel_get_article_author', $author, $article );
+}
+
+/**
+ * Output the Article's author link
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param string $sep Optional. Whether to return urls as string using param as separator.
+ */
+function econozel_the_article_author_link( $article = 0, $sep = ', ' ) {
+	echo econozel_get_article_author_link( $article, $sep );
+}
+
+	/**
+	 * Return the Article's author link
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param string $sep Optional. Whether to return urls as string using param as separator.
+	 * @return string|array Article author link(s)
+	 */
+	function econozel_get_article_author_link( $article = 0, $sep = null ) {
+
+		// Define return value
+		$link = array();
+
+		// Get the Article author url
+		$url = econozel_get_article_author_url( $article );
+
+		// Loop Article author url(s)
+		foreach ( $url as $user_id => $_url ) {
+
+			// Setup user link
+			$_link = sprintf( ! empty( $_url ) ? '<a href="%1$s">%2$s</a>' : '%2$s', esc_url( $_url ), econozel_get_user_displayname( $user_id ) );
+
+			// Enable plugin filtering
+			$link[ $user_id ] = apply_filters( 'econozel_get_article_author_link', $_link, $user_id, $_url, $article );
+		}
+
+		// Stringify links
+		if ( null !== $sep ) {
+			$link = implode( $sep, $link );
+		}
+
+		return $link;
+	}
+
+/**
+ * Output the Article's author url
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param string $sep Optional. Whether to return urls as string using param as separator.
+ */
+function econozel_the_article_author_url( $article = 0, $sep = ', ' ) {
+	echo econozel_get_article_author_url( $article, $sep );
+}
+
+	/**
+	 * Return the Article's author url
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param string $sep Optional. Whether to return urls as string using param as separator.
+	 * @return string|array Article author url(s)
+	 */
+	function econozel_get_article_author_url( $article = 0, $sep = null ) {
+
+		// Define return value
+		$url = array();
+
+		// Get the Article author
+		$author = econozel_get_article_author( $article );
+
+		// Loop Article author(s)
+		foreach ( $author as $user_id ) {
+
+			// Get the user
+			if ( ! $user = get_userdata( $user_id ) )
+				continue;
+
+			// Enable plugin filtering
+			$url[ $user->ID ] = apply_filters( 'econozel_get_article_author_url', '', $user->ID, $article );
+		}
+
+		// Stringify urls
+		if ( null !== $sep ) {
+			$url = implode( $sep, $url );
+		}
+
+		return $url;
+	}
+
+/**
+ * Output the user's display name
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID
+ */
+function econozel_the_user_displayname( $user_id ) {
+	echo econozel_get_user_displayname( $user_id );
+}
+
+	/**
+	 * Return the user's display name
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $user_id User ID
+	 * @return string User display name
+	 */
+	function econozel_get_user_displayname( $user_id ) {
+
+		// Define return value
+		$name = '';
+
+		// Get the user
+		if ( $user = get_userdata( $user_id ) ) {
+			$name = $user->display_name;
+		}
+
+		return apply_filters( 'econozel_get_user_displayname', $name, $user_id );
+	}
+
+/**
  * Output the current Article's page number in a read-friendly format
  *
  * @since 1.0.0
@@ -339,7 +533,7 @@ function econozel_article_page_number( $article = 0, $echo = true ) {
 }
 
 /**
- * Output the current Article's page number
+ * Output the Article's page number
  *
  * @since 1.0.0
  *
@@ -350,7 +544,7 @@ function econozel_the_article_page_number( $article = 0 ) {
 }
 
 	/**
-	 * Return the current Article's page number
+	 * Return the Article's page number
 	 *
 	 * @since 1.0.0
 	 *
