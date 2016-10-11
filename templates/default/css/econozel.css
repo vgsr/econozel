@@ -1,0 +1,30 @@
+/**
+ * Econozel Theme-Compat Styles
+ *
+ * @package Econozel
+ * @subpackage Theme
+ */
+
+.econozel .volume-editions,
+.econozel .edition-articles {
+	list-style: none;
+	margin-left: 0;
+}
+
+.econozel .volume-editions .edition-title,
+.econozel .edition-articles .article-title {
+	display: block;
+}
+
+.econozel .volume-editions .edition-title ~ span,
+.econozel .edition-articles .article-title ~ span,
+.econozel .article-meta span {
+	opacity: .7;
+}
+
+.econozel .volume-editions .edition-title ~ span:not(:last-of-type):after,
+.econozel .edition-articles .article-title ~ span:not(:last-of-type):after,
+.econozel .article-meta span:not(:last-of-type):after {
+	content: ' \2013'; /* &ndash; */
+	margin: 0 5px;
+}
