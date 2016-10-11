@@ -876,7 +876,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Volume Archive
 	} elseif ( econozel_is_volume_archive() ) {
-		$title = esc_html__( 'Econozel Volumes', 'econozel' );
+		$title = sprintf( __( 'Archives: %s' ), esc_html__( 'Econozel Volumes', 'econozel' ) );
 
 	// Volume page
 	} elseif ( econozel_is_volume() ) {
