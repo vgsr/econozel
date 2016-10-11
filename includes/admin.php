@@ -664,6 +664,7 @@ class Econozel_Admin {
 					'hide_empty' => false,
 				) ); ?></span>
 			</label>
+			<?php wp_nonce_field( 'edition_volume_field_save', 'edition_volume_field' ); ?>
 			</div>
 		</fieldset>
 
