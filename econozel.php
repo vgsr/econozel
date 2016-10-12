@@ -120,6 +120,7 @@ final class Econozel {
 		require( $this->includes_dir . 'capabilities.php' );
 		require( $this->includes_dir . 'editions.php'     );
 		require( $this->includes_dir . 'functions.php'    );
+		require( $this->includes_dir . 'sub-actions.php'  );
 		require( $this->includes_dir . 'taxonomy.php'     );
 		require( $this->includes_dir . 'volumes.php'      );
 
