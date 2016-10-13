@@ -198,6 +198,8 @@ function econozel_get_article( $article = 0 ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_get_article_volume'
+ *
  * @param WP_Post|int $article Optional. Defaults to the current post.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
  * @return WP_Term|int|bool Volume term object or ID when found, else False.
@@ -211,13 +213,15 @@ function econozel_get_article_volume( $article = 0, $object = false ) {
 	// Get the Edition's Volume
 	$volume = econozel_get_edition_volume( $edition, $object );
 
-	return $volume;
+	return apply_filters( 'econozel_get_article_volume', $volume, $article, $object );
 }
 
 /**
  * Return the Article's Edition
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_article_edition'
  *
  * @param WP_Post|int $article Optional. Defaults to the current post.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
@@ -241,7 +245,7 @@ function econozel_get_article_edition( $article = 0, $object = false ) {
 		$edition = $terms[0];
 	}
 
-	return $edition;
+	return apply_filters( 'econozel_get_article_edition', $edition, $article, $object );
 }
 
 /**
@@ -272,6 +276,8 @@ function econozel_the_article_edition_label( $article = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_edition_label'
+	 *
 	 * @param WP_Post|int $article Optional. Defaults to the current post.
 	 * @return string Article Edition label
 	 */
@@ -283,7 +289,7 @@ function econozel_the_article_edition_label( $article = 0 ) {
 		// Get Edition label
 		$label = econozel_get_edition_label( $edition );
 
-		return $label;
+		return apply_filters( 'econozel_get_article_edition_label', $label, $article, $edition );
 	}
 
 /**
@@ -326,6 +332,8 @@ function econozel_the_article_description( $article = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_description'
+	 *
 	 * @param WP_Post|int $article Optional. Defaults to the current Article.
 	 * @return string Article description
 	 */
@@ -348,7 +356,7 @@ function econozel_the_article_description( $article = 0 ) {
 			}
 		}
 
-		return $description;
+		return apply_filters( 'econozel_get_article_description', $description, $article );
 	}
 
 /**
@@ -508,6 +516,8 @@ function econozel_the_user_displayname( $user_id ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_article_page_number'
+ *
  * @param WP_Post|int $article Optional. Defaults to the current Article.
  * @param bool $echo Optional. Whether to output the return value. Defaults to true.
  * @return string Article page number in read-friendly format.
@@ -524,6 +534,9 @@ function econozel_article_page_number( $article = 0, $echo = true ) {
 	if ( $page_number > 0 ) {
 		$retval = sprintf( esc_html__( 'Page %d', 'econozel' ), $page_number );
 	}
+
+	// Enable plugin filtering
+	$retval = apply_filters( 'econozel_article_page_number', $retval, $article, $page_number );
 
 	if ( $echo ) {
 		echo $retval;
@@ -548,6 +561,8 @@ function econozel_the_article_page_number( $article = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_page_number'
+	 *
 	 * @param WP_Post|int $article Optional. Defaults to the current Article.
 	 * @return int Article page number
 	 */
@@ -561,5 +576,5 @@ function econozel_the_article_page_number( $article = 0 ) {
 			$page_number = $article->menu_order;
 		}
 
-		return $page_number;
+		return apply_filters( 'econozel_get_article_page_number', $page_number, $article );
 	}
