@@ -249,6 +249,8 @@ function econozel_get_volume( $volume = 0, $by = 'id' ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_get_volume_editions'
+ *
  * @param WP_Term|int $volume Optional. Defaults to the current Volume.
  * @param bool $object Optional. Whether to return term objects. Defaults to false.
  * @return array Volume Edition term objects or ID's.
@@ -269,13 +271,15 @@ function econozel_get_volume_editions( $volume = 0, $object = false ) {
 		) );
 	}
 
-	return $editions;
+	return apply_filters( 'econozel_get_volume_editions', $editions, $volume, $object );
 }
 
 /**
  * Return the Volume's Articles
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_volume_articles'
  *
  * @param WP_Term|int $volume Optional. Defaults to the current Volume.
  * @param bool $object Optional. Whether to return post objects. Defaults to false.
@@ -308,7 +312,7 @@ function econozel_get_volume_articles( $volume = 0, $object = false ) {
 		}
 	}
 
-	return $articles;
+	return (array) apply_filters( 'econozel_get_volume_articles', $articles, $volume, $object );
 }
 
 /**
@@ -319,6 +323,8 @@ function econozel_get_volume_articles( $volume = 0, $object = false ) {
  * @since 1.0.0
  *
  * @global WPDB $wpdb
+ *
+ * @uses apply_filters() Calls 'econozel_get_adjacent_volume'
  *
  * @param bool $previous Whether to get the previous Volume. Defaults to False.
  * @return WP_Term|bool The adjacent Volume or False when not found.
@@ -367,7 +373,7 @@ function econozel_get_adjacent_volume( $previous = false ) {
 		$volume = econozel_get_volume( $result );
 	}
 
-	return $volume;
+	return apply_filters( 'econozel_get_adjacent_volume', $volume, $previous );
 }
 
 /**
@@ -410,6 +416,8 @@ function econozel_the_volume_title( $volume = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_volume_title'
+	 *
 	 * @param WP_Term|WP_Post|int $volume Optional. Defaults to the current volume.
 	 * @return string Volume title.
 	 */
@@ -428,7 +436,7 @@ function econozel_the_volume_title( $volume = 0 ) {
 			$title = sprintf( esc_html__( 'Volume %s', 'econozel' ), $title );
 		}
 
-		return $title;
+		return apply_filters( 'econozel_get_volume_title', $title, $volume );
 	}
 
 /**
@@ -447,6 +455,8 @@ function econozel_the_volume_link( $volume = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_volume_link'
+	 *
 	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
 	 * @return string Volume permalink
 	 */
@@ -464,7 +474,7 @@ function econozel_the_volume_link( $volume = 0 ) {
 			);
 		}
 
-		return $link;
+		return apply_filters( 'econozel_get_volume_link', $link, $volume );
 	}
 
 /**
@@ -483,6 +493,8 @@ function econozel_the_volume_url( $volume = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_volume_url'
+	 *
 	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
 	 * @return string Volume url
 	 */
@@ -495,7 +507,7 @@ function econozel_the_volume_url( $volume = 0 ) {
 			$url = get_term_link( $volume );
 		}
 
-		return $url;
+		return apply_filters( 'econozel_get_volume_url', $url, $volume );
 	}
 
 /**
