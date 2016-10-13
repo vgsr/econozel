@@ -53,7 +53,7 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 		case 'edit_econozel_articles' :
 
 			// VGSR leden can edit one's own Articles
-			if ( is_user_lid( $user_id ) ) {
+			if ( econozel_is_user_lid( $user_id ) ) {
 				$caps = array( 'read' );
 			} else {
 				$caps = array( 'econozel_editor' );
@@ -107,7 +107,7 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 		case 'econozel_articles_admin' :
 
 			// VGSR leden can enter the admin
-			if ( is_user_lid( $user_id ) ) {
+			if ( econozel_is_user_lid( $user_id ) ) {
 				$caps = array( 'read' );
 			} else {
 				$caps = array( 'econozel_editor' );
@@ -273,7 +273,7 @@ function econozel_map_post_tag_meta_caps( $caps = array(), $cap = '', $user_id =
 		case 'assign_post_tags' :
 
 			// VGSR leden can assign tags
-			if ( is_user_lid( $user_id ) ) {
+			if ( econozel_is_user_lid( $user_id ) ) {
 				$caps = array( 'read' );
 
 			// Allow Econozel Editors

@@ -212,8 +212,8 @@ final class Econozel {
 	 */
 	public function register_post_types() {
 
-		// Define local vars
-		$is_user_vgsr = is_user_vgsr();
+		// Check current user access
+		$access = econozel_check_access();
 
 		// Register Econozel Article post type
 		register_post_type(
@@ -225,14 +225,14 @@ final class Econozel {
 				'capabilities'        => econozel_get_article_post_type_caps(),
 				'capability_type'     => array( 'econozel', 'econozels' ),
 				'hierarchical'        => false,
-				'public'              => $is_user_vgsr,
+				'public'              => $access,
 				'has_archive'         => true,
 				'rewrite'             => econozel_get_article_post_type_rewrite(),
 				'query_var'           => true,
-				'exclude_from_search' => ! $is_user_vgsr,
+				'exclude_from_search' => ! $access,
 				'show_ui'             => current_user_can( 'econozel_articles_admin' ),
-				'show_in_nav_menus'   => $is_user_vgsr,
-				'can_export'          => $is_user_vgsr,
+				'show_in_nav_menus'   => $access,
+				'can_export'          => $access,
 				'taxonomies'          => array( 'post_tag' ),
 				'menu_icon'           => 'dashicons-format-aside'
 			)
@@ -246,8 +246,8 @@ final class Econozel {
 	 */
 	public function register_taxonomies() {
 
-		// Define local vars
-		$is_user_vgsr = is_user_vgsr();
+		// Check current user access
+		$access = econozel_check_access();
 
 		// Register Edition taxonomy for Article post type
 		register_taxonomy(
@@ -258,13 +258,13 @@ final class Econozel {
 				'capabilities'          => econozel_get_edition_tax_caps(),
 				'update_count_callback' => '_update_post_term_count',
 				'hierarchical'          => false,
-				'public'                => $is_user_vgsr,
+				'public'                => $access,
 				'rewrite'               => false, // We have our own rewrite rules
 				'query_var'             => false, // We have our own query vars
 				'show_tagcloud'         => false,
 				'show_in_quick_edit'    => true,
 				'show_admin_column'     => true,
-				'show_in_nav_menus'     => $is_user_vgsr,
+				'show_in_nav_menus'     => $access,
 				'show_ui'               => current_user_can( 'econozel_edition_admin' ),
 				'meta_box_cb'           => false // We have our own metabox
 			)
@@ -279,13 +279,13 @@ final class Econozel {
 				'capabilities'          => econozel_get_volume_tax_caps(),
 				'update_count_callback' => '_update_generic_term_count',
 				'hierarchical'          => false,
-				'public'                => $is_user_vgsr,
+				'public'                => $access,
 				'rewrite'               => false, // We have our own rewrite rules
 				'query_var'             => false, // We have our own query vars
 				'show_tagcloud'         => false,
 				'show_in_quick_edit'    => false,
 				'show_admin_column'     => false,
-				'show_in_nav_menus'     => $is_user_vgsr,
+				'show_in_nav_menus'     => $access,
 				'show_ui'               => current_user_can( 'econozel_volume_admin' ),
 				'meta_box_cb'           => false // We have our own metabox
 			)

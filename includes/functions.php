@@ -10,6 +10,44 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** User **********************************************************************/
+
+/**
+ * Return whether the current user has basic access
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID. Optional. Defaults to the current user.
+ * @return bool Current user has access
+ */
+function econozel_check_access( $user_id = 0 ) {
+	return econozel_is_user_vgsr( $user_id ) || user_can( $user_id, 'econozel_editor' );
+}
+
+/**
+ * Context-aware wrapper for `is_user_vgsr()`
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID. Optional. Defaults to the current user.
+ * @return bool Current user is VGSR lid
+ */
+function econozel_is_user_vgsr( $user_id = 0 ) {
+	return ( function_exists( 'vgsr' ) && is_user_vgsr( $user_id ) );
+}
+
+/**
+ * Context-aware wrapper for `is_user_lid()`
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID. Optional. Defaults to the current user.
+ * @return bool Current user is VGSR lid
+ */
+function econozel_is_user_lid( $user_id = 0 ) {
+	return ( function_exists( 'vgsr' ) && is_user_lid( $user_id ) );
+}
+
 /** Rewrite *******************************************************************/
 
 /**

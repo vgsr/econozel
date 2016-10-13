@@ -52,8 +52,8 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 	 */
 	public static function register_widget() {
 
-		// Bail when current user is not VGSR
-		if ( ! function_exists( 'vgsr' ) || ! is_user_vgsr() )
+		// Bail when current user has no access
+		if ( ! econozel_check_access() )
 			return;
 
 		register_widget( 'Econozel_Comments_Widget' );
