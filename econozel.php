@@ -150,20 +150,26 @@ final class Econozel {
 		add_action( 'activate_'   . $this->basename, 'econozel_activation'   );
 		add_action( 'deactivate_' . $this->basename, 'econozel_deactivation' );
 
-		// Bail when VGSR is not acive or plugin is being deactivated
-		if ( ! function_exists( 'vgsr' ) || econozel_is_deactivation() )
+		// Activation/Deactivation
+		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+			add_action( 'econozel_activation',   'econozel_delete_rewrite_rules' );
+			add_action( 'econozel_deactivation', 'econozel_delete_rewrite_rules' );
+		}
+
+		// Bail when plugin is being deactivated
+		if ( econozel_is_deactivation() )
 			return;
 
 		// Load textdomain
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 20 );
 
-		// Register entities
-		add_action( 'vgsr_init', array( $this, 'register_post_types' ) );
-		add_action( 'vgsr_init', array( $this, 'register_taxonomies' ) );
+		// Register assets
+		add_action( 'econozel_init', array( $this, 'register_post_types' ) );
+		add_action( 'econozel_init', array( $this, 'register_taxonomies' ) );
 
 		// Permalinks
-		add_action( 'vgsr_init', array( $this, 'add_rewrite_tags'  ), 20 );
-		add_action( 'vgsr_init', array( $this, 'add_rewrite_rules' ), 30 );
+		add_action( 'econozel_init', array( $this, 'add_rewrite_tags'  ), 20 );
+		add_action( 'econozel_init', array( $this, 'add_rewrite_rules' ), 30 );
 	}
 
 	/** Plugin **********************************************************/
