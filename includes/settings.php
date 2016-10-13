@@ -262,7 +262,7 @@ function econozel_admin_setting_callback_root_slug() { ?>
  */
 function econozel_admin_setting_callback_article_slug() { ?>
 
-	<input name="_econozel_article_slug" id="_econozel_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_article_slug', _x( 'articles', 'Article rewrite slug', 'econozel' ), true ); ?>">
+	<input name="_econozel_article_slug" id="_econozel_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_article_slug', 'articles', true ); ?>">
 
 	<?php
 }
@@ -274,7 +274,7 @@ function econozel_admin_setting_callback_article_slug() { ?>
  */
 function econozel_admin_setting_callback_volume_slug() { ?>
 
-	<input name="_econozel_volume_slug" id="_econozel_volume_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_volume_slug', _x( 'volumes', 'Volume rewrite slug', 'econozel' ), true ); ?>">
+	<input name="_econozel_volume_slug" id="_econozel_volume_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_volume_slug', 'volumes', true ); ?>">
 
 	<?php
 }
