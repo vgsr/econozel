@@ -1,0 +1,500 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-13 16:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: econozel.php:230
+msgid "Econozel articles"
+msgstr ""
+
+#: includes/admin.php:114 includes/admin.php:143
+msgid "Econozel Settings"
+msgstr ""
+
+#: includes/admin.php:114
+msgid "Settings"
+msgstr ""
+
+#: includes/admin.php:208 includes/admin.php:403 includes/admin.php:405
+msgid "Page Number"
+msgstr ""
+
+#: includes/admin.php:319 includes/admin.php:463
+msgid "Edition"
+msgstr ""
+
+#: includes/admin.php:369
+msgid "Article Details"
+msgstr ""
+
+#: includes/admin.php:395
+msgid "Volume & Edition"
+msgstr ""
+
+#: includes/admin.php:415
+msgid "Page Number: %d"
+msgstr ""
+
+#: includes/admin.php:421
+msgid "&mdash; Not published in an Edition &mdash;"
+msgstr ""
+
+#: includes/admin.php:596 includes/admin.php:621 includes/admin.php:661 
+#: includes/settings.php:119
+msgid "Volume"
+msgstr ""
+
+#: includes/admin.php:603 includes/admin.php:631
+msgid "The Volume is the periodic collection an Edition belongs to."
+msgstr ""
+
+#. Name of the plugin
+#: includes/admin.php:725 includes/articles.php:37 includes/template.php:832 
+#: includes/template.php:840 includes/template.php:875 
+#: includes/theme-compat.php:76
+msgid "Econozel"
+msgstr ""
+
+#: includes/admin.php:730
+msgid "Econozel Role"
+msgstr ""
+
+#: includes/admin.php:733
+msgid "&mdash; No Econozel role &mdash;"
+msgstr ""
+
+#: includes/articles.php:36
+msgid "Econozel Articles"
+msgstr ""
+
+#: includes/articles.php:38
+msgid "Econozel Article"
+msgstr ""
+
+#: includes/articles.php:39
+msgid "All Articles"
+msgstr ""
+
+#: includes/articles.php:40 includes/articles.php:44
+msgid "New Article"
+msgstr ""
+
+#: includes/articles.php:41
+msgid "Create New Article"
+msgstr ""
+
+#: includes/articles.php:42
+msgid "Edit"
+msgstr ""
+
+#: includes/articles.php:43
+msgid "Edit Article"
+msgstr ""
+
+#: includes/articles.php:45 includes/articles.php:46
+msgid "View Article"
+msgstr ""
+
+#: includes/articles.php:47
+msgid "View Articles"
+msgstr ""
+
+#: includes/articles.php:48
+msgid "Search Articles"
+msgstr ""
+
+#: includes/articles.php:49
+msgid "No articles found"
+msgstr ""
+
+#: includes/articles.php:50
+msgid "No articles found in Trash"
+msgstr ""
+
+#: includes/articles.php:51
+msgid "Insert into article"
+msgstr ""
+
+#: includes/articles.php:52
+msgid "Uploaded to this article"
+msgstr ""
+
+#: includes/articles.php:53
+msgid "Filter articles list"
+msgstr ""
+
+#: includes/articles.php:54
+msgid "Articles list navigation"
+msgstr ""
+
+#: includes/articles.php:55
+msgid "Articles list"
+msgstr ""
+
+#: includes/articles.php:525
+msgid "Page %d"
+msgstr ""
+
+#: includes/capabilities.php:414
+msgid "Econozel Editor"
+msgstr ""
+
+#: includes/editions.php:36
+msgid "Econozel Editions"
+msgstr ""
+
+#: includes/editions.php:37 includes/settings.php:91
+msgid "Editions"
+msgstr ""
+
+#: includes/editions.php:38
+msgid "Econozel Edition"
+msgstr ""
+
+#: includes/editions.php:39
+msgid "Search Editions"
+msgstr ""
+
+#: includes/editions.php:41
+msgid "All Editions"
+msgstr ""
+
+#: includes/editions.php:42
+msgid "No Edition"
+msgstr ""
+
+#: includes/editions.php:43
+msgid "Edit Edition"
+msgstr ""
+
+#: includes/editions.php:44
+msgid "Update Edition"
+msgstr ""
+
+#: includes/editions.php:45
+msgid "Add New Edition"
+msgstr ""
+
+#: includes/editions.php:46
+msgid "New Edition Name"
+msgstr ""
+
+#: includes/editions.php:47
+msgid "View Edition"
+msgstr ""
+
+#: includes/editions.php:66
+msgid "Issue"
+msgstr ""
+
+#: includes/editions.php:67
+msgid "The Edition's issue type within the Volume."
+msgstr ""
+
+#: includes/editions.php:77
+msgid "File"
+msgstr ""
+
+#: includes/editions.php:78
+msgid "The published Edition as a PDF file."
+msgstr ""
+
+#: includes/editions.php:87
+msgid "Cover Image"
+msgstr ""
+
+#: includes/editions.php:88
+msgid "The cover image of the published Edition."
+msgstr ""
+
+#: includes/editions.php:681
+msgid "Issue %d"
+msgstr ""
+
+#: includes/editions.php:728 includes/volumes.php:462
+msgid "View articles in %s"
+msgstr ""
+
+#: includes/editions.php:810
+msgid "%d article"
+msgid_plural "%d articles"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/functions.php:74 includes/settings.php:265
+msgctxt "Article rewrite slug"
+msgid "articles"
+msgstr ""
+
+#: includes/functions.php:86 includes/settings.php:277
+msgctxt "Volume rewrite slug"
+msgid "volumes"
+msgstr ""
+
+#: includes/settings.php:26
+msgid "General Settings"
+msgstr ""
+
+#: includes/settings.php:33
+msgid "Per Page Settings"
+msgstr ""
+
+#: includes/settings.php:40
+msgid "Econozel Slugs"
+msgstr ""
+
+#: includes/settings.php:63
+msgid "Edition Issues"
+msgstr ""
+
+#: includes/settings.php:71
+msgid "Volume Title"
+msgstr ""
+
+#: includes/settings.php:83 includes/volumes.php:37
+msgid "Volumes"
+msgstr ""
+
+#: includes/settings.php:103
+msgid "Econozel Root"
+msgstr ""
+
+#: includes/settings.php:111
+msgid "Article"
+msgstr ""
+
+#: includes/settings.php:157
+msgid "Define the available edition issues and other generic settings"
+msgstr ""
+
+#: includes/settings.php:170
+msgid "Comma separated list of available issues"
+msgstr ""
+
+#: includes/settings.php:183
+msgid ""
+"Prefix all volume titles with the term 'Volume' (Useful when you have only "
+"numeric volumes)"
+msgstr ""
+
+#: includes/settings.php:197
+msgid "How many volumes and editions to show per page"
+msgstr ""
+
+#: includes/settings.php:210
+msgid "per page"
+msgstr ""
+
+#: includes/settings.php:223
+msgid "per page (Note: editions by volume are still displayed all)"
+msgstr ""
+
+#: includes/settings.php:241
+msgid "Customize your econozel slugs"
+msgstr ""
+
+#: includes/taxonomy.php:649
+msgid "Current Edition"
+msgstr ""
+
+#: includes/taxonomy.php:729
+msgid "&mdash; No Edition &mdash;"
+msgstr ""
+
+#: includes/template.php:844
+msgid "Volume Archives"
+msgstr ""
+
+#: includes/template.php:879 includes/theme-compat.php:90 
+#: includes/volumes.php:36
+msgid "Econozel Volumes"
+msgstr ""
+
+#: includes/template.php:883
+msgctxt "Single volume title"
+msgid "Econozel %s"
+msgstr ""
+
+#: includes/template.php:893
+msgctxt "Numeric issue edition title"
+msgid "Econozel %s"
+msgstr ""
+
+#: includes/template.php:912
+msgid ""
+"This page lists recent Econozel activity on this site. You can browse the <a "
+"title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
+"href=\"%4$s\">article archives</a> to find all articles that have been "
+"archived or published on this site."
+msgstr ""
+
+#: includes/template.php:912 includes/template.php:920
+msgid "Permalink to the volume archives"
+msgstr ""
+
+#: includes/template.php:912 includes/template.php:916
+msgid "Permalink to the article archives"
+msgstr ""
+
+#: includes/template.php:916
+msgid ""
+"This page lists all Econozel volumes with their respective editions. You can "
+"browse here to find articles that have been archived or published on this "
+"site. To view all published articles, go to the <a title=\"%1$s\" "
+"href=\"%2$s\">article archives</a>."
+msgstr ""
+
+#: includes/template.php:920
+msgid ""
+"This page lists all Econozel articles archived on this site. You can browse "
+"them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
+"and editions</a> in which they have been published."
+msgstr ""
+
+#: includes/template.php:1131
+msgid "Older volumes"
+msgstr ""
+
+#: includes/template.php:1132
+msgid "Newer volumes"
+msgstr ""
+
+#: includes/template.php:1133
+msgid "Volumes navigation"
+msgstr ""
+
+#: includes/template.php:1139
+msgid "Older articles"
+msgstr ""
+
+#: includes/template.php:1140
+msgid "Newer articles"
+msgstr ""
+
+#: includes/template.php:1141
+msgid "Articles navigation"
+msgstr ""
+
+#: includes/volumes.php:38
+msgid "Econozel Volume"
+msgstr ""
+
+#: includes/volumes.php:39
+msgid "Search Volumes"
+msgstr ""
+
+#: includes/volumes.php:41
+msgid "All Volumes"
+msgstr ""
+
+#: includes/volumes.php:42
+msgid "No Volume"
+msgstr ""
+
+#: includes/volumes.php:43
+msgid "Edit Volume"
+msgstr ""
+
+#: includes/volumes.php:44
+msgid "Update Volume"
+msgstr ""
+
+#: includes/volumes.php:45
+msgid "Add New Volume"
+msgstr ""
+
+#: includes/volumes.php:46
+msgid "New Volume Name"
+msgstr ""
+
+#: includes/volumes.php:47
+msgid "View Volume"
+msgstr ""
+
+#: includes/volumes.php:428
+msgid "Volume %s"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:29
+msgid "Econozel Recent Articles"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:30
+msgid "A list of the most recent articles."
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:66 
+#: templates/default/econozel/content-econozel.php:23
+msgid "Recent Articles"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:68
+msgid "There were no articles found."
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:87
+msgid "Articles in %s"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:167
+msgid "Filter articles by edition:"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:179
+msgid "For an edition, the title will be overridden."
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:182
+msgid "Number of articles to show:"
+msgstr ""
+
+#: includes/widgets/class-econozel-articles-widget.php:184
+msgid "For an edition, all articles are shown."
+msgstr ""
+
+#: includes/widgets/class-econozel-comments-widget.php:35
+msgid "Econozel Recent Comments"
+msgstr ""
+
+#: includes/widgets/class-econozel-comments-widget.php:37
+msgid "A list of the most recent article comments."
+msgstr ""
+
+#: templates/default/econozel/content-econozel.php:28
+msgid "Active Articles"
+msgstr ""
+
+#: templates/default/econozel/content-econozel.php:29
+msgid "It seems there have been no articles commented on lately."
+msgstr ""
+
+#: templates/default/econozel/content-econozel.php:35
+msgid "Recent Comments"
+msgstr ""
+
+#. Description of the plugin
+msgid "Present d' Econozel on your site with Articles, Editions, and Volumes."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/vgsr/econozel/"
+msgstr ""
+
+#. Author of the plugin
+msgid "Laurens Offereins"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://github.com/vgsr/"
+msgstr ""

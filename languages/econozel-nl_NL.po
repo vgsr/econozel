@@ -1,0 +1,513 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Econozel\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-13 16:06+0000\n"
+"PO-Revision-Date: 2016-10-13 19:31+0000\n"
+"Last-Translator: Laurens Offereins <lmoffereins@gmail.com>\n"
+"Language-Team: Dutch\n"
+"Language: nl-NL\n"
+"Plural-Forms: nplurals=2; plural=n != 1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: econozel.php:230
+msgid "Econozel articles"
+msgstr "Econozel artikelen"
+
+#: includes/admin.php:114 includes/admin.php:143
+msgid "Econozel Settings"
+msgstr "Econozel Instellingen"
+
+#: includes/admin.php:114
+msgid "Settings"
+msgstr "Instellingen"
+
+#: includes/admin.php:208 includes/admin.php:403 includes/admin.php:405
+msgid "Page Number"
+msgstr "Pagina"
+
+#: includes/admin.php:319 includes/admin.php:463
+msgid "Edition"
+msgstr "Editie"
+
+#: includes/admin.php:369
+msgid "Article Details"
+msgstr "Artikel Details"
+
+#: includes/admin.php:395
+msgid "Volume & Edition"
+msgstr "Jaargang & Editie"
+
+#: includes/admin.php:415
+msgid "Page Number: %d"
+msgstr "Pagina: %d"
+
+#: includes/admin.php:421
+msgid "&mdash; Not published in an Edition &mdash;"
+msgstr "&mdash; Niet gepubliceerd in een editie &mdash;"
+
+#: includes/admin.php:596 includes/admin.php:621 includes/admin.php:661 
+#: includes/settings.php:119
+msgid "Volume"
+msgstr "Jaargang"
+
+#: includes/admin.php:603 includes/admin.php:631
+msgid "The Volume is the periodic collection an Edition belongs to."
+msgstr "De jaagang is de periodieke collectie waartoe een editie behoort."
+
+#. Name of the plugin
+#: includes/admin.php:725 includes/articles.php:37 includes/template.php:832 
+#: includes/template.php:840 includes/template.php:875 
+#: includes/theme-compat.php:76
+msgid "Econozel"
+msgstr "Econozel"
+
+#: includes/admin.php:730
+msgid "Econozel Role"
+msgstr "Econozel rol"
+
+#: includes/admin.php:733
+msgid "&mdash; No Econozel role &mdash;"
+msgstr "&mdash; Geen Econozel rol &mdash;"
+
+#: includes/articles.php:36
+msgid "Econozel Articles"
+msgstr "Econozel Artikelen"
+
+#: includes/articles.php:38
+msgid "Econozel Article"
+msgstr "Econozel Artikel"
+
+#: includes/articles.php:39
+msgid "All Articles"
+msgstr "Alle artikelen"
+
+#: includes/articles.php:40 includes/articles.php:44
+msgid "New Article"
+msgstr "Nieuw artikel"
+
+#: includes/articles.php:41
+msgid "Create New Article"
+msgstr "Nieuw artikel aanmaken"
+
+#: includes/articles.php:42
+msgid "Edit"
+msgstr "Bewerken"
+
+#: includes/articles.php:43
+msgid "Edit Article"
+msgstr "Bewerk artikel"
+
+#: includes/articles.php:45 includes/articles.php:46
+msgid "View Article"
+msgstr "Bekijk artikel"
+
+#: includes/articles.php:47
+msgid "View Articles"
+msgstr "Bekijk artikelen"
+
+#: includes/articles.php:48
+msgid "Search Articles"
+msgstr "Zoek artikel"
+
+#: includes/articles.php:49
+msgid "No articles found"
+msgstr "Geen artikelen gevonden"
+
+#: includes/articles.php:50
+msgid "No articles found in Trash"
+msgstr "Geen artikelen gevonden in de prullebak"
+
+#: includes/articles.php:51
+msgid "Insert into article"
+msgstr "Invoegen in artikel"
+
+#: includes/articles.php:52
+msgid "Uploaded to this article"
+msgstr "Uploaden naar artikel"
+
+#: includes/articles.php:53
+msgid "Filter articles list"
+msgstr "Artikelen filteren"
+
+#: includes/articles.php:54
+msgid "Articles list navigation"
+msgstr "Navigatie door de artikelenlijst"
+
+#: includes/articles.php:55
+msgid "Articles list"
+msgstr "Artkelenlijst"
+
+#: includes/articles.php:525
+msgid "Page %d"
+msgstr "Pagina %d"
+
+#: includes/capabilities.php:414
+msgid "Econozel Editor"
+msgstr "Econozel Bewerker"
+
+#: includes/editions.php:36
+msgid "Econozel Editions"
+msgstr "Econozel Edities"
+
+#: includes/editions.php:37 includes/settings.php:91
+msgid "Editions"
+msgstr "Edities"
+
+#: includes/editions.php:38
+msgid "Econozel Edition"
+msgstr "Econozel Editie"
+
+#: includes/editions.php:39
+msgid "Search Editions"
+msgstr "Zoek edities"
+
+#: includes/editions.php:41
+msgid "All Editions"
+msgstr "Alle edities"
+
+#: includes/editions.php:42
+msgid "No Edition"
+msgstr "Geen editie"
+
+#: includes/editions.php:43
+msgid "Edit Edition"
+msgstr "Bewerk editie"
+
+#: includes/editions.php:44
+msgid "Update Edition"
+msgstr "Editie bijwerken"
+
+#: includes/editions.php:45
+msgid "Add New Edition"
+msgstr "Nieuwe editie toevoegen"
+
+#: includes/editions.php:46
+msgid "New Edition Name"
+msgstr "Nieuwe editienaam"
+
+#: includes/editions.php:47
+msgid "View Edition"
+msgstr "Editie bekijken"
+
+#: includes/editions.php:66
+msgid "Issue"
+msgstr "Uitgave"
+
+#: includes/editions.php:67
+msgid "The Edition's issue type within the Volume."
+msgstr "Het uitgave type in de jaargang van de editie"
+
+#: includes/editions.php:77
+msgid "File"
+msgstr "Bestand"
+
+#: includes/editions.php:78
+msgid "The published Edition as a PDF file."
+msgstr "De gepubliceerde editie als PDF bestand"
+
+#: includes/editions.php:87
+msgid "Cover Image"
+msgstr "Omslagfoto"
+
+#: includes/editions.php:88
+msgid "The cover image of the published Edition."
+msgstr "De omslagfoto van de gepubliceerde editie"
+
+#: includes/editions.php:681
+msgid "Issue %d"
+msgstr "Uitgave %d"
+
+#: includes/editions.php:728 includes/volumes.php:462
+msgid "View articles in %s"
+msgstr "Bekijk artikelen in %s"
+
+#: includes/editions.php:810
+msgid "%d article"
+msgid_plural "%d articles"
+msgstr[0] "%d artikel"
+msgstr[1] "%d artikelen"
+
+#: includes/functions.php:74 includes/settings.php:265
+msgctxt "Article rewrite slug"
+msgid "articles"
+msgstr "artikel"
+
+#: includes/functions.php:86 includes/settings.php:277
+msgctxt "Volume rewrite slug"
+msgid "volumes"
+msgstr "jaargang"
+
+#: includes/settings.php:26
+msgid "General Settings"
+msgstr "Algemene instellingen"
+
+#: includes/settings.php:33
+msgid "Per Page Settings"
+msgstr "Per pagina instellingen"
+
+#: includes/settings.php:40
+msgid "Econozel Slugs"
+msgstr "Econozel slugs"
+
+#: includes/settings.php:63
+msgid "Edition Issues"
+msgstr "Editie uitgaven"
+
+#: includes/settings.php:71
+msgid "Volume Title"
+msgstr "Jaargangtitel"
+
+#: includes/settings.php:83 includes/volumes.php:37
+msgid "Volumes"
+msgstr "Jaargangen"
+
+#: includes/settings.php:103
+msgid "Econozel Root"
+msgstr "Econozel basis"
+
+#: includes/settings.php:111
+msgid "Article"
+msgstr "Artikel"
+
+#: includes/settings.php:157
+msgid "Define the available edition issues and other generic settings"
+msgstr "Bepaal de beschikbare editie uitgaven en andere instellingen"
+
+#: includes/settings.php:170
+msgid "Comma separated list of available issues"
+msgstr "Komma-gescheiden lijst van beschikbare uitgaven"
+
+#: includes/settings.php:183
+msgid ""
+"Prefix all volume titles with the term 'Volume' (Useful when you have only "
+"numeric volumes)"
+msgstr ""
+"Alle jaargangtitels voorvoegen met de term 'Jaargang' (Handig als je alleen "
+"numerieke jaargangen hebt)"
+
+#: includes/settings.php:197
+msgid "How many volumes and editions to show per page"
+msgstr "Hoeveel jaargangen en edities per pagina te tonen"
+
+#: includes/settings.php:210
+msgid "per page"
+msgstr "per pagina"
+
+#: includes/settings.php:223
+msgid "per page (Note: editions by volume are still displayed all)"
+msgstr "per pagina (NB: edities per jaargang worden alsnog allemaal getoond)"
+
+#: includes/settings.php:241
+msgid "Customize your econozel slugs"
+msgstr "Pas je econozel slugs aan"
+
+#: includes/taxonomy.php:649
+msgid "Current Edition"
+msgstr "Huidige editie"
+
+#: includes/taxonomy.php:729
+msgid "&mdash; No Edition &mdash;"
+msgstr "&mdash; Geen editie &mdash;"
+
+#: includes/template.php:844
+msgid "Volume Archives"
+msgstr "Jaargangarchief"
+
+#: includes/template.php:879 includes/theme-compat.php:90 
+#: includes/volumes.php:36
+msgid "Econozel Volumes"
+msgstr "Econozel Jaargangen"
+
+#: includes/template.php:883
+msgctxt "Single volume title"
+msgid "Econozel %s"
+msgstr "Econozel %s"
+
+#: includes/template.php:893
+msgctxt "Numeric issue edition title"
+msgid "Econozel %s"
+msgstr "Econozel %s"
+
+#: includes/template.php:912
+msgid ""
+"This page lists recent Econozel activity on this site. You can browse the <a "
+"title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
+"href=\"%4$s\">article archives</a> to find all articles that have been "
+"archived or published on this site."
+msgstr ""
+"Deze pagina toont de recente Econozelactiviteit op deze site. Je kan het <a "
+"title=\"%1$s\" href=\"%2$s\">jaargangarchief</a> of het <a title=\"%3$s\" "
+"href=\"%4$s\">artikelarchief</a> doorbladeren om alle artikelen te vinden "
+"die zijn gearchiveerd of gepubliceerd op deze site."
+
+#: includes/template.php:912 includes/template.php:920
+msgid "Permalink to the volume archives"
+msgstr "Link naar het jaargangarchief"
+
+#: includes/template.php:912 includes/template.php:916
+msgid "Permalink to the article archives"
+msgstr "Link naar het artikelarchief"
+
+#: includes/template.php:916
+msgid ""
+"This page lists all Econozel volumes with their respective editions. You can "
+"browse here to find articles that have been archived or published on this "
+"site. To view all published articles, go to the <a title=\"%1$s\" "
+"href=\"%2$s\">article archives</a>."
+msgstr ""
+"Deze pagina toont alle jaargangen van d' Econozel met hun edities. Hier vind "
+"je de op deze site gearchiveerde en gepubliceerde artikelen. Om alle losse "
+"artikelen te bekijken, ga je naar het <a title=\"%1$s\" href=\"%2$s\">"
+"artikelarchief</a>."
+
+#: includes/template.php:920
+msgid ""
+"This page lists all Econozel articles archived on this site. You can browse "
+"them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
+"and editions</a> in which they have been published."
+msgstr ""
+"Deze pagina toont alle Econozel artikelen die op deze site zijn gearchiveerd."
+" Je vind de artikelen hier of via de <a title=\"%1$s\" href=\"%2$s\">"
+"jaargangen en edities</a> waarin ze zijn gepubliceerd."
+
+#: includes/template.php:1131
+msgid "Older volumes"
+msgstr "Oudere jaargangen"
+
+#: includes/template.php:1132
+msgid "Newer volumes"
+msgstr "Nieuwe jaargangen"
+
+#: includes/template.php:1133
+msgid "Volumes navigation"
+msgstr "Navigatie voor jaargangen"
+
+#: includes/template.php:1139
+msgid "Older articles"
+msgstr "Oudere artikelen"
+
+#: includes/template.php:1140
+msgid "Newer articles"
+msgstr "Nieuwere artikelen"
+
+#: includes/template.php:1141
+msgid "Articles navigation"
+msgstr "Navigatie door artikelen"
+
+#: includes/volumes.php:38
+msgid "Econozel Volume"
+msgstr "Econozel Jaargang"
+
+#: includes/volumes.php:39
+msgid "Search Volumes"
+msgstr "Zoek jaargangen"
+
+#: includes/volumes.php:41
+msgid "All Volumes"
+msgstr "Alle jaargangen"
+
+#: includes/volumes.php:42
+msgid "No Volume"
+msgstr "Geen jaargang"
+
+#: includes/volumes.php:43
+msgid "Edit Volume"
+msgstr "Jaargang bewerken"
+
+#: includes/volumes.php:44
+msgid "Update Volume"
+msgstr "Jaargang bijwerken"
+
+#: includes/volumes.php:45
+msgid "Add New Volume"
+msgstr "Nieuwe jaargang aanmaken"
+
+#: includes/volumes.php:46
+msgid "New Volume Name"
+msgstr "Nieuwe jaargangnaam"
+
+#: includes/volumes.php:47
+msgid "View Volume"
+msgstr "Jaargang bekijken"
+
+#: includes/volumes.php:428
+msgid "Volume %s"
+msgstr "Jaargang %s"
+
+#: includes/widgets/class-econozel-articles-widget.php:29
+msgid "Econozel Recent Articles"
+msgstr "Econozel Recente Artikelen"
+
+#: includes/widgets/class-econozel-articles-widget.php:30
+msgid "A list of the most recent articles."
+msgstr "Een lijst van de meest recente artikelen."
+
+#: includes/widgets/class-econozel-articles-widget.php:66 
+#: templates/default/econozel/content-econozel.php:23
+msgid "Recent Articles"
+msgstr "Recente Artikelen"
+
+#: includes/widgets/class-econozel-articles-widget.php:68
+msgid "There were no articles found."
+msgstr "Er zijn geen artikelen gevonden."
+
+#: includes/widgets/class-econozel-articles-widget.php:87
+msgid "Articles in %s"
+msgstr "Artikelen in %s"
+
+#: includes/widgets/class-econozel-articles-widget.php:167
+msgid "Filter articles by edition:"
+msgstr "Filter artikelen per editie:"
+
+#: includes/widgets/class-econozel-articles-widget.php:179
+msgid "For an edition, the title will be overridden."
+msgstr "Voor een editie wordt de titel overschreven."
+
+#: includes/widgets/class-econozel-articles-widget.php:182
+msgid "Number of articles to show:"
+msgstr "Aantal te tonen artikelen:"
+
+#: includes/widgets/class-econozel-articles-widget.php:184
+msgid "For an edition, all articles are shown."
+msgstr "Voor een editie worden alle artikelen getoond."
+
+#: includes/widgets/class-econozel-comments-widget.php:35
+msgid "Econozel Recent Comments"
+msgstr "Econozel Recente Reacties"
+
+#: includes/widgets/class-econozel-comments-widget.php:37
+msgid "A list of the most recent article comments."
+msgstr "Een lijst van de meest recente artikelreacties."
+
+#: templates/default/econozel/content-econozel.php:28
+msgid "Active Articles"
+msgstr "Actieve Artikelen"
+
+#: templates/default/econozel/content-econozel.php:29
+msgid "It seems there have been no articles commented on lately."
+msgstr "Het lijkt er op dat er al even geen reacties zijn geweest."
+
+#: templates/default/econozel/content-econozel.php:35
+msgid "Recent Comments"
+msgstr "Recente Reacties"
+
+#. Description of the plugin
+msgid "Present d' Econozel on your site with Articles, Editions, and Volumes."
+msgstr ""
+"Presenteer d' Econozel op je site met artikelen, edities en jaargangen."
+
+#. URI of the plugin
+msgid "https://github.com/vgsr/econozel/"
+msgstr "https://github.com/vgsr/econozel/"
+
+#. Author of the plugin
+msgid "Laurens Offereins"
+msgstr "Laurens Offereins"
+
+#. Author URI of the plugin
+msgid "https://github.com/vgsr/"
+msgstr "https://github.com/vgsr/"
