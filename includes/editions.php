@@ -302,39 +302,41 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
  *
  * @since 1.0.0
  *
- * @param int $issue Edition issue.
+ * @uses apply_filters() Calls 'econozel_get_edition_by_issue'
+ *
+ * @param string|int $issue Edition issue.
  * @param WP_Term|int $volume Optional. Defaults to the current Volume.
  * @param bool $object Optional. Whether to return a term object. Defaults to false.
  * @return WP_Term|bool Edition term object when found, else False.
  */
 function econozel_get_edition_by_issue( $issue, $volume = 0, $object = false ) {
 
-	// Bail when Volume does not exist
-	if ( ! $volume = econozel_get_volume( $volume ) )
-		return false;
-
 	// Define return value
 	$edition = false;
 
-	// Use `get_terms()` to enable query filtering
-	$terms = get_terms( econozel_get_edition_tax_id(), array(
-		'econozel_volume' => $volume->term_id, // Implements WP_Tax_Query
-		'fields'          => $object ? 'all' : 'ids',
-		'meta_query'      => array(
-			array(
-				'key'     => 'issue',
-				'value'   => $issue,
-				'compare' => '='
-			)
-		)
-	) );
+	// Require Edition Volume
+	if ( $volume = econozel_get_volume( $volume ) ) {
 
-	// Assign term when found
-	if ( ! empty( $terms ) ) {
-		$edition = $terms[0];
+		// Use `get_terms()` to enable query filtering
+		$terms = get_terms( econozel_get_edition_tax_id(), array(
+			'econozel_volume' => $volume->term_id, // Implements WP_Tax_Query
+			'fields'          => $object ? 'all' : 'ids',
+			'meta_query'      => array(
+				array(
+					'key'     => 'issue',
+					'value'   => $issue,
+					'compare' => '='
+				)
+			)
+		) );
+
+		// Assign term when found
+		if ( ! empty( $terms ) ) {
+			$edition = $terms[0];
+		}
 	}
 
-	return $edition;
+	return apply_filters( 'econozel_get_edition_by_issue', $edition, $issue, $volume, $object );
 }
 
 /**
