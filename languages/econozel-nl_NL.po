@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Econozel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-13 16:06+0000\n"
-"PO-Revision-Date: 2016-10-13 19:31+0000\n"
+"POT-Creation-Date: 2016-10-14 05:29+0000\n"
+"PO-Revision-Date: 2016-10-14 05:29+0000\n"
 "Last-Translator: Laurens Offereins <lmoffereins@gmail.com>\n"
-"Language-Team: Dutch\n"
+"Language-Team: Dutch (Netherlands)\n"
 "Language: nl-NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "MIME-Version: 1.0\n"
@@ -59,8 +59,8 @@ msgid "The Volume is the periodic collection an Edition belongs to."
 msgstr "De jaagang is de periodieke collectie waartoe een editie behoort."
 
 #. Name of the plugin
-#: includes/admin.php:725 includes/articles.php:37 includes/template.php:832 
-#: includes/template.php:840 includes/template.php:875 
+#: includes/admin.php:725 includes/articles.php:37 includes/template.php:842 
+#: includes/template.php:850 includes/template.php:885 
 #: includes/theme-compat.php:76
 msgid "Econozel"
 msgstr "Econozel"
@@ -141,13 +141,13 @@ msgstr "Navigatie door de artikelenlijst"
 msgid "Articles list"
 msgstr "Artkelenlijst"
 
-#: includes/articles.php:525
+#: includes/articles.php:535
 msgid "Page %d"
 msgstr "Pagina %d"
 
 #: includes/capabilities.php:414
 msgid "Econozel Editor"
-msgstr "Econozel Bewerker"
+msgstr "Econozel Redacteur"
 
 #: includes/editions.php:36
 msgid "Econozel Editions"
@@ -217,29 +217,19 @@ msgstr "Omslagfoto"
 msgid "The cover image of the published Edition."
 msgstr "De omslagfoto van de gepubliceerde editie"
 
-#: includes/editions.php:681
+#: includes/editions.php:683
 msgid "Issue %d"
 msgstr "Uitgave %d"
 
-#: includes/editions.php:728 includes/volumes.php:462
+#: includes/editions.php:730 includes/volumes.php:472
 msgid "View articles in %s"
 msgstr "Bekijk artikelen in %s"
 
-#: includes/editions.php:810
+#: includes/editions.php:812
 msgid "%d article"
 msgid_plural "%d articles"
 msgstr[0] "%d artikel"
 msgstr[1] "%d artikelen"
-
-#: includes/functions.php:74 includes/settings.php:265
-msgctxt "Article rewrite slug"
-msgid "articles"
-msgstr "artikel"
-
-#: includes/functions.php:86 includes/settings.php:277
-msgctxt "Volume rewrite slug"
-msgid "volumes"
-msgstr "jaargang"
 
 #: includes/settings.php:26
 msgid "General Settings"
@@ -313,26 +303,26 @@ msgstr "Huidige editie"
 msgid "&mdash; No Edition &mdash;"
 msgstr "&mdash; Geen editie &mdash;"
 
-#: includes/template.php:844
+#: includes/template.php:854
 msgid "Volume Archives"
 msgstr "Jaargangarchief"
 
-#: includes/template.php:879 includes/theme-compat.php:90 
+#: includes/template.php:889 includes/theme-compat.php:90 
 #: includes/volumes.php:36
 msgid "Econozel Volumes"
 msgstr "Econozel Jaargangen"
 
-#: includes/template.php:883
+#: includes/template.php:893
 msgctxt "Single volume title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
-#: includes/template.php:893
+#: includes/template.php:903
 msgctxt "Numeric issue edition title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
-#: includes/template.php:912
+#: includes/template.php:922
 msgid ""
 "This page lists recent Econozel activity on this site. You can browse the <a "
 "title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
@@ -344,15 +334,15 @@ msgstr ""
 "href=\"%4$s\">artikelarchief</a> doorbladeren om alle artikelen te vinden "
 "die zijn gearchiveerd of gepubliceerd op deze site."
 
-#: includes/template.php:912 includes/template.php:920
+#: includes/template.php:922 includes/template.php:930
 msgid "Permalink to the volume archives"
 msgstr "Link naar het jaargangarchief"
 
-#: includes/template.php:912 includes/template.php:916
+#: includes/template.php:922 includes/template.php:926
 msgid "Permalink to the article archives"
 msgstr "Link naar het artikelarchief"
 
-#: includes/template.php:916
+#: includes/template.php:926
 msgid ""
 "This page lists all Econozel volumes with their respective editions. You can "
 "browse here to find articles that have been archived or published on this "
@@ -364,7 +354,7 @@ msgstr ""
 "artikelen te bekijken, ga je naar het <a title=\"%1$s\" href=\"%2$s\">"
 "artikelarchief</a>."
 
-#: includes/template.php:920
+#: includes/template.php:930
 msgid ""
 "This page lists all Econozel articles archived on this site. You can browse "
 "them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
@@ -374,27 +364,27 @@ msgstr ""
 " Je vind de artikelen hier of via de <a title=\"%1$s\" href=\"%2$s\">"
 "jaargangen en edities</a> waarin ze zijn gepubliceerd."
 
-#: includes/template.php:1131
+#: includes/template.php:1141
 msgid "Older volumes"
 msgstr "Oudere jaargangen"
 
-#: includes/template.php:1132
+#: includes/template.php:1142
 msgid "Newer volumes"
 msgstr "Nieuwe jaargangen"
 
-#: includes/template.php:1133
+#: includes/template.php:1143
 msgid "Volumes navigation"
 msgstr "Navigatie voor jaargangen"
 
-#: includes/template.php:1139
+#: includes/template.php:1149
 msgid "Older articles"
 msgstr "Oudere artikelen"
 
-#: includes/template.php:1140
+#: includes/template.php:1150
 msgid "Newer articles"
 msgstr "Nieuwere artikelen"
 
-#: includes/template.php:1141
+#: includes/template.php:1151
 msgid "Articles navigation"
 msgstr "Navigatie door artikelen"
 
@@ -434,7 +424,7 @@ msgstr "Nieuwe jaargangnaam"
 msgid "View Volume"
 msgstr "Jaargang bekijken"
 
-#: includes/volumes.php:428
+#: includes/volumes.php:436
 msgid "Volume %s"
 msgstr "Jaargang %s"
 
