@@ -18,9 +18,15 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0.0
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool Current user has access
+ * @return bool The user has access
  */
 function econozel_check_access( $user_id = 0 ) {
+
+	// Default to the current user
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	}
+
 	return econozel_is_user_vgsr( $user_id ) || user_can( $user_id, 'econozel_editor' );
 }
 
@@ -30,7 +36,7 @@ function econozel_check_access( $user_id = 0 ) {
  * @since 1.0.0
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool Current user is VGSR lid
+ * @return bool The user is VGSR lid
  */
 function econozel_is_user_vgsr( $user_id = 0 ) {
 	return ( function_exists( 'vgsr' ) && is_user_vgsr( $user_id ) );
@@ -42,7 +48,7 @@ function econozel_is_user_vgsr( $user_id = 0 ) {
  * @since 1.0.0
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool Current user is VGSR lid
+ * @return bool The user is VGSR lid
  */
 function econozel_is_user_lid( $user_id = 0 ) {
 	return ( function_exists( 'vgsr' ) && is_user_lid( $user_id ) );
