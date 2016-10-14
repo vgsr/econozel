@@ -2,16 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Econozel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-14 05:29+0000\n"
-"PO-Revision-Date: 2016-10-14 05:29+0000\n"
+"POT-Creation-Date: 2016-10-14 15:00+0000\n"
+"PO-Revision-Date: 2016-10-14 15:00+0000\n"
 "Last-Translator: Laurens Offereins <lmoffereins@gmail.com>\n"
-"Language-Team: Dutch (Netherlands)\n"
+"Language-Team: Dutch\n"
 "Language: nl-NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
+
+#: includes/settings.php:223
+msgid "Note: when showing volume editions this setting is ignored"
+msgstr "NB: bij edities in een jaargang wordt deze instelling genegeerd"
 
 #: econozel.php:230
 msgid "Econozel articles"
@@ -59,8 +63,8 @@ msgid "The Volume is the periodic collection an Edition belongs to."
 msgstr "De jaagang is de periodieke collectie waartoe een editie behoort."
 
 #. Name of the plugin
-#: includes/admin.php:725 includes/articles.php:37 includes/template.php:842 
-#: includes/template.php:850 includes/template.php:885 
+#: includes/admin.php:725 includes/articles.php:37 includes/template.php:845 
+#: includes/template.php:853 includes/template.php:888 
 #: includes/theme-compat.php:76
 msgid "Econozel"
 msgstr "Econozel"
@@ -283,13 +287,9 @@ msgstr ""
 msgid "How many volumes and editions to show per page"
 msgstr "Hoeveel jaargangen en edities per pagina te tonen"
 
-#: includes/settings.php:210
+#: includes/settings.php:210 includes/settings.php:223
 msgid "per page"
 msgstr "per pagina"
-
-#: includes/settings.php:223
-msgid "per page (Note: editions by volume are still displayed all)"
-msgstr "per pagina (NB: edities per jaargang worden alsnog allemaal getoond)"
 
 #: includes/settings.php:241
 msgid "Customize your econozel slugs"
@@ -303,26 +303,26 @@ msgstr "Huidige editie"
 msgid "&mdash; No Edition &mdash;"
 msgstr "&mdash; Geen editie &mdash;"
 
-#: includes/template.php:854
+#: includes/template.php:857
 msgid "Volume Archives"
 msgstr "Jaargangarchief"
 
-#: includes/template.php:889 includes/theme-compat.php:90 
+#: includes/template.php:892 includes/theme-compat.php:90 
 #: includes/volumes.php:36
 msgid "Econozel Volumes"
 msgstr "Econozel Jaargangen"
 
-#: includes/template.php:893
+#: includes/template.php:896
 msgctxt "Single volume title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
-#: includes/template.php:903
+#: includes/template.php:906
 msgctxt "Numeric issue edition title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
-#: includes/template.php:922
+#: includes/template.php:925
 msgid ""
 "This page lists recent Econozel activity on this site. You can browse the <a "
 "title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
@@ -334,15 +334,15 @@ msgstr ""
 "href=\"%4$s\">artikelarchief</a> doorbladeren om alle artikelen te vinden "
 "die zijn gearchiveerd of gepubliceerd op deze site."
 
-#: includes/template.php:922 includes/template.php:930
+#: includes/template.php:925 includes/template.php:933
 msgid "Permalink to the volume archives"
 msgstr "Link naar het jaargangarchief"
 
-#: includes/template.php:922 includes/template.php:926
+#: includes/template.php:925 includes/template.php:929
 msgid "Permalink to the article archives"
 msgstr "Link naar het artikelarchief"
 
-#: includes/template.php:926
+#: includes/template.php:929
 msgid ""
 "This page lists all Econozel volumes with their respective editions. You can "
 "browse here to find articles that have been archived or published on this "
@@ -354,7 +354,7 @@ msgstr ""
 "artikelen te bekijken, ga je naar het <a title=\"%1$s\" href=\"%2$s\">"
 "artikelarchief</a>."
 
-#: includes/template.php:930
+#: includes/template.php:933
 msgid ""
 "This page lists all Econozel articles archived on this site. You can browse "
 "them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
@@ -364,27 +364,27 @@ msgstr ""
 " Je vind de artikelen hier of via de <a title=\"%1$s\" href=\"%2$s\">"
 "jaargangen en edities</a> waarin ze zijn gepubliceerd."
 
-#: includes/template.php:1141
+#: includes/template.php:1144
 msgid "Older volumes"
 msgstr "Oudere jaargangen"
 
-#: includes/template.php:1142
+#: includes/template.php:1145
 msgid "Newer volumes"
 msgstr "Nieuwe jaargangen"
 
-#: includes/template.php:1143
+#: includes/template.php:1146
 msgid "Volumes navigation"
 msgstr "Navigatie voor jaargangen"
 
-#: includes/template.php:1149
+#: includes/template.php:1152
 msgid "Older articles"
 msgstr "Oudere artikelen"
 
-#: includes/template.php:1150
+#: includes/template.php:1153
 msgid "Newer articles"
 msgstr "Nieuwere artikelen"
 
-#: includes/template.php:1151
+#: includes/template.php:1154
 msgid "Articles navigation"
 msgstr "Navigatie door artikelen"
 

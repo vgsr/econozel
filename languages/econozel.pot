@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-14 05:28+0000\n"
+"POT-Creation-Date: 2016-10-14 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -60,8 +60,8 @@ msgid "The Volume is the periodic collection an Edition belongs to."
 msgstr ""
 
 #. Name of the plugin
-#: includes/admin.php:725 includes/articles.php:37 includes/template.php:842 
-#: includes/template.php:850 includes/template.php:885 
+#: includes/admin.php:725 includes/articles.php:37 includes/template.php:845 
+#: includes/template.php:853 includes/template.php:888 
 #: includes/theme-compat.php:76
 msgid "Econozel"
 msgstr ""
@@ -282,12 +282,12 @@ msgstr ""
 msgid "How many volumes and editions to show per page"
 msgstr ""
 
-#: includes/settings.php:210
+#: includes/settings.php:210 includes/settings.php:223
 msgid "per page"
 msgstr ""
 
 #: includes/settings.php:223
-msgid "per page (Note: editions by volume are still displayed all)"
+msgid "Note: when showing volume editions this setting is ignored"
 msgstr ""
 
 #: includes/settings.php:241
@@ -302,26 +302,26 @@ msgstr ""
 msgid "&mdash; No Edition &mdash;"
 msgstr ""
 
-#: includes/template.php:854
+#: includes/template.php:857
 msgid "Volume Archives"
 msgstr ""
 
-#: includes/template.php:889 includes/theme-compat.php:90 
+#: includes/template.php:892 includes/theme-compat.php:90 
 #: includes/volumes.php:36
 msgid "Econozel Volumes"
 msgstr ""
 
-#: includes/template.php:893
+#: includes/template.php:896
 msgctxt "Single volume title"
 msgid "Econozel %s"
 msgstr ""
 
-#: includes/template.php:903
+#: includes/template.php:906
 msgctxt "Numeric issue edition title"
 msgid "Econozel %s"
 msgstr ""
 
-#: includes/template.php:922
+#: includes/template.php:925
 msgid ""
 "This page lists recent Econozel activity on this site. You can browse the <a "
 "title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
@@ -329,15 +329,15 @@ msgid ""
 "archived or published on this site."
 msgstr ""
 
-#: includes/template.php:922 includes/template.php:930
+#: includes/template.php:925 includes/template.php:933
 msgid "Permalink to the volume archives"
 msgstr ""
 
-#: includes/template.php:922 includes/template.php:926
+#: includes/template.php:925 includes/template.php:929
 msgid "Permalink to the article archives"
 msgstr ""
 
-#: includes/template.php:926
+#: includes/template.php:929
 msgid ""
 "This page lists all Econozel volumes with their respective editions. You can "
 "browse here to find articles that have been archived or published on this "
@@ -345,34 +345,34 @@ msgid ""
 "href=\"%2$s\">article archives</a>."
 msgstr ""
 
-#: includes/template.php:930
+#: includes/template.php:933
 msgid ""
 "This page lists all Econozel articles archived on this site. You can browse "
 "them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
 "and editions</a> in which they have been published."
 msgstr ""
 
-#: includes/template.php:1141
+#: includes/template.php:1144
 msgid "Older volumes"
 msgstr ""
 
-#: includes/template.php:1142
+#: includes/template.php:1145
 msgid "Newer volumes"
 msgstr ""
 
-#: includes/template.php:1143
+#: includes/template.php:1146
 msgid "Volumes navigation"
 msgstr ""
 
-#: includes/template.php:1149
+#: includes/template.php:1152
 msgid "Older articles"
 msgstr ""
 
-#: includes/template.php:1150
+#: includes/template.php:1153
 msgid "Newer articles"
 msgstr ""
 
-#: includes/template.php:1151
+#: includes/template.php:1154
 msgid "Articles navigation"
 msgstr ""
 

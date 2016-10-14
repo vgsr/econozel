@@ -220,7 +220,7 @@ function econozel_admin_setting_callback_volumes_per_page() { ?>
 function econozel_admin_setting_callback_editions_per_page() { ?>
 
 	<input name="_econozel_editions_per_page" id="_econozel_editions_per_page" type="number" min="1" step="1" class="small-text" value="<?php econozel_form_option( '_econozel_editions_per_page', '5' ); ?>">
-	<label for="_econozel_editions_per_page"><?php esc_html_e( 'per page (Note: editions by volume are still displayed all)', 'econozel' ); ?></label>
+	<label for="_econozel_editions_per_page"><?php esc_html_e( 'per page', 'econozel' ); ?> (<?php esc_html_e( 'Note: when showing volume editions this setting is ignored', 'econozel' ); ?>)</label>
 
 	<?php
 }
