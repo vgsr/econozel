@@ -42,6 +42,19 @@ function econozel_parse_query( $posts_query ) {
 	$is_volume_archive = $posts_query->get( econozel_get_volume_archive_rewrite_id() );
 	$is_edition        = $posts_query->get( econozel_get_edition_issue_rewrite_id()  );
 
+	/**
+	 * 404 and bail when the user has no Econozel access.
+	 *
+	 * For the Article Archive and Single Archive pages, this cannot be done,
+	 * because the 'public' property of the post type determines whether the
+	 * post type's query arg is registered. Consequently, these pages will
+	 * not catch the request correctly and default to querying the blog index.
+	 */
+	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition ) ) && ! econozel_check_access() ) {
+		$posts_query->set_404();
+		return;
+	}
+
 	// Root Page
 	if ( ! empty( $is_root ) ) {
 
