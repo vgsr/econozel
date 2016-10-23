@@ -74,8 +74,10 @@ class Econozel_Admin {
 		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
 		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
 		add_action( 'quick_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
+		add_action( 'bulk_edit_custom_box',                     array( $this, 'article_inline_edit'    ), 10, 2 );
 		add_action( "add_meta_boxes_{$post_type}",              array( $this, 'article_meta_boxes'     ), 99    );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
+		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_bulk_edit' )        );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
@@ -205,7 +207,8 @@ class Econozel_Admin {
 			wp_enqueue_script( 'econozel-admin', $eco->includes_url . 'assets/js/admin.js', array( 'jquery' ), econozel_get_version(), true );
 			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
 				'l10n' => array(
-					'articleMenuOrderLabel' => esc_html__( 'Page Number', 'econozel' )
+					'articleMenuOrderLabel' => esc_html__( 'Page Number', 'econozel' ),
+					'noChangeLabel'         => __( '&mdash; No Change &mdash;' ), // As WP does
 				),
 				'settings' => array(
 
@@ -433,7 +436,7 @@ class Econozel_Admin {
 	}
 
 	/**
-	 * Add fields to the Article inline-edit form
+	 * Add fields to the Article bulk/inline-edit form
 	 *
 	 * @since 1.0.0
 	 *
@@ -446,6 +449,10 @@ class Econozel_Admin {
 		if ( $this->article_post_type !== $post_type )
 			return;
 
+		// Bulk or Quick edit?
+		$bulk = doing_action( 'bulk_edit_custom_box' );
+
+		// Check the column
 		switch ( $column ) {
 
 			// Edition
@@ -458,14 +465,14 @@ class Econozel_Admin {
 				if ( ! $tax || ! current_user_can( $tax->cap->assign_terms ) )
 					return; ?>
 
-		<div class="inline-edit-col article-edition">
+		<div class="<?php echo $bulk ? 'inline-edit-group' : 'inline-edit-col'; ?> article-edition">
 			<label>
 				<span class="title"><?php esc_html_e( 'Edition', 'econozel' ); ?></span>
 				<span class="input-text-wrap"><?php econozel_dropdown_editions( array(
-					'name'              => "tax_input[{$this->edition_tax_id}]",
+					'name'              => $bulk ? 'article-edition' : "tax_input[{$this->edition_tax_id}]", // Doing bulk through tax_input prohibits removing the current term(s), so a custom input name/saving is used
 					'class'             => "tax_input_{$this->edition_tax_id}",
 					'hide_empty'        => false,
-					'value_field'       => 'name', // Use default saving through non-hierarchical tax_input
+					'value_field'       => $bulk ? 'term_id' : 'name', // Saving through WP's non-hierarchical tax_input uses term names
 					'option_none_value' => '', // NOTE: non-empty values are used to create new terms on the fly
 				) ); ?></span>
 			</label>
@@ -497,7 +504,7 @@ class Econozel_Admin {
 		if ( empty( $_POST['econozel_edition_metabox'] ) || ! wp_verify_nonce( $_POST['econozel_edition_metabox'], 'econozel_edition_metabox_save' ) )
 			return;
 
-		// Only save for period post-types
+		// Only save for Article post-types
 		if ( ! $article = econozel_get_article( $post_id ) )
 			return;
 
@@ -521,6 +528,60 @@ class Econozel_Admin {
 			// Remove Article Edition
 			} elseif ( $edition = econozel_get_article_edition( $post_id ) ) {
 				wp_remove_object_terms( $post_id, array( $edition ), $this->edition_tax_id );
+			}
+		}
+	}
+
+	/**
+	 * Save the input from the post bulk edit action
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $post_id Post ID
+	 */
+	public function article_save_bulk_edit( $post_id ) {
+
+		// Bail when doing an autosave
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			return;
+
+		// Bail when not a get request
+		if ( 'GET' != strtoupper( $_SERVER['REQUEST_METHOD'] ) )
+			return;
+
+		// Bail when not bulk editing or nonce does not verify
+		if ( ! isset( $_REQUEST['bulk_edit'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-posts' ) )
+			return;
+
+		// Only save for Article post-types
+		if ( ! $article = econozel_get_article( $post_id ) )
+			return;
+
+		// Get post type object
+		$post_type_object = get_post_type_object( $article->post_type );
+
+		// Bail when current user is not capable
+		if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+			return;
+
+		// Edition
+		if ( isset( $_REQUEST['article-edition'] ) ) {
+
+			// Get Edition taxonomy
+			$tax = get_taxonomy( $this->edition_tax_id );
+
+			// Continue when the user is capable
+			if ( $tax && current_user_can( $tax->cap->assign_terms ) ) {
+				$edition = $_REQUEST['article-edition'];
+
+				// Remove Article Edition
+				if ( empty( $edition ) && $edition = econozel_get_article_edition( $post_id ) ) {
+					wp_remove_object_terms( $post_id, array( $edition ), $this->edition_tax_id );
+
+				// Set Article Edition. -1 means to do nothing
+				} elseif ( '-1' !== $edition ) {
+					wp_set_object_terms( $post_id, array( intval( $edition ) ), $this->edition_tax_id, false );
+				}
 			}
 		}
 	}

@@ -8,7 +8,8 @@
 /* global inlineEditTax, inlineEditPost, econozelAdmin */
 ( function( $ ) {
 
-	var settings = econozelAdmin.settings, l10n = econozelAdmin.l10n, wp_inline_edit;
+	var settings = econozelAdmin.settings, l10n = econozelAdmin.l10n,
+	    wp_inline_edit, wp_bulk_edit;
 
 	// Extend inlineEditTax to contain custom edit fields
 	if ( typeof inlineEditTax !== 'undefined' ) {
@@ -50,11 +51,12 @@
 	// Extend inlineEditPost to contain custom edit fields
 	if ( typeof inlineEditPost !== 'undefined' ) {
 
-		// Create a copy of the inline edit method
+		// Create a copy of the edit methods
 		wp_inline_edit = inlineEditPost.edit;
+		wp_bulk_edit   = inlineEditPost.setBulk;
 
 		/**
-		 * Extend the inline edit method by redefining it
+		 * Extend the inline edit method by redefining it.
 		 *
 		 * @see wp-admin/js/inline-edit-post.js
 		 */
@@ -66,7 +68,7 @@
 			/*
 			 * From here on the custom logic kicks in.
 			 */
-			var editRow, rowData, val, t = this, $order, edition;
+			var editRow, rowData, t = this, $order, edition;
 
 			if ( typeof( id ) === 'object' ) {
 				id = t.getId( id );
@@ -83,19 +85,62 @@
 				// Hacky: replace menu_order label for Articles
 				$order.find( '.title' ).text( l10n.articleMenuOrderLabel );
 
-				// Handle Edition
+				// Get the current Edition
 				edition = $( '#' + settings.editionTaxId + '_' + id, rowData ).text();
+
 				// Remove default flat-taxonomy Edition input field (textarea)
 				$( '.tax_input_' + settings.editionTaxId, editRow ).eq(0).parents( 'label' ).first().remove();
-				// Position Edition field before Page Number and set its value
+
+				// Edition field...
 				$( '.article-edition label', editRow )
+					// ... move before Page Number
 					.prependTo( $( '.inline-edit-col-right .inline-edit-col', editRow ).first() )
+					// ... and set its value
 					.find( 'select option[value="' + edition + '"]' ).prop( 'selected', true );
 
+			// User cannot assign Editions
 			} else {
 
 				// Remove Page Number input
 				$order.remove();
+			}
+		};
+
+		/**
+		 * Extend the bulk edit method by redefining it.
+		 *
+		 * @see wp-admin/js/inline-edit-post.js
+		 */
+		inlineEditPost.setBulk = function() {
+
+			// Apply original logic before adding custom logic
+			wp_bulk_edit.apply( this, arguments );
+
+			/*
+			 * From here on the custom logic kicks in.
+			 */
+			var bulkRow = $( '#bulk-edit' ), $taxInput;
+
+			// Bail when no posts were selected
+			if ( ! $( '#bulk-titles', bulkRow ).length ) {
+				return;
+			}
+
+			// Get Edition input field(s)
+			$taxInput = $( '.tax_input_' + settings.editionTaxId, bulkRow );
+
+			// Initial setup
+			if ( 1 !== $taxInput.length ) {
+
+				// Remove default flat-taxonomy Edition input field (textarea)
+				$taxInput.eq(0).parents( 'label' ).first().remove();
+
+				// Edition field...
+				$( '.article-edition', bulkRow )
+					// ... below the other selectors
+					.appendTo( $( '.inline-edit-col-right .inline-edit-col', bulkRow ).first() )
+					// ... and add no-change option, select on init
+					.find( 'select' ).prepend( $( '<option/>' ).html( l10n.noChangeLabel ).attr({ 'value': '-1', 'selected': 'selected' }) );
 			}
 		};
 	}
