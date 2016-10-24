@@ -83,23 +83,23 @@ class Econozel_BuddyPress {
 			'position'                          => 10,
 
 			// Post labels
-			'bp_activity_admin_filter'          => __( 'New Econozel Article',                                           'econozel' ),
-			'bp_activity_front_filter'          => __( 'Econozel Articles',                                              'econozel' ),
-			'bp_activity_new_post'              => __( '%1$s posted the article %2$s',                                   'econozel' ),
-			'bp_activity_new_post_ms'           => __( '%1$s posted the article %2$s, on the site %3$s',                 'econozel' ),
+			'bp_activity_admin_filter'          => esc_html__( 'New Econozel Article',                                           'econozel' ),
+			'bp_activity_front_filter'          => esc_html__( 'Econozel Articles',                                              'econozel' ),
+			'bp_activity_new_post'              => esc_html__( '%1$s posted the article %2$s',                                   'econozel' ),
+			'bp_activity_new_post_ms'           => esc_html__( '%1$s posted the article %2$s, on the site %3$s',                 'econozel' ),
 
 			// Additional post labels
-			'new_article_in_edition_action'     => __( '%1$s posted the article %2$s in edition %3$s',                   'econozel' ),
-			'new_article_in_edition_action_ms'  => __( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
+			'new_article_in_edition_action'     => esc_html__( '%1$s posted the article %2$s in edition %3$s',                   'econozel' ),
+			'new_article_in_edition_action_ms'  => esc_html__( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
 
 			// Enable comment tracking. Should this be separate from normal comments?
 			'comment_action_id'                 => 'new_' . $this->article_post_type . '_comment',
 
 			// Comment labels
-			'bp_activity_comments_admin_filter' => __( 'New Article Comment',                                  'econozel' ),
-			'bp_activity_comments_front_filter' => __( 'Article Comments',                                     'econozel' ),
-			'bp_activity_new_comment'           => __( '%1$s commented on the article %2$s',                   'econozel' ),
-			'bp_activity_new_comment_ms'        => __( '%1$s commented on the article %2$s, on the site %3$s', 'econozel' ),
+			'bp_activity_comments_admin_filter' => esc_html__( 'New Article Comment',                                  'econozel' ),
+			'bp_activity_comments_front_filter' => esc_html__( 'Article Comments',                                     'econozel' ),
+			'bp_activity_new_comment'           => esc_html__( '%1$s commented on the article %2$s',                   'econozel' ),
+			'bp_activity_new_comment_ms'        => esc_html__( '%1$s commented on the article %2$s, on the site %3$s', 'econozel' ),
 
 		) );
 	}
