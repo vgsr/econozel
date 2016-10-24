@@ -74,3 +74,7 @@ add_action( 'set_user_role',          'econozel_handle_set_user_role',   10, 3 )
 if ( is_admin() ) {
 	add_action( 'init', 'econozel_admin' );
 }
+
+/** Extend ********************************************************************/
+
+add_action( 'bp_loaded', 'econozel_buddypress' );

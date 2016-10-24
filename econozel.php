@@ -137,6 +137,9 @@ final class Econozel {
 			require( $this->includes_dir . 'admin.php'    );
 			require( $this->includes_dir . 'settings.php' );
 		}
+
+		// Extend
+		require( $this->includes_dir . 'extend/buddypress.php' );
 	}
 
 	/**
