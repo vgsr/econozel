@@ -352,7 +352,7 @@ function econozel_the_article_description( $article = 0 ) {
 
 			// Default to a trimmed content
 			if ( empty( $description ) ) {
-				$description = wp_html_excerpt( $article->post_content, 200, "&#8230;" );
+				$description = wp_trim_words( $article->post_content, 55, apply_filters( 'excerpt_more', ' [&hellip;]' ) );
 			}
 		}
 
