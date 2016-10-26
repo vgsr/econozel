@@ -54,7 +54,7 @@ class Econozel_BuddyPress {
 	/** Activity **************************************************************/
 
 	/**
-	 * Setup actions for the Activity component
+	 * Setup actions for the activity component
 	 *
 	 * @since 1.0.0
 	 */
@@ -62,6 +62,9 @@ class Econozel_BuddyPress {
 
 		// After the post type is registered
 		add_action( 'econozel_init', array( $this, 'activity_setup_post_type_tracking' ), 15 );
+
+		// Complete queried activities
+		add_filter( 'bp_activity_get', array( $this, 'bp_activity_get' ), 10, 2 );
 	}
 
 	/**
@@ -168,6 +171,44 @@ class Econozel_BuddyPress {
 		}
 
 		return $action;
+	}
+
+	/**
+	 * Modify the queried activity items
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $activity Activity query result
+	 * @param array $args Activity query arguments
+	 * @return array Activity query result
+	 */
+	public function bp_activity_get( $activity, $args ) {
+
+		// Walk queried activities
+		foreach ( $activity['activities'] as $k => $a ) {
+
+			// This is a New Article activity item
+			if ( "new_{$this->article_post_type}" == $a->type ) {
+
+				// Skip when Article does not exist
+				if ( ! $article = econozel_get_article( (int) $a->secondary_item_id ) )
+					continue;
+
+				// Redefine action string since it was inserted in the DB
+				if ( $action = bp_activity_generate_action_string( $a ) ) {
+					$a->action = $action;
+				}
+
+				// Add content from Article description
+				if ( $content = econozel_get_article_description( $article ) ) {
+					$a->content = $content;
+				}
+			}
+
+			$activity['activities'][ $k ] = $a;
+		}
+
+		return $activity;
 	}
 }
 
