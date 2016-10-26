@@ -97,18 +97,43 @@ class Econozel_BuddyPress {
 
 			// Enable comment tracking. Should this be separate from normal comments?
 			'comment_action_id'                 => 'new_' . $this->article_post_type . '_comment',
+			'comment_format_callback'           => array( $this, 'activity_new_comment_action' ),
 
 			// Comment labels
-			'bp_activity_comments_admin_filter' => esc_html__( 'New Article Comment',                                  'econozel' ),
-			'bp_activity_comments_front_filter' => esc_html__( 'Article Comments',                                     'econozel' ),
-			'bp_activity_new_comment'           => esc_html__( '%1$s commented on the article %2$s',                   'econozel' ),
-			'bp_activity_new_comment_ms'        => esc_html__( '%1$s commented on the article %2$s, on the site %3$s', 'econozel' ),
-
+			'bp_activity_comments_admin_filter' => esc_html__( 'New Article Comment',                                                'econozel' ),
+			'bp_activity_comments_front_filter' => esc_html__( 'Article Comments',                                                   'econozel' ),
+			'bp_activity_new_comment'           =>         __( '%1$s commented on the <a href="%2$s">article</a>',                   'econozel' ),
+			'bp_activity_new_comment_ms'        =>         __( '%1$s commented on the <a href="%2$s">article</a>, on the site %3$s', 'econozel' ),
 		) );
+
+		// Filter arguments that cannot be set above
+		add_filter( 'bp_activity_get_post_type_tracking_args', array( $this, 'activity_filter_post_type_tracking_args' ), 10, 2 );
 	}
 
 	/**
-	 * Modify the New Post activity action text
+	 * Modify the activity post type tracking arguments
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param object $tracking_args Tracking arguments
+	 * @param string $post_type Post type name
+	 * @return object Tracking arguments
+	 */
+	public function activity_filter_post_type_tracking_args( $args, $post_type ) {
+
+		// Article post type tracking
+		if ( $post_type == $this->article_post_type ) {
+
+			// Set additional comments action strings
+			$args->comments_tracking->new_article_comment_action    = esc_html__( '%1$s commented on the article %2$s',                   'econozel' );
+			$args->comments_tracking->new_article_comment_action_ms = esc_html__( '%1$s commented on the article %2$s, on the site %3$s', 'econozel' );
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Define the activity New Post action text for Articles
 	 *
 	 * @see bp_activity_format_activity_action_custom_post_type_post()
 	 * 
@@ -168,6 +193,63 @@ class Econozel_BuddyPress {
 		// Default to the generic formatter
 		} else {
 			$action = bp_activity_format_activity_action_custom_post_type_post( $action, $activity );
+		}
+
+		return $action;
+	}
+
+	/**
+	 * Define the activity New Comment action text for Article comments
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $action Activity action text
+	 * @param object $activity Activity data object
+	 * @return string Activity action text
+	 */
+	public function activity_new_comment_action( $action, $activity ) {
+		$bp = buddypress();
+
+		// Fetch all the tracked post types once.
+		if ( empty( $bp->activity->track ) ) {
+			$bp->activity->track = bp_activity_get_post_types_tracking_args();
+		}
+
+		// Bail when the activity is invalid
+		if ( empty( $activity->type ) || empty( $bp->activity->track[ $activity->type ] ) ) {
+			return $action;
+		}
+
+		// Get the Article comment
+		$comment = (int) $activity->secondary_item_id;
+		$comment = get_comment( $comment );
+
+		// Get the Article
+		if ( $comment && $article = econozel_get_article( $comment->comment_post_ID ) ) {
+
+			// Get tracking arguments for the post type which is stored by the action/type
+			$track = $bp->activity->track[ $activity->type ];
+
+			// Setup action elements. @todo Handle multiple authors
+			$user_link = bp_core_get_userlink( $activity->user_id );
+			$post_link = '<a href="' . esc_url( get_permalink( $article ) ) . '">' . get_the_title( $article ) . '</a>';
+			$blog_link = '<a href="' . esc_url( get_home_url( $activity->item_id ) ) . '">' . get_blog_option( $activity->item_id, 'blogname' ) . '</a>';
+
+			/*
+			 * VGSR: do not use the ms action string when displaying the activity
+			 * item on the original site where the post was published.
+			 */
+			$multisite = function_exists( 'vgsr' ) && is_multisite() && get_current_blog_id() !== (int) $activity->item_id;
+
+			if ( $multisite && ! empty( $track->new_article_comment_action_ms ) ) {
+				$action = sprintf( $track->new_article_comment_action_ms, $user_link, $post_link, $blog_link );
+			} elseif ( ! empty( $track->new_article_comment_action ) ) {
+				$action = sprintf( $track->new_article_comment_action, $user_link, $post_link );
+			}
+
+		// Default to the generic formatter
+		} else {
+			$action = bp_activity_format_activity_action_custom_post_type_comment( $action, $activity );
 		}
 
 		return $action;
