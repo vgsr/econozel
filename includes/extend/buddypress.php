@@ -68,13 +68,13 @@ class Econozel_BuddyPress {
 	}
 
 	/**
-	 * Initial logic for the Activity component
+	 * Initial logic for the activity component
 	 *
 	 * @since 1.0.0
 	 */
 	public function activity_setup_post_type_tracking() {
 
-		// Register post type Activity support
+		// Register post type activity support
 		add_post_type_support( $this->article_post_type, 'buddypress-activity' );
 
 		// Register Article tracking args
@@ -82,16 +82,16 @@ class Econozel_BuddyPress {
 
 			// Our own format logic
 			'format_callback'                   => array( $this, 'activity_new_post_action' ),
-			'conxtexts'                         => array( 'activity', 'member' ),
-			'position'                          => 10,
+			'contexts'                          => array( 'activity', 'member' ),
+			'position'                          => 50,
 
 			// Post labels
 			'bp_activity_admin_filter'          => esc_html__( 'New Econozel Article',                                           'econozel' ),
 			'bp_activity_front_filter'          => esc_html__( 'Econozel Articles',                                              'econozel' ),
-			'bp_activity_new_post'              => esc_html__( '%1$s posted the article %2$s',                                   'econozel' ),
-			'bp_activity_new_post_ms'           => esc_html__( '%1$s posted the article %2$s, on the site %3$s',                 'econozel' ),
-
-			// Additional post labels
+			'bp_activity_new_post'              =>         __( '%1$s posted the <a href="%2$s">article</a>',                     'econozel' ),
+			'bp_activity_new_post_ms'           =>         __( '%1$s posted the <a href="%2$s">article</a>, on the site %3$s',   'econozel' ),
+			'new_article_action'                => esc_html__( '%1$s posted the article %2$s',                                   'econozel' ),
+			'new_article_action_ms'             => esc_html__( '%1$s posted the article %2$s, on the site %3$s',                 'econozel' ),
 			'new_article_in_edition_action'     => esc_html__( '%1$s posted the article %2$s in edition %3$s',                   'econozel' ),
 			'new_article_in_edition_action_ms'  => esc_html__( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
 
@@ -158,10 +158,10 @@ class Econozel_BuddyPress {
 					$action = sprintf( $track->new_article_in_edition_action, $user_link, $post_link, $edition_link );
 				}
 			} else {
-				if ( $multisite && ! empty( $track->new_post_type_action_ms ) ) {
-					$action = sprintf( $track->new_post_type_action_ms, $user_link, $post_link, $blog_link );
-				} elseif ( ! empty( $track->new_post_type_action ) ) {
-					$action = sprintf( $track->new_post_type_action, $user_link, $post_link );
+				if ( $multisite && ! empty( $track->new_article_action_ms ) ) {
+					$action = sprintf( $track->new_article_action_ms, $user_link, $post_link, $blog_link );
+				} elseif ( ! empty( $track->new_article_action ) ) {
+					$action = sprintf( $track->new_article_action, $user_link, $post_link );
 				}
 			}
 
