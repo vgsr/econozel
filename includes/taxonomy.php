@@ -113,10 +113,10 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 	add_action( "edited_{$taxonomy}",  'econozel_taxonomy_meta_save_fields' );
 
 	// Admin columns
-	add_filter( "manage_edit-{$taxonomy}_columns", 'econozel_taxonomy_admin_columns' );
+	add_filter( "manage_edit-{$taxonomy}_columns", 'econozel_taxonomy_meta_admin_columns' );
 
 	// Inline editing
-	add_action( 'quick_edit_custom_box', 'econozel_taxonomy_inline_edit', 10, 3 );
+	add_action( 'quick_edit_custom_box', 'econozel_taxonomy_meta_inline_edit', 10, 3 );
 
 	// Walk fields
 	foreach ( $fields as $meta_key => $args ) {
@@ -128,7 +128,7 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 		if ( isset( $args['admin_column_cb'] ) && $args['admin_column_cb'] ) {
 			add_action( "manage_{$taxonomy}_custom_column", is_callable( $args['admin_column_cb'] )
 				? $args['admin_column_cb']
-				: 'econozel_taxonomy_admin_column_content',
+				: 'econozel_taxonomy_meta_admin_column_content',
 				10, 3
 			);
 		}
@@ -364,7 +364,7 @@ function econozel_taxonomy_meta_save_fields( $term_id ) {
  * @param array $columns List table columns
  * @return array List table columns
  */
-function econozel_taxonomy_admin_columns( $columns ) {
+function econozel_taxonomy_meta_admin_columns( $columns ) {
 
 	// When on the taxonomy page
 	if ( function_exists( 'get_current_screen' ) || ! empty( get_current_screen()->taxonomy ) ) {
@@ -394,7 +394,7 @@ function econozel_taxonomy_admin_columns( $columns ) {
  * @param int $term_id Term ID
  * @return stringn Column content
  */
-function econozel_taxonomy_admin_column_content( $content, $column, $term_id ) {
+function econozel_taxonomy_meta_admin_column_content( $content, $column, $term_id ) {
 
 	// Get the meta field
 	if ( $meta = econozel_get_taxonomy_meta( get_current_screen()->taxonomy, $column ) ) {
@@ -435,7 +435,7 @@ function econozel_taxonomy_admin_column_content( $content, $column, $term_id ) {
  * @param string $screen_type Screen type name
  * @param string $taxonomy Taxonomy name
  */
-function econozel_taxonomy_inline_edit( $column, $screen_type, $taxonomy = '' ) {
+function econozel_taxonomy_meta_inline_edit( $column, $screen_type, $taxonomy = '' ) {
 
 	// Bail when we're not editing terms
 	if ( 'edit-tags' != $screen_type )
