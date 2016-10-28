@@ -63,8 +63,9 @@ class Econozel_BuddyPress {
 		// After the post type is registered
 		add_action( 'econozel_init', array( $this, 'activity_setup_post_type_tracking' ), 15 );
 
-		// Complete queried activities
-		add_filter( 'bp_activity_get', array( $this, 'bp_activity_get' ), 10, 2 );
+		// Modify queried activities
+		add_filter( 'bp_activity_get',                  array( $this, 'bp_activity_get'                    ), 10, 2 );
+		add_filter( 'bp_activity_get_where_conditions', array( $this, 'activity_filter_where_conditions'   ), 10, 2 );
 	}
 
 	/**
@@ -99,12 +100,12 @@ class Econozel_BuddyPress {
 			'new_article_in_edition_action_ms'  => esc_html__( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
 
 			// Enable comment tracking. Should this be separate from normal comments?
-			'comment_action_id'                 => 'new_' . $this->article_post_type . '_comment',
+			'comment_action_id'                 => "new_{$this->article_post_type}_comment",
 			'comment_format_callback'           => array( $this, 'activity_new_comment_action' ),
 
 			// Comment labels
 			'bp_activity_comments_admin_filter' => esc_html__( 'New Article Comment',                                                'econozel' ),
-			'bp_activity_comments_front_filter' => esc_html__( 'Article Comments',                                                   'econozel' ),
+			'bp_activity_comments_front_filter' => esc_html__( 'Comments'                                                                       ),
 			'bp_activity_new_comment'           =>         __( '%1$s commented on the <a href="%2$s">article</a>',                   'econozel' ),
 			'bp_activity_new_comment_ms'        =>         __( '%1$s commented on the <a href="%2$s">article</a>, on the site %3$s', 'econozel' ),
 		) );
@@ -126,6 +127,9 @@ class Econozel_BuddyPress {
 
 		// Article post type tracking
 		if ( $post_type == $this->article_post_type ) {
+
+			// Disable list filtering for Aritlce comments when Blog component is active
+			$args->comments_tracking->contexts = ! bp_is_active( 'blogs' ) ? array( 'activity', 'member' ) : array();
 
 			// Set additional comments action strings
 			$args->comments_tracking->new_article_comment_action    = esc_html__( '%1$s commented on the article %2$s',                   'econozel' );
@@ -284,7 +288,7 @@ class Econozel_BuddyPress {
 					$a->action = $action;
 				}
 
-				// Add content from Article description
+				// Add from Article description
 				if ( $content = econozel_get_article_description( $article ) ) {
 					$a->content = $content;
 				}
@@ -294,6 +298,44 @@ class Econozel_BuddyPress {
 		}
 
 		return $activity;
+	}
+
+	/**
+	 * Modify the activity query WHERE clause statements
+	 *
+	 * @since 1.0.0
+	 *
+	 * @global WPDB $wpdb
+	 *
+	 * @param array $where Query WHERE clause statements
+	 * @param array $args Query arguments
+	 * @return array Query WHERE clause statements
+	 */
+	public function activity_filter_where_conditions( $where, $args ) {
+		global $wpdb;
+
+		// Get BuddyPress
+		$bp = buddypress();
+
+		// Define comment query condition part
+		$_part = "a.type IN ( 'new_blog_comment'";
+
+		// This is an activity comment query
+		if ( isset( $where['filter_sql'] ) && false !== ( $pos = strpos( $where['filter_sql'], $_part ) ) ) {
+
+			// Query also comment
+			$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$this->article_post_type}_comment" ), $pos + strlen( $_part ), 0 );
+
+			// Get synced Article comment activities
+			$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$this->article_post_type}_comment_id" ) );
+
+			// OR query for specific comment activities
+			if ( ! empty( $activity_ids ) ) {
+				$where['filter_sql'] = '(' . $where['filter_sql'] . ' OR a.id IN ( ' . implode( ',', $activity_ids ) . ' ) )';
+			}
+		}
+
+		return $where;
 	}
 }
 
