@@ -153,13 +153,15 @@ function econozel_taxonomy_meta_add_fields( $taxonomy ) {
 
 	<div class="form-field term-<?php echo $meta_key; ?>">
 		<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['label']; ?></label>
-		<?php econozel_taxonomy_meta_display_single_field( wp_parse_args( $args, array(
+		<?php econozel_taxonomy_meta_field_input( wp_parse_args( $args, array(
 			'taxonomy' => $taxonomy,
 			'meta_key' => $meta_key
 		) ) ); ?>
 
 		<?php if ( ! empty( $args['description'] ) ) : ?>
+
 		<p><?php echo $args['description']; ?></p>
+
 		<?php endif; ?>
 	</div>
 
@@ -188,14 +190,16 @@ function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
 			<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['label']; ?></label>
 		</th>
 		<td>
-			<?php econozel_taxonomy_meta_display_single_field( wp_parse_args( $args, array(
+			<?php econozel_taxonomy_meta_field_input( wp_parse_args( $args, array(
 				'taxonomy' => $taxonomy,
 				'meta_key' => $meta_key,
 				'term'     => $term
 			) ) ); ?>
 
 			<?php if ( ! empty( $args['description'] ) ) : ?>
+
 			<p class="description"><?php echo $args['description']; ?></p>
+
 			<?php endif; ?>
 		</td>
 	</tr>
@@ -210,7 +214,7 @@ function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
  *
  * @param array $args Meta field arguments
  */
-function econozel_taxonomy_meta_display_single_field( $args = array() ) {
+function econozel_taxonomy_meta_field_input( $args = array() ) {
 
 	// Get field details
 	$taxonomy = $args['taxonomy'];
@@ -261,7 +265,8 @@ function econozel_taxonomy_meta_display_single_field( $args = array() ) {
 			// Load upload library
 			break;
 		default:
-			$field = apply_filters( 'econozel_taxonomy_meta_display_single_field', $field, $args, $attrs );
+			$field = apply_filters( 'econozel_taxonomy_meta_field_input', $field, $args, $attrs );
+			break;
 	}
 
 	// Field is defined
@@ -426,7 +431,7 @@ function econozel_taxonomy_inline_edit( $column, $screen_type, $taxonomy = '' ) 
 		<div class="inline-edit-col">
 		<label>
 			<span class="title"><?php echo $meta['label']; ?></span>
-			<span class="input-text-wrap"><?php econozel_taxonomy_meta_display_single_field( $meta ); ?></span>
+			<span class="input-text-wrap"><?php econozel_taxonomy_meta_field_input( $meta ); ?></span>
 		</label>
 		</div>
 	</fieldset>
