@@ -69,6 +69,17 @@ function econozel_get_root_slug() {
 }
 
 /**
+ * Return the root url
+ *
+ * @since 1.0.0
+ *
+ * @return string Root url
+ */
+function econozel_get_root_url() {
+	return home_url( user_trailingslashit( econozel_get_root_slug() ) );
+}
+
+/**
  * Return the Article rewrite slug
  *
  * @since 1.0.0
