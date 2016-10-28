@@ -48,6 +48,9 @@ add_filter( 'econozel_term_class',         'econozel_filter_object_class'       
 add_filter( 'previous_post_link',          'econozel_adjacent_post_link',   10, 5 );
 add_filter( 'next_post_link',              'econozel_adjacent_post_link',   10, 5 );
 
+// Content filters
+add_filter( 'econozel_get_article_description', 'strip_shortcodes' );
+
 // Theme Compat
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
 add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 );
