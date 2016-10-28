@@ -80,10 +80,13 @@ class Econozel_BuddyPress {
 		// Register Article tracking args
 		bp_activity_set_post_type_tracking_args( $this->article_post_type, array(
 
+			// Register as part of the Blogs component
+			'component_id'                      => bp_is_active( 'blogs' ) ? buddypress()->blogs->id : 'blogs',
+
 			// Our own format logic
 			'format_callback'                   => array( $this, 'activity_new_post_action' ),
 			'contexts'                          => array( 'activity', 'member' ),
-			'position'                          => 50,
+			'position'                          => 10,
 
 			// Post labels
 			'bp_activity_admin_filter'          => esc_html__( 'New Econozel Article',                                           'econozel' ),
