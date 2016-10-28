@@ -103,10 +103,10 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 		return;
 
 	// Display add meta fields
-	add_action( "{$taxonomy}_add_form_fields", 'econozel_taxonomy_meta_display_add_fields' );
+	add_action( "{$taxonomy}_add_form_fields", 'econozel_taxonomy_meta_add_fields' );
 
 	// Display edit meta fields
-	add_action( "{$taxonomy}_edit_form_fields", 'econozel_taxonomy_meta_display_edit_fields', 10, 2 );
+	add_action( "{$taxonomy}_edit_form_fields", 'econozel_taxonomy_meta_edit_fields', 10, 2 );
 
 	// Save meta fields on create and edit
 	add_action( "created_{$taxonomy}", 'econozel_taxonomy_meta_save_fields' );
@@ -142,7 +142,7 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
  *
  * @param string $taxonomy Taxonomy name
  */
-function econozel_taxonomy_meta_display_add_fields( $taxonomy ) {
+function econozel_taxonomy_meta_add_fields( $taxonomy ) {
 
 	// Bail when the taxonomy has no meta fields
 	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
@@ -174,7 +174,7 @@ function econozel_taxonomy_meta_display_add_fields( $taxonomy ) {
  * @param WP_Term $term Term object
  * @param string $taxonomy Taxonomy name
  */
-function econozel_taxonomy_meta_display_edit_fields( $term, $taxonomy ) {
+function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
 
 	// Bail when the taxonomy has no meta fields
 	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
