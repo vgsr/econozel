@@ -24,8 +24,8 @@ defined( 'ABSPATH' ) || exit;
  */
 function econozel_register_taxonomy_args( $args, $taxonomy, $object_types ) {
 
-	// Registering Post Tags
-	if ( 'post_tag' === $taxonomy ) {
+	// Registering Post Tags - this is fixed since WP 4.7. See WP#35614
+	if ( 'post_tag' === $taxonomy && version_compare( $GLOBALS['wp_version'], '4.7-beta1', '<' ) ) {
 
 		/**
 		 * Change caps definition when not already changed

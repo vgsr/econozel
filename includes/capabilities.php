@@ -261,8 +261,8 @@ function econozel_map_post_tag_meta_caps( $caps = array(), $cap = '', $user_id =
 			if ( user_can( $user_id, 'econozel_editor' ) ) {
 				$caps = array( 'econozel_editor' );
 
-			// Or default to original manage_categories
-			} else {
+			// Or default to original manage_categories when pre WP4.7
+			} elseif ( version_compare( $GLOABLS['wp_version'], '4.7-beta1', '<' ) ) {
 				$caps = array( 'manage_categories' );
 			}
 
@@ -280,8 +280,8 @@ function econozel_map_post_tag_meta_caps( $caps = array(), $cap = '', $user_id =
 			} elseif ( user_can( $user_id, 'econozel_editor' ) ) {
 				$caps = array( 'econozel_editor' );
 
-			// Or default to original edit_posts
-			} else {
+			// Or default to original edit_posts when pre WP4.7
+			} elseif ( version_compare( $GLOABLS['wp_version'], '4.7-beta1', '<' ) ) {
 				$caps = array( 'edit_posts' );
 			}
 
