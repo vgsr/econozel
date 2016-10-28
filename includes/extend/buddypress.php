@@ -45,10 +45,40 @@ class Econozel_BuddyPress {
 	 */
 	public function setup_actions() {
 
+		// Add activity settings
+		add_filter( 'econozel_admin_get_settings_fields', array( $this, 'add_settings_fields' ) );
+
 		// Activity component
 		if ( bp_is_active( 'activity' ) ) {
 			add_action( 'bp_loaded', array( $this, 'setup_activity_actions' ), 20 );
 		}
+	}
+
+	/** General ***************************************************************/
+
+	/**
+	 * Register additional admin settings fields
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $fields Settings fields
+	 * @return array Settings fields
+	 */
+	public function add_settings_fields( $fields ) {
+
+		// Activity component
+		if ( bp_is_active( 'activity' ) ) {
+
+			// Enable BP summaries
+			$fields['econozel_settings_general']['_econozel_bp_enable_summary'] = array(
+				'title'             => esc_html__( 'Article summaries', 'econozel' ),
+				'callback'          => 'econozel_admin_bp_setting_callback_enable_summary',
+				'sanitize_callback' => 'intval',
+				'args'              => array()
+			);
+		}
+
+		return $fields;
 	}
 
 	/** Activity **************************************************************/
@@ -66,6 +96,9 @@ class Econozel_BuddyPress {
 		// Modify queried activities
 		add_filter( 'bp_activity_get',                  array( $this, 'bp_activity_get'                    ), 10, 2 );
 		add_filter( 'bp_activity_get_where_conditions', array( $this, 'activity_filter_where_conditions'   ), 10, 2 );
+
+		// Generate post summary
+		add_filter( 'econozel_get_article_description', array( $this, 'get_post_summary' ), 10, 2 );
 	}
 
 	/**
@@ -337,6 +370,74 @@ class Econozel_BuddyPress {
 
 		return $where;
 	}
+
+	/**
+	 * Return a generated summary for the given post object
+	 *
+	 * @since 1.0.0
+	 *
+	 * @global WPDB $wpdb
+	 *
+	 * @param string $content Post content
+	 * @param WP_Post $post Post object
+	 * @return string Post content summary
+	 */
+	public function get_post_summary( $content, $article ) {
+		global $wpdb;
+
+		// Bail when BP's summaries are not enabled
+		if ( ! econozel_bp_enable_summary() ) {
+			return $content;
+		}
+
+		// Get BuddyPress
+		$bp = buddypress();
+
+		// Define activity item identifiers
+		$activity          = false;
+		$type              = 'new_' . $this->article_post_type;
+		$item_id           = get_current_blog_id();
+		$secondary_item_id = $article->ID;
+
+		// Check whether there was an activity item registered
+		$activity_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bp->activity->table_name} WHERE type = %s AND item_id = %d AND secondary_item_id = %d", $type, $item_id, $secondary_item_id ) );
+
+		// Get the original activity object
+		if ( $activity_id ) {
+			$activity = bp_activity_get_specific( array( 'activity_ids' => (int) $activity_id ) );
+			$activity = (array) $activity['activities'][0];
+		}
+
+		// When not found, setup fake activity object data
+		if ( ! $activity ) {
+			$activity = array(
+				'id'                => 0,
+				'user_id'           => $article->post_author,
+				'component'         => bp_is_active( 'blogs' ) ? $bp->blogs->id : 'blogs',
+				'type'              => $type,
+				'content'           => $content,
+				'primary_link'      => get_home_url( null, '?p=' . $article->ID ),
+				'item_id'           => $item_id,
+				'secondary_item_id' => $secondary_item_id,
+				'date_recorded'     => $article->post_date,
+				'hide_sitewide'     => 0,
+				'mptt_left'         => 0,
+				'mptt_right'        => 0,
+				'is_spam'           => 0,
+				'user_email'        => '',
+				'user_nicename'     => '',
+				'user_login'        => '',
+				'display_name'      => '',
+				'user_fullname'     => '',
+				'children'          => false,
+			);
+		}
+
+		// Generate summary from activity data for this post's summary
+		$content = bp_activity_create_summary( $article, $activity );
+
+		return $content;
+	}
 }
 
 /**
@@ -348,6 +449,35 @@ class Econozel_BuddyPress {
  */
 function econozel_buddypress() {
 	econozel()->extend->buddypress = new Econozel_BuddyPress;
+}
+
+/** Options ******************************************************************/
+
+/**
+ * Return whether to use BuddyPress to create Article summaries
+ *
+ * @since 1.0.0
+ *
+ * @param bool $default Optional. Defaults to False.
+ * @return bool Are BP summaries enabled?
+ */
+function econozel_bp_enable_summary( $default = false ) {
+	return (bool) apply_filters( 'econozel_bp_enable_summary', get_option( '_econozel_bp_enable_summary', $default ) );
+}
+
+/** Settings *****************************************************************/
+
+/**
+ * Display the content of the Article summaries settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_bp_setting_callback_enable_summary() { ?>
+
+	<input name="_econozel_bp_enable_summary" id="_econozel_bp_enable_summary" type="checkbox" value="1" <?php checked( econozel_bp_enable_summary() ); ?>>
+	<label for="_econozel_bp_enable_summary"><?php esc_html_e( 'Display more fancy article summaries when they contain media', 'econozel' ); ?></label>
+
+	<?php
 }
 
 endif; // class_exists
