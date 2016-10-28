@@ -232,6 +232,8 @@ function econozel_taxonomy_meta_field_input( $args = array() ) {
 	$attrs['name'] = $field_key;
 
 	switch ( $args['type'] ) {
+
+		// Number field
 		case 'number':
 
 			// Define value attribute
@@ -243,7 +245,17 @@ function econozel_taxonomy_meta_field_input( $args = array() ) {
 			$field = '<input type="number" %s/>';
 
 			break;
+
+		// Dropdown or multiselect field
 		case 'select':
+
+			// Select multiple?
+			$multiple = isset( $args['multiple'] ) && $args['multiple'];
+
+			// Get meta value
+			$value = get_term_meta( $term_id, $meta_key, ! $multiple );
+
+			// Setup field markup
 			$field = '<select %s>';
 
 			// Define no-option
@@ -255,15 +267,27 @@ function econozel_taxonomy_meta_field_input( $args = array() ) {
 
 			// Get input options from callable or array
 			$options = is_callable( $args['options'] ) ? call_user_func( $args['options'] ) : $args['options'];
+
+			// Walk the options
 			foreach ( (array) $options as $val => $label ) {
-				$field .= sprintf( '<option value="%s">%s</option>', esc_attr( $val ), esc_html( $label ) );
+
+				// Determine whether this value is selected
+				$selected = $multiple ? in_array( $val, $value ) : $val == $value;
+
+				// Define option
+				$field .= sprintf( '<option value="%s"%s>%s</option>', esc_attr( $val ), selected( $selected, true, false ), esc_html( $label ) );
 			}
 
 			$field .= '</select>';
+
 			break;
+
+		// Upload field
 		case 'file':
+
 			// Load upload library
 			break;
+
 		default:
 			$field = apply_filters( 'econozel_taxonomy_meta_field_input', $field, $args, $attrs );
 			break;
