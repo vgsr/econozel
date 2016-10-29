@@ -55,6 +55,12 @@ add_filter( 'econozel_get_article_description', 'strip_shortcodes' );
 add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
 add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 );
 
+/** Menus *********************************************************************/
+
+add_filter( 'customize_nav_menu_available_items', 'econozel_customize_nav_menu_items',          10, 4 );
+add_filter( 'customize_nav_menu_searched_items',  'econozel_customize_nav_menu_searched_items', 10, 2 );
+add_filter( 'wp_setup_nav_menu_item',             'econozel_setup_nav_menu_item'                      );
+
 /** Widgets *******************************************************************/
 
 add_action( 'econozel_widgets_init', array( 'Econozel_Articles_Widget', 'register_widget' ) );

@@ -232,6 +232,209 @@ function econozel_get_edition_issue_whitelist( $flat = true ) {
 	return $issues;
 }
 
+/** Menus *********************************************************************/
+
+/**
+ * Return the available custom Econozel nav menu items
+ *
+ * @since 1.0.0
+ *
+ * @return array Custom nav menu items
+ */
+function econozel_nav_menu_get_items() {
+
+	// Try to return items from cache
+	if ( ! empty( econozel()->wp_nav_menu_items ) ) {
+		return econozel()->wp_nav_menu_items;
+	} else {
+		econozel()->wp_nav_menu_items = new stdClass;
+	}
+
+	// Get the post type
+	$post_type  = econozel_get_article_post_type();
+	$volume_tax = get_taxonomy( econozel_get_volume_tax_id() );
+
+	// Setup van menu items
+	$items = (array) apply_filters( 'econozel_nav_menu_get_items', array(
+
+		// Econozel root
+		array(
+			'id'         => 'root',
+			'title'      => esc_html__( 'Econozel', 'econozel' ),
+			'type'       => $post_type,
+			'type_label' => esc_html_x( 'Econozel Page', 'customizer menu type label', 'econozel' ),
+			'url'        => econozel_get_root_url(),
+		),
+
+		// Volume Archives
+		array(
+			'id'         => 'volume-archive',
+			'title'      => $volume_tax->labels->all_items,
+			'type'       => $post_type,
+			'type_label' => esc_html_x( 'Econozel Page', 'customizer menu type label', 'econozel' ),
+			'url'        => econozel_get_volume_archive_url(),
+		),
+	) );
+
+	// Assign items to global
+	econozel()->wp_nav_menu_items = $items;
+
+	return $items;
+}
+
+/**
+ * Add custom Econozel pages to the availabel nav menu items
+ *
+ * @since 1.0.0
+ *
+ * @param array $items The nav menu items for the current post type.
+ * @param array $args An array of WP_Query arguments.
+ * @param WP_Post_Type $post_type The current post type object for this menu item meta box.
+ * @return array $items Nav menu items
+ */
+function econozel_nav_menu_items( $items, $args, $post_type ) {
+	global $_wp_nav_menu_placeholder;
+
+	// Econozel items
+	if ( econozel_get_article_post_type() === $post_type->name ) {
+		$_items = econozel_nav_menu_get_items();
+
+		// Append all custom items
+		foreach ( array_reverse( $_items ) as $item ) {
+			$_wp_nav_menu_placeholder = ( 0 > $_wp_nav_menu_placeholder ) ? intval( $_wp_nav_menu_placeholder ) -1 : -1;
+
+			// Append item
+			array_unshift( $items, (object) array(
+				'ID'           => $post_type->name . '-' . $item['id'],
+				'object_id'    => $_wp_nav_menu_placeholder,
+				'object'       => $item['id'],
+				'post_content' => '',
+				'post_excerpt' => '',
+				'post_title'   => $item['title'],
+				'post_type'    => 'nav_menu_item',
+				'type'         => $item['type'],
+				'type_label'   => $item['type_label'],
+				'url'          => $item['url'],
+			) );
+		}
+
+	}
+
+	return $items;
+}
+
+/**
+ * Add custom Econozel pages to the available menu items in the Customizer
+ *
+ * @since 1.0.0
+ *
+ * @param array $items The array of menu items.
+ * @param string $type The object type.
+ * @param string $object The object name.
+ * @param int $page The current page number.
+ * @return array Menu items
+ */
+function econozel_customize_nav_menu_items( $items, $type, $object, $page ) {
+
+	// First page of Econozel Articles list
+	if ( econozel_get_article_post_type() === $object && 0 === $page ) {
+		$_items = econozel_nav_menu_get_items();
+
+		// Append all custom items
+		foreach ( array_reverse( $_items ) as $item ) {
+
+			// Redefine item details
+			$item['object'] = $item['id'];
+			$item['id']     = $post_type . '-' . $item['id'];
+
+			// Append item
+			array_unshift( $items, $item );
+		}
+	}
+
+	return $items;
+}
+
+/**
+ * Add custom Econozel pages to the searched menu items in the Customizer
+ *
+ * @since 1.0.0
+ *
+ * @param array $items The array of menu items.
+ * @param array $args Includes 'pagenum' and 's' (search) arguments.
+ * @return array Menu items
+ */
+function econozel_customize_nav_menu_searched_items( $items, $args ) {
+
+	// Search query matches a part of the term 'econozel'
+	if ( false !== strpos( 'econozel', strtolower( $args['s'] ) ) ) {
+		$post_type        = econozel_get_article_post_type();
+		$post_type_object = get_post_type_object( $post_type );
+
+		// Append all custom items
+		foreach ( econozel_nav_menu_get_items() as $item ) {
+
+			// Redefine item details
+			$item['object'] = $item['id'];
+			$item['id']     = $post_type . '-' . $item['id'];
+
+			// Append item
+			$items[] = $item;
+		}
+
+		// Also Article archives
+		$items[] = array(
+			'id'         => $post_type . '-archive',
+			'title'      => $post_type_object->labels->all_items,
+			'type'       => 'post_type',
+			'type_label' => __( 'Post Type Archive' ),
+			'object'     => $post_type,
+			'url'        => get_post_type_archive_link( $post_type ),
+		);
+	}
+
+	return $items;
+}
+
+/**
+ * Setup details of nav menu item for Econozel pages
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post $menu_item Nav menu item object
+ * @return WP_Post Nav menu item object
+ */
+function econozel_setup_nav_menu_item( $menu_item ) {
+
+	// Econozel page
+	if ( 'econozel' === $menu_item->type ) {
+
+		// Check the page
+		switch ( $menu_item->object ) {
+
+			// Econozel root
+			case 'root' :
+				$menu_item->url = econozel_get_root_url();
+				break;
+
+			// Volume archives
+			case 'volume-archive' :
+				$menu_item->url = econozel_get_volume_archive_url();
+				break;
+		}
+
+		// Enable plugin filtering
+		$menu_item = apply_filters( 'econozel_setup_nav_menu_item', $menu_item );
+
+		// Prevent rendering when the user has no access
+		if ( ! econozel_check_access() || empty( $menu_item->url ) ) {
+			$menu_item->_invalid = true;
+		}
+	}
+
+	return $menu_item;
+}
+
 /** Utility *******************************************************************/
 
 /**
