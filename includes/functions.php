@@ -264,6 +264,7 @@ function econozel_nav_menu_get_items() {
 			'type'       => $post_type,
 			'type_label' => esc_html_x( 'Econozel Page', 'customizer menu type label', 'econozel' ),
 			'url'        => econozel_get_root_url(),
+			'current'    => econozel_is_root(),
 		),
 
 		// Volume Archives
@@ -273,6 +274,7 @@ function econozel_nav_menu_get_items() {
 			'type'       => $post_type,
 			'type_label' => esc_html_x( 'Econozel Page', 'customizer menu type label', 'econozel' ),
 			'url'        => econozel_get_volume_archive_url(),
+			'current'    => econozel_is_volume_archive(),
 		),
 	) );
 
@@ -299,11 +301,11 @@ function econozel_nav_menu_items( $items, $args, $post_type ) {
 	if ( econozel_get_article_post_type() === $post_type->name ) {
 		$_items = econozel_nav_menu_get_items();
 
-		// Append all custom items
+		// Prepend all custom items
 		foreach ( array_reverse( $_items ) as $item ) {
 			$_wp_nav_menu_placeholder = ( 0 > $_wp_nav_menu_placeholder ) ? intval( $_wp_nav_menu_placeholder ) -1 : -1;
 
-			// Append item
+			// Prepend item
 			array_unshift( $items, (object) array(
 				'ID'           => $post_type->name . '-' . $item['id'],
 				'object_id'    => $_wp_nav_menu_placeholder,
@@ -317,7 +319,6 @@ function econozel_nav_menu_items( $items, $args, $post_type ) {
 				'url'          => $item['url'],
 			) );
 		}
-
 	}
 
 	return $items;
@@ -340,14 +341,14 @@ function econozel_customize_nav_menu_items( $items, $type, $object, $page ) {
 	if ( econozel_get_article_post_type() === $object && 0 === $page ) {
 		$_items = econozel_nav_menu_get_items();
 
-		// Append all custom items
+		// Prepend all custom items
 		foreach ( array_reverse( $_items ) as $item ) {
 
 			// Redefine item details
 			$item['object'] = $item['id'];
 			$item['id']     = $post_type . '-' . $item['id'];
 
-			// Append item
+			// Prepend item
 			array_unshift( $items, $item );
 		}
 	}
@@ -409,18 +410,24 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 	// Econozel page
 	if ( 'econozel' === $menu_item->type ) {
 
-		// Check the page
-		switch ( $menu_item->object ) {
+		// This is a custom page
+		if ( $item = wp_list_filter( econozel_nav_menu_get_items(), array( 'id' => $menu_item->object ) ) ) {
+			$item = array_values( $item );
+			$item = (object) $item[0];
 
-			// Econozel root
-			case 'root' :
-				$menu_item->url = econozel_get_root_url();
-				break;
+			// Set item details
+			$menu_item->type_label = $item->type_label;
+			$menu_item->url        = $item->url;
 
-			// Volume archives
-			case 'volume-archive' :
-				$menu_item->url = econozel_get_volume_archive_url();
-				break;
+			// Set item classes
+			if ( $item->current && ! empty( $menu_item->url ) ) {
+				if ( is_array( $menu_item->classes ) ) {
+					$menu_item->classes[] = 'current_page_item';
+					$menu_item->classes[] = 'current-menu-item';
+				} else {
+					$menu_item->classes = array( 'current_page_item', 'current-menu-item' );
+				}
+			}
 		}
 
 		// Enable plugin filtering
