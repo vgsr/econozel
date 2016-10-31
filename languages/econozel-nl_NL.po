@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Econozel\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-14 15:00+0000\n"
-"PO-Revision-Date: 2016-10-14 15:00+0000\n"
+"POT-Creation-Date: 2016-10-31 15:34+0000\n"
+"PO-Revision-Date: 2016-10-31 16:01+0000\n"
 "Last-Translator: Laurens Offereins <lmoffereins@gmail.com>\n"
-"Language-Team: Dutch\n"
+"Language-Team: Dutch (Netherlands)\n"
 "Language: nl-NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1\n"
 "MIME-Version: 1.0\n"
@@ -13,71 +13,139 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: includes/settings.php:223
-msgid "Note: when showing volume editions this setting is ignored"
-msgstr "NB: bij edities in een jaargang wordt deze instelling genegeerd"
+#: includes/functions.php:281
+msgctxt "customizer menu type label"
+msgid "Econozel Page"
+msgstr "Econozel Pagina"
 
-#: econozel.php:230
+#: includes/extend/buddypress.php:74
+msgid "Article summaries"
+msgstr "Artikelsamenvatting"
+
+#: includes/extend/buddypress.php:126
+msgid "New Econozel Article"
+msgstr "Nieuw Econozelartikel"
+
+#: includes/extend/buddypress.php:128
+#, php-format
+msgid "%1$s posted the <a href=\"%2$s\">article</a>"
+msgstr "%1$s schreef een <a href=\"%2$s\">artikel</a>"
+
+#: includes/extend/buddypress.php:129
+#, php-format
+msgid "%1$s posted the <a href=\"%2$s\">article</a>, on the site %3$s"
+msgstr "%1$s schreef een <a href=\"%2$s\">artikel</a>, op de site %3$s"
+
+#: includes/extend/buddypress.php:130
+#, php-format
+msgid "%1$s posted the article %2$s"
+msgstr "%1$s schreef het artikel %2$s"
+
+#: includes/extend/buddypress.php:131
+#, php-format
+msgid "%1$s posted the article %2$s, on the site %3$s"
+msgstr "%1$s schreef het artikel %2$s, op de site %3$s"
+
+#: includes/extend/buddypress.php:132
+#, php-format
+msgid "%1$s posted the article %2$s in edition %3$s"
+msgstr "%1$s schreef het artikel %2$s in editie %3$s"
+
+#: includes/extend/buddypress.php:133
+#, php-format
+msgid "%1$s posted the article %2$s in edition %3$s, on the site %4$s"
+msgstr "%1$s schreef het artikel %2$s in editie %3$s, op de site %4$s"
+
+#: includes/extend/buddypress.php:140
+msgid "New Article Comment"
+msgstr "Opmerking bij een artikel gepost"
+
+#: includes/extend/buddypress.php:142
+#, php-format
+msgid "%1$s commented on the <a href=\"%2$s\">article</a>"
+msgstr "%1$s reageerde op een <a href=\"%2$s\">artikel</a>"
+
+#: includes/extend/buddypress.php:143
+#, php-format
+msgid "%1$s commented on the <a href=\"%2$s\">article</a>, on the site %3$s"
+msgstr "%1$s reageerde op een <a href=\"%2$s\">artikel</a>, op de site %3$s"
+
+#: includes/extend/buddypress.php:168
+#, php-format
+msgid "%1$s commented on the article %2$s"
+msgstr "%1$s reageerde op het artikel %2$s"
+
+#: includes/extend/buddypress.php:169
+#, php-format
+msgid "%1$s commented on the article %2$s, on the site %3$s"
+msgstr "%1$s reageerde op het artikel %2$s, op de site %3$s"
+
+#: includes/extend/buddypress.php:478
+msgid "Display more fancy article summaries when they contain media"
+msgstr "Toon een betere artikelsamenvatting als die media bevat"
+
+#: econozel.php:233
 msgid "Econozel articles"
 msgstr "Econozel artikelen"
 
-#: includes/admin.php:114 includes/admin.php:143
+#: includes/admin.php:119 includes/admin.php:148
 msgid "Econozel Settings"
 msgstr "Econozel Instellingen"
 
-#: includes/admin.php:114
+#: includes/admin.php:119
 msgid "Settings"
 msgstr "Instellingen"
 
-#: includes/admin.php:208 includes/admin.php:403 includes/admin.php:405
+#: includes/admin.php:213 includes/admin.php:409 includes/admin.php:411
 msgid "Page Number"
 msgstr "Pagina"
 
-#: includes/admin.php:319 includes/admin.php:463
+#: includes/admin.php:325 includes/admin.php:473
 msgid "Edition"
 msgstr "Editie"
 
-#: includes/admin.php:369
+#: includes/admin.php:375
 msgid "Article Details"
 msgstr "Artikel Details"
 
-#: includes/admin.php:395
+#: includes/admin.php:401
 msgid "Volume & Edition"
 msgstr "Jaargang & Editie"
 
-#: includes/admin.php:415
+#: includes/admin.php:421
+#, php-format
 msgid "Page Number: %d"
 msgstr "Pagina: %d"
 
-#: includes/admin.php:421
+#: includes/admin.php:427
 msgid "&mdash; Not published in an Edition &mdash;"
 msgstr "&mdash; Niet gepubliceerd in een editie &mdash;"
 
-#: includes/admin.php:596 includes/admin.php:621 includes/admin.php:661 
+#: includes/admin.php:660 includes/admin.php:685 includes/admin.php:725
 #: includes/settings.php:119
 msgid "Volume"
 msgstr "Jaargang"
 
-#: includes/admin.php:603 includes/admin.php:631
+#: includes/admin.php:667 includes/admin.php:695
 msgid "The Volume is the periodic collection an Edition belongs to."
 msgstr "De jaagang is de periodieke collectie waartoe een editie behoort."
 
 #. Name of the plugin
-#: includes/admin.php:725 includes/articles.php:37 includes/template.php:845 
-#: includes/template.php:853 includes/template.php:888 
-#: includes/theme-compat.php:76
+#: includes/admin.php:789 includes/articles.php:37 includes/functions.php:258
+#: includes/template.php:845 includes/template.php:853
+#: includes/template.php:888 includes/theme-compat.php:76
 msgid "Econozel"
 msgstr "Econozel"
 
-#: includes/admin.php:730
+#: includes/admin.php:794
 msgid "Econozel Role"
 msgstr "Econozel rol"
 
-#: includes/admin.php:733
+#: includes/admin.php:797
 msgid "&mdash; No Econozel role &mdash;"
 msgstr "&mdash; Geen Econozel rol &mdash;"
 
-#: includes/articles.php:36
+#: includes/articles.php:36 includes/extend/buddypress.php:127
 msgid "Econozel Articles"
 msgstr "Econozel Artikelen"
 
@@ -95,7 +163,8 @@ msgstr "Nieuw artikel"
 
 #: includes/articles.php:41
 msgid "Create New Article"
-msgstr "Nieuw artikel aanmaken"
+msgstr ""
+"Nieuw artikel toevoegen\n"
 
 #: includes/articles.php:42
 msgid "Edit"
@@ -146,6 +215,7 @@ msgid "Articles list"
 msgstr "Artkelenlijst"
 
 #: includes/articles.php:535
+#, php-format
 msgid "Page %d"
 msgstr "Pagina %d"
 
@@ -222,14 +292,17 @@ msgid "The cover image of the published Edition."
 msgstr "De omslagfoto van de gepubliceerde editie"
 
 #: includes/editions.php:683
+#, php-format
 msgid "Issue %d"
 msgstr "Uitgave %d"
 
 #: includes/editions.php:730 includes/volumes.php:472
+#, php-format
 msgid "View articles in %s"
 msgstr "Bekijk artikelen in %s"
 
 #: includes/editions.php:812
+#, php-format
 msgid "%d article"
 msgid_plural "%d articles"
 msgstr[0] "%d artikel"
@@ -291,15 +364,19 @@ msgstr "Hoeveel jaargangen en edities per pagina te tonen"
 msgid "per page"
 msgstr "per pagina"
 
+#: includes/settings.php:223
+msgid "Note: when showing volume editions this setting is ignored"
+msgstr "NB: bij edities in een jaargang wordt deze instelling genegeerd"
+
 #: includes/settings.php:241
 msgid "Customize your econozel slugs"
 msgstr "Pas je econozel slugs aan"
 
-#: includes/taxonomy.php:649
+#: includes/taxonomy.php:678
 msgid "Current Edition"
 msgstr "Huidige editie"
 
-#: includes/taxonomy.php:729
+#: includes/taxonomy.php:758
 msgid "&mdash; No Edition &mdash;"
 msgstr "&mdash; Geen editie &mdash;"
 
@@ -307,22 +384,25 @@ msgstr "&mdash; Geen editie &mdash;"
 msgid "Volume Archives"
 msgstr "Jaargangarchief"
 
-#: includes/template.php:892 includes/theme-compat.php:90 
+#: includes/template.php:892 includes/theme-compat.php:90
 #: includes/volumes.php:36
 msgid "Econozel Volumes"
 msgstr "Econozel Jaargangen"
 
 #: includes/template.php:896
+#, php-format
 msgctxt "Single volume title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
 #: includes/template.php:906
+#, php-format
 msgctxt "Numeric issue edition title"
 msgid "Econozel %s"
 msgstr "Econozel %s"
 
 #: includes/template.php:925
+#, php-format
 msgid ""
 "This page lists recent Econozel activity on this site. You can browse the <a "
 "title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
@@ -343,6 +423,7 @@ msgid "Permalink to the article archives"
 msgstr "Link naar het artikelarchief"
 
 #: includes/template.php:929
+#, php-format
 msgid ""
 "This page lists all Econozel volumes with their respective editions. You can "
 "browse here to find articles that have been archived or published on this "
@@ -355,6 +436,7 @@ msgstr ""
 "artikelarchief</a>."
 
 #: includes/template.php:933
+#, php-format
 msgid ""
 "This page lists all Econozel articles archived on this site. You can browse "
 "them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
@@ -414,7 +496,8 @@ msgstr "Jaargang bijwerken"
 
 #: includes/volumes.php:45
 msgid "Add New Volume"
-msgstr "Nieuwe jaargang aanmaken"
+msgstr ""
+"Nieuwe jaargang toevoegen\n"
 
 #: includes/volumes.php:46
 msgid "New Volume Name"
@@ -425,6 +508,7 @@ msgid "View Volume"
 msgstr "Jaargang bekijken"
 
 #: includes/volumes.php:436
+#, php-format
 msgid "Volume %s"
 msgstr "Jaargang %s"
 
@@ -436,7 +520,7 @@ msgstr "Econozel Recente Artikelen"
 msgid "A list of the most recent articles."
 msgstr "Een lijst van de meest recente artikelen."
 
-#: includes/widgets/class-econozel-articles-widget.php:66 
+#: includes/widgets/class-econozel-articles-widget.php:66
 #: templates/default/econozel/content-econozel.php:23
 msgid "Recent Articles"
 msgstr "Recente Artikelen"
@@ -446,6 +530,7 @@ msgid "There were no articles found."
 msgstr "Er zijn geen artikelen gevonden."
 
 #: includes/widgets/class-econozel-articles-widget.php:87
+#, php-format
 msgid "Articles in %s"
 msgstr "Artikelen in %s"
 
