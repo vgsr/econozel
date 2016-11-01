@@ -380,6 +380,9 @@ function econozel_get_caps_for_role( $role = '' ) {
 				'edit_post_tags'                  => true,
 				'delete_post_tags'                => true,
 				'assign_post_tags'                => true,
+
+				// Attachments
+				'upload_files'                    => true,
 			);
 
 			break;
