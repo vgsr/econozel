@@ -27,6 +27,7 @@ function econozel_get_article_post_type_caps() {
 		'edit_others_posts'   => 'edit_others_econozel_articles',
 		'publish_posts'       => 'publish_econozel_articles',
 		'read_private_posts'  => 'read_private_econozel_articles',
+		'delete_post'         => 'delete_econozel_article',
 		'delete_posts'        => 'delete_econozel_articles',
 		'delete_others_posts' => 'delete_others_econozel_articles'
 	) );
@@ -71,14 +72,57 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 				$post_type = get_post_type_object( econozel_get_article_post_type() );
 				$caps      = array();
 
-				// User is author so allow edit
+				// User is author so allow editing
 				// @todo Account for multiple authors
 				// @todo Consider applying a time window to limit editing
-				if ( $user_id === (int) $article->post_author && user_can( $user_id, $post_type->cap->edit_posts ) ) {
+				if ( $article->post_author && $user_id === (int) $article->post_author && user_can( $user_id, $post_type->cap->edit_posts ) ) {
 					$caps[] = 'read';
 
 				// Defer to edit_others_posts
 				} elseif ( user_can( $user_id, $post_type->cap->edit_others_posts ) ) {
+					$caps[] = 'read';
+
+				// Unknown, so block access
+				} else {
+					$caps[] = 'do_not_allow';
+				}
+			}
+
+			break;
+
+		/** Deleting **********************************************************/
+
+		case 'delete_econozel_articles' :
+
+			// Only allow Econozel Editors
+			if ( user_can( $user_id, 'econozel_editor' ) ) {
+				$caps = array( 'econozel_editor' );
+
+			// Prevent deleting
+			} else {
+				$caps = array( 'do_not_allow' );
+			}
+
+			break;
+
+		case 'delete_econozel_article' :
+
+			// Get the Article
+			$article = econozel_get_article( $args[0] );
+			if ( ! empty( $article ) ) {
+
+				// Get caps for post type object
+				$post_type = get_post_type_object( econozel_get_article_post_type() );
+				$caps      = array();
+
+				// User is author so allow deleting
+				// @todo Account for multiple authors
+				// @todo Consider applying a time window to limit editing
+				if ( $article->post_author && $user_id === (int) $article->post_author && user_can( $user_id, $post_type->cap->edit_posts ) ) {
+					$caps[] = 'read';
+
+				// Defer to delete_others_posts
+				} elseif ( user_can( $user_id, $post_type->cap->delete_others_posts ) ) {
 					$caps[] = 'read';
 
 				// Unknown, so block access
@@ -94,7 +138,6 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 		case 'edit_others_econozel_articles' :
 		case 'publish_econozel_articles' :
 		case 'read_private_econozel_articles' :
-		case 'delete_econozel_articles' :
 		case 'delete_others_econozel_articles' :
 
 			// Only allow Econozel Editors
