@@ -45,7 +45,7 @@ function econozel_parse_query( $posts_query ) {
 	/**
 	 * 404 and bail when the user has no Econozel access.
 	 *
-	 * For the Article Archive and Single Archive pages, this cannot be done,
+	 * For the Article archives and Single Article pages, this cannot be done,
 	 * because the 'public' property of the post type determines whether the
 	 * post type's query arg is registered. Consequently, these pages will
 	 * not catch the request correctly and default to querying the blog index.
@@ -72,7 +72,7 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->found_posts   = 0;
 		$posts_query->max_num_pages = 0;
 
-	// Volume Archive
+	// Volume archives
 	} elseif ( ! empty( $is_volume_archive ) ) {
 
 		// 404 and bail when Volumes are not returned in query
@@ -170,7 +170,7 @@ function econozel_parse_query( $posts_query ) {
 	}
 
 	// This is a Post Tag query
-	if ( $posts_query->is_tag() ) {
+	if ( $posts_query->is_tag() && econozel_check_access() ) {
 
 		// Add Article to the query's post type
 		$post_type   = (array) $posts_query->get( 'post_type' );
