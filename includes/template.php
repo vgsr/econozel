@@ -168,6 +168,15 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->found_posts   = $eco->edition_query->found_terms;
 		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
 	}
+
+	// This is a Post Tag query
+	if ( $posts_query->is_tag() ) {
+
+		// Add Article to the query's post type
+		$post_type   = (array) $posts_query->get( 'post_type' );
+		$post_type[] = econozel_get_article_post_type();
+		$posts_query->set( 'post_type', $post_type );
+	}
 }
 
 /**
