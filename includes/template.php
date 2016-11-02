@@ -311,6 +311,77 @@ function econozel_bypass_wp_query( $retval, $query ) {
 }
 
 /**
+ * Modify the WHERE clause for the post query
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb
+ *
+ * @param WP_Query $query
+ */
+function econozel_posts_where_request( $where, $query ) {
+	global $wpdb;
+
+	// Bail when not an Econozel query
+	if ( econozel_get_article_post_type() !== $query->get( 'post_type' ) )
+		return $where;
+
+	// For non-Econozel Editors, hide other's draft/pending posts
+	if ( ! current_user_can( 'econozel_editor' ) ) {
+
+		// Collect 'private' post statuses
+		$post_stati = "'" . implode( "','", array( 'draft', 'pending' ) ) . "'";
+
+		// Append to WHERE clause
+		// @todo Consider multiple authors
+		$where .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_status NOT IN ($post_stati) OR {$wpdb->posts}.post_author = %d )", get_current_user_id() );
+	}
+
+	return $where;
+}
+
+/**
+ * Modify the post counts for a given post type
+ *
+ * @since 1.0.0
+ *
+ * @param array $counts Post counts per post status
+ * @param string $type Post type name
+ * @param string $perm Permission to determine if posts are 'readable'.
+ * @return array Post counts
+ */
+function econozel_filter_count_posts( $counts, $type, $perm ) {
+
+	// Bail when not an Econozel query
+	if ( econozel_get_article_post_type() !== $type )
+		return $counts;
+
+	// For non-Econozel Editors, hide other's draft/pending posts
+	if ( ! current_user_can( 'econozel_editor' ) ) {
+
+		// Define count query args. Note that we do not require to query
+		// for 'post_author', since the WHERE filter will handle authorship.
+		$query_args = array(
+			'post_type'      => econozel_get_article_post_type(),
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		);
+
+		// Do specific count queries
+		$draft   = new WP_Query( array_merge( array( 'post_status' => 'draft'   ), $query_args ) );
+		$pending = new WP_Query( array_merge( array( 'post_status' => 'pending' ), $query_args ) );
+
+		// Only display the current user's posts
+		$counts->draft   = $draft->post_count;
+		$counts->pending = $pending->post_count;
+	}
+
+	return $counts;
+}
+
+/** Is_* **********************************************************************/
+
+/**
  * Check if current page is the root page
  *
  * @since 1.0.0
