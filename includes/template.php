@@ -169,8 +169,8 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
 	}
 
-	// This is a Post Tag query
-	if ( $posts_query->is_tag() && econozel_check_access() ) {
+	// This is a Post Tag or Author query
+	if ( econozel_check_access() && ( $posts_query->is_tag() || $posts_query->is_author() ) ) {
 
 		// Add Article to the query's post type
 		$post_type   = (array) $posts_query->get( 'post_type' );
