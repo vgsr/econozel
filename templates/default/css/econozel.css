@@ -28,3 +28,7 @@
 	content: ' \2013'; /* &ndash; */
 	margin: 0 5px;
 }
+
+.econozel .entry-content .widget_recent_entries .post-date {
+	opacity: .7;
+}

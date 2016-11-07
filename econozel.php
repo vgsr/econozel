@@ -132,6 +132,9 @@ final class Econozel {
 		require( $this->includes_dir . 'widgets/class-econozel-articles-widget.php' );
 		require( $this->includes_dir . 'widgets/class-econozel-comments-widget.php' );
 
+		// Utility
+		require( $this->includes_dir . 'classes/class-walker-econozel-article.php' );
+
 		// Administration
 		if ( is_admin() ) {
 			require( $this->includes_dir . 'admin.php'    );

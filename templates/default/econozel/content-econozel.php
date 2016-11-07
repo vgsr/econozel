@@ -20,17 +20,19 @@ $widget_args = array(
 
 // Recent Articles
 the_widget( 'Econozel_Articles_Widget', array(
-	'title'            => esc_html__( 'Recent Articles', 'econozel' )
+	'title'            => esc_html__( 'Recent Articles', 'econozel' ),
+	'show_date'        => true,
 ), $widget_args );
 
 // Active Articles
 the_widget( 'Econozel_Articles_Widget', array(
 	'title'            => esc_html__( 'Active Articles', 'econozel' ),
 	'none_found'       => esc_html__( 'It seems there have been no articles commented on lately.', 'econozel' ),
-	'comment_activity' => 30
+	'comment_activity' => 30,
+	'show_date'        => true,
 ), $widget_args );
 
 // Recent Comments
 the_widget( 'Econozel_Comments_Widget', array(
-	'title'            => esc_html__( 'Recent Comments', 'econozel' )
+	'title'            => esc_html__( 'Recent Comments', 'econozel' ),
 ), $widget_args );
