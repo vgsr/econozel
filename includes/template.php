@@ -221,7 +221,7 @@ function econozel_parse_query_vars( $posts_query ) {
 }
 
 /**
- * Add checks for plugin conditions to posts_clauses action
+ * Add checks for plugin conditions to posts_clauses filter
  *
  * @since 1.0.0
  *
@@ -328,7 +328,7 @@ function econozel_bypass_wp_query( $retval, $query ) {
  *
  * @param WP_Query $query
  */
-function econozel_posts_where_request( $where, $query ) {
+function econozel_posts_where( $where, $query ) {
 	global $wpdb;
 
 	// Bail when not an Econozel query
@@ -368,8 +368,8 @@ function econozel_filter_count_posts( $counts, $type, $perm ) {
 	// For non-Econozel Editors, hide other's draft/pending posts
 	if ( ! current_user_can( 'econozel_editor' ) ) {
 
-		// Define count query args. Note that we do not require to query
-		// for 'post_author', since the WHERE filter will handle authorship.
+		// Define count query args. Note that we do not require to query for
+		// 'post_author' here, since the WHERE filter will handle authorship.
 		$query_args = array(
 			'post_type'      => econozel_get_article_post_type(),
 			'posts_per_page' => -1,

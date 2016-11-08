@@ -32,10 +32,10 @@ add_filter( 'term_link',                   'econozel_term_link',                
 
 add_action( 'parse_query',                 'econozel_parse_query',               2    ); // Early for overrides
 add_action( 'parse_query',                 'econozel_parse_query_vars',         10    );
-add_action( 'posts_clauses',               'econozel_posts_clauses',            10, 2 );
+add_filter( 'posts_where',                 'econozel_posts_where',              10, 2 );
+add_filter( 'posts_clauses',               'econozel_posts_clauses',            10, 2 );
 add_filter( 'posts_request',               'econozel_filter_wp_query',          10, 2 );
 add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          10, 2 ); // Since WP 4.6
-add_filter( 'posts_where_request',         'econozel_posts_where_request',      10, 2 );
 add_filter( 'wp_count_posts',              'econozel_filter_count_posts',       10, 3 );
 
 /** Template ******************************************************************/
