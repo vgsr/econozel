@@ -342,7 +342,7 @@ function econozel_posts_where( $where, $query ) {
 		$post_stati = "'" . implode( "','", array( 'draft', 'pending' ) ) . "'";
 
 		// Append to WHERE clause
-		// @todo Consider multiple authors
+		// TODO: Account for multiple authors
 		$where .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_status NOT IN ($post_stati) OR {$wpdb->posts}.post_author = %d )", get_current_user_id() );
 	}
 
@@ -369,7 +369,8 @@ function econozel_filter_count_posts( $counts, $type, $perm ) {
 	if ( ! current_user_can( 'econozel_editor' ) ) {
 
 		// Define count query args. Note that we do not require to query for
-		// 'post_author' here, since the WHERE filter will handle authorship.
+		// 'post_author' here, since the above defined WHERE filter will handle
+		// authorship in the post query for private post statuses.
 		$query_args = array(
 			'post_type'      => econozel_get_article_post_type(),
 			'posts_per_page' => -1,
@@ -834,7 +835,7 @@ function econozel_has_custom_query() {
 	// Define return value
 	$retval = false;
 
-	// Volume Archive
+	// Volume archives
 	if ( econozel_is_volume_archive() && econozel_has_volumes()  ) {
 		$retval = true;
 
@@ -862,7 +863,7 @@ function econozel_in_the_loop() {
 	// Define return value
 	$retval = false;
 
-	// Volume Archive
+	// Volume archives
 	if ( econozel_is_volume_archive() && econozel_in_the_volume_loop()  ) {
 		$retval = true;
 
@@ -932,15 +933,15 @@ function econozel_document_title_parts( $title = array() ) {
 	if ( econozel_is_root() ) {
 		$_title = esc_html__( 'Econozel', 'econozel' );
 
-	// Volume Archive
+	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$_title = esc_html__( 'Volume Archives', 'econozel' );
 
-	// Volume page
+	// Single Volume
 	} elseif ( econozel_is_volume() ) {
 		$_title = econozel_get_volume_title();
 
-	// Edition page
+	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 		$_title = econozel_get_edition_title();
 	}
@@ -967,15 +968,15 @@ function econozel_get_the_archive_title( $title = '' ) {
 	if ( econozel_is_root() ) {
 		$title = esc_html__( 'Econozel', 'econozel' );
 
-	// Volume Archive
+	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$title = sprintf( __( 'Archives: %s' ), esc_html__( 'Econozel Volumes', 'econozel' ) );
 
-	// Volume page
+	// Single Volume
 	} elseif ( econozel_is_volume() ) {
 		$title = sprintf( _x( 'Econozel %s', 'Single volume title', 'econozel' ), econozel_get_volume_title() );
 
-	// Edition page
+	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 
 		// Get Edition title
@@ -1004,11 +1005,11 @@ function econozel_get_the_archive_description( $description = '' ) {
 	if ( econozel_is_root() ) {
 		$description = sprintf( __( 'This page lists recent Econozel activity on this site. You can browse the <a title="%1$s" href="%2$s">volume archives</a> or <a title="%3$s" href="%4$s">article archives</a> to find all articles that have been archived or published on this site.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the article archives', 'econozel' ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ) );
 
-	// Volume archive
+	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel volumes with their respective editions. You can browse here to find articles that have been archived or published on this site. To view all published articles, go to the <a title="%1$s" href="%2$s">article archives</a>.', 'econozel' ), esc_attr__( 'Permalink to the article archives', 'econozel' ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ) );
 
-	// Article archive
+	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel articles archived on this site. You can browse them here or through the registered <a title="%1$s" href="%2$s">volumes and editions</a> in which they have been published.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ) );
 	}
@@ -1063,14 +1064,14 @@ function econozel_adjacent_post_link( $output, $format, $link, $post, $adjacent 
 	if ( econozel_is_volume() ) {
 		if ( $term = econozel_get_adjacent_volume( $previous ) ) {
 			$title = econozel_get_volume_title( $term );
-			$_url  = econozel_get_volume_url( $term );
+			$url   = econozel_get_volume_url( $term );
 		}
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 		if ( $term = econozel_get_adjacent_edition( $previous ) ) {
 			$title = econozel_get_edition_title( $term );
-			$_url  = econozel_get_edition_url( $term );
+			$url   = econozel_get_edition_url( $term );
 		}
 	}
 
@@ -1078,7 +1079,7 @@ function econozel_adjacent_post_link( $output, $format, $link, $post, $adjacent 
 	if ( $term ) {
 		$inlink = str_replace( '%title', $title, $link );
 		$inlink = str_replace( '%date', '', $inlink ); // There are no dates on Volumes/Editions
-		$inlink = sprintf( '<a href="%s" rel="%s">%s</a>', $_url, $previous ? 'prev' : 'next', $inlink );
+		$inlink = sprintf( '<a href="%s" rel="%s">%s</a>', $url, $previous ? 'prev' : 'next', $inlink );
 		$output = str_replace( '%link', $inlink, $format );
 	}
 
@@ -1218,7 +1219,7 @@ function econozel_the_posts_navigation( $args = array() ) {
 	 */
 	function econozel_get_the_posts_navigation( $args = array() ) {
 
-		// Volume Archive
+		// Volume archives
 		if ( econozel_is_volume_archive() ) {
 			$args = array(
 				'prev_text'          => esc_html__( 'Older volumes',      'econozel' ),
@@ -1226,7 +1227,7 @@ function econozel_the_posts_navigation( $args = array() ) {
 				'screen_reader_text' => esc_html__( 'Volumes navigation', 'econozel' )
 			);
 
-		// Article Archive
+		// Article archives
 		} elseif ( econozel_is_article_archive() ) {
 			$args = array(
 				'prev_text'          => esc_html__( 'Older articles',      'econozel' ),

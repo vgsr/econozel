@@ -127,7 +127,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	if ( econozel_is_theme_compat_active() ) {
 
 		// Remove filters on 'the_content'
-		// @todo When to restore the filters?
+		// TODO: When to restore the filters?
 		remove_all_filters( 'the_content' );
 
 		// Use a theme compat template

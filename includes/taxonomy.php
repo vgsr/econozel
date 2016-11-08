@@ -335,8 +335,8 @@ function econozel_taxonomy_meta_save_fields( $term_id ) {
 	foreach ( $fields as $meta_key => $args ) {
 
 		// Define field keys
-		$field_key    = "{$term->taxonomy}-{$meta_key}";
-		$nonce_key    = $field_key . '_nonce';
+		$field_key = "{$term->taxonomy}-{$meta_key}";
+		$nonce_key = $field_key . '_nonce';
 
 		// Skip when nonce does not verify
 		if ( ! isset( $_POST[ $nonce_key ] ) || ! wp_verify_nonce( $_POST[ $nonce_key ], $nonce_key ) )
