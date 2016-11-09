@@ -1018,18 +1018,18 @@ function econozel_get_the_archive_description( $description = '' ) {
 }
 
 /**
- * Modify the object's classes
+ * Modify the item's CSS classes
  *
- * Applies to both post and term objects.
+ * Applies to both post and term items.
  *
  * @since 1.0.0
  *
- * @param array $classes Object classes
- * @return array Object classes
+ * @param array $classes Item CSS classes
+ * @return array Item CSS classes
  */
-function econozel_filter_object_class( $classes ) {
+function econozel_filter_item_class( $classes ) {
 
-	// When in Theme Compat mode and looping objects on the page
+	// When in Theme Compat mode and looping items on the page
 	if ( econozel_is_theme_compat_active() && econozel_in_the_loop() ) {
 
 		// Remove 'hentry' class, because when doing theme-compat

@@ -45,8 +45,8 @@ add_filter( 'document_title_parts',        'econozel_document_title_parts'      
 add_filter( 'body_class',                  'econozel_body_class'                  );
 add_filter( 'get_the_archive_title',       'econozel_get_the_archive_title'       );
 add_filter( 'get_the_archive_description', 'econozel_get_the_archive_description' );
-add_filter( 'post_class',                  'econozel_filter_object_class'         );
-add_filter( 'econozel_term_class',         'econozel_filter_object_class'         );
+add_filter( 'post_class',                  'econozel_filter_item_class'           );
+add_filter( 'econozel_term_class',         'econozel_filter_item_class'           );
 add_filter( 'previous_post_link',          'econozel_adjacent_post_link',   10, 5 );
 add_filter( 'next_post_link',              'econozel_adjacent_post_link',   10, 5 );
 
