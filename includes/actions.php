@@ -83,7 +83,7 @@ add_action( 'set_user_role',          'econozel_handle_set_user_role',   10, 3 )
 /** Admin *********************************************************************/
 
 if ( is_admin() ) {
-	add_action( 'init', 'econozel_admin' );
+	add_action( 'econozel_init', 'econozel_admin' );
 }
 
 /** Extend ********************************************************************/
