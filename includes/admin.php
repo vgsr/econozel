@@ -78,6 +78,7 @@ class Econozel_Admin {
 		add_action( "add_meta_boxes_{$post_type}",              array( $this, 'article_meta_boxes'     ), 99    );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_bulk_edit' )        );
+		add_filter( 'wp_dropdown_users_args',                   array( $this, 'dropdown_users_args'    ), 10, 2 );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
@@ -587,6 +588,41 @@ class Econozel_Admin {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Modify the query args for the users dropdown
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $query_args Query args for `WP_User_Query`
+	 * @param array $args Dropdown args
+	 * @return array Query args
+	 */
+	public function dropdown_users_args( $query_args, $args ) {
+
+		// When an Articles admin page
+		if ( econozel_get_article_post_type() === get_current_screen()->post_type ) {
+
+			// When listing authors, list Econozel Editors instead
+			if ( 'authors' === $args['who'] ) {
+				$query_args['econozel'] = true;
+
+				// Enable all vgsr users to be authors
+				if ( function_exists( 'vgsr' ) ) {
+					$query_args['vgsr'] = true;
+
+				// Or list just the Editors
+				} else {
+					$query_args['role'] = econozel_get_editor_role();
+				}
+
+				// Remove the 'authors' limitation
+				unset( $query_args['who'] );
+			}
+		}
+
+		return $query_args;
 	}
 
 	/** Edition ***************************************************************/
