@@ -456,8 +456,11 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 			$menu_item->_invalid = true;
 		}
 
-	// Article post type (archive) item
-	} elseif ( econozel_get_article_post_type() == $menu_item->object ) {
+	// Econozel post type (archive) or taxonomy
+	} elseif (
+		   ( in_array( $menu_item->type, array( 'post_type', 'post_type_archive' ) ) && econozel_get_article_post_type() == $menu_item->object )
+		|| ( 'taxonomy' == $menu_item->type && in_array( $menu_item->object, array( econozel_get_edition_tax_id(), econozel_get_volume_tax_id() ) ) )
+	) {
 
 		// Prevent rendering when the user has no access
 		if ( ! econozel_check_access() ) {
