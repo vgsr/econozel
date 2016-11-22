@@ -29,6 +29,16 @@
 	margin: 0 5px;
 }
 
+.econozel .entry-content .widgettitle ~ ul {
+	list-style-type: none;
+}
+
 .econozel .entry-content .widget_recent_entries .post-date {
 	opacity: .7;
+}
+
+.econozel .widget_recent_entries .post-date a:not(:hover) {
+	border: 0;
+	text-decoration: none;
+	box-shadow: none;
 }
