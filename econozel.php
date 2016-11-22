@@ -157,12 +157,6 @@ final class Econozel {
 		add_action( 'activate_'   . $this->basename, 'econozel_activation'   );
 		add_action( 'deactivate_' . $this->basename, 'econozel_deactivation' );
 
-		// Activation/Deactivation
-		if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-			add_action( 'econozel_activation',   'econozel_delete_rewrite_rules' );
-			add_action( 'econozel_deactivation', 'econozel_delete_rewrite_rules' );
-		}
-
 		// Bail when plugin is being deactivated
 		if ( econozel_is_deactivation() )
 			return;

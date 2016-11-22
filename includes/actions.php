@@ -17,6 +17,11 @@ add_action( 'widgets_init',                'econozel_widgets_init'             )
 add_action( 'after_setup_theme',           'econozel_after_setup_theme'        );
 add_filter( 'map_meta_cap',                'econozel_map_meta_caps',     10, 4 );
 
+/** Utility *******************************************************************/
+
+add_action( 'econozel_activation',         'econozel_delete_rewrite_rules' );
+add_action( 'econozel_deactivation',       'econozel_delete_rewrite_rules' );
+
 /** Taxonomy ******************************************************************/
 
 add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',      5    );
