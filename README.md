@@ -1,15 +1,10 @@
-=== Econozel ===
-Contributors: Offereins
-Tags: vgsr, econozel, magazine, article, edition, volume
-Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# Econozel #
 
-Present d' Econozel on your site with articles, editions, and volumes.
+Present d' Econozel on your site with Articles, Editions, and Volumes.
 
-== Description ==
+## Description ##
+
+> This WordPress plugin requires at least [WordPress](https://wordpress.org) 4.4 and [VGSR](https://github.com/vgsr/vgsr/) 0.1.
 
 Tightly coupled with the VGSR plugin, providing a secured platform to archive and display articles from d' Econozel or any other medium. Articles are clustered by edition, which in turn are clustered in volumes. Since both editions and volumes are stored as WordPress taxonomies, this plugin creates their front-facing pages and paths dynamically.
 
@@ -26,15 +21,16 @@ Several widgets are added to present the plugin's content:
 
 For delegating article and plugin management to your users, the Econozel Editor role is available.
 
-== Installation ==
+## Installation ##
 
 If you download Econozel manually, make sure it is uploaded to "/wp-content/plugins/econozel/".
 
 Activate Econozel in the "Plugins" admin panel using the "Activate" link. If you're using WordPress Multisite, you can choose to activate Econozel network wide for full integration with all of your sites.
 
+## Updates ##
+
 This plugin is not hosted in the official WordPress repository. Instead, updating is supported through use of the [GitHub Updater](https://github.com/afragen/github-updater/) plugin by @afragen and friends.
 
-== Changelog ==
+## Contributing ##
 
-= 1.0.0 =
-* Initial release
+You can contribute to the development of this plugin by [opening a new issue](https://github.com/vgsr/econozel/issues/) to report a bug or request a feature in the plugin's GitHub repository.
