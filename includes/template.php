@@ -43,14 +43,18 @@ function econozel_parse_query( $posts_query ) {
 	$is_edition        = $posts_query->get( econozel_get_edition_issue_rewrite_id()  );
 
 	/**
-	 * 404 and bail when the user has no Econozel access.
-	 *
-	 * For the Article archives and Single Article pages, this cannot be done,
-	 * because the 'public' property of the post type determines whether the
-	 * post type's query arg is registered. Consequently, these pages will
-	 * not catch the request correctly and default to querying the blog index.
+	 * Find out whether this is still an Article request, even though the post type
+	 * was defined as non-public. In that case, WP couldn't match the query vars. This
+	 * way we force WP to 404, and not default to the blog index when nothing matched.
 	 */
-	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition ) ) && ! econozel_check_access() ) {
+	$post_type_object  = get_post_type_object( econozel_get_article_post_type() );
+	$wp_query_vars     = wp_parse_args( $GLOBALS['wp']->matched_query, array( 'post_type' => false, $post_type_object->query_var => false ) );
+	$is_article        = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] );
+
+	/**
+	 * 404 and bail when the user has no Econozel access.
+	 */
+	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition ) || $is_article ) && ! econozel_check_access() ) {
 		$posts_query->set_404();
 		return;
 	}
