@@ -42,9 +42,11 @@ class Walker_Econozel_Article extends Walker_Page {
 		if ( $args['show_date'] ) {
 
 			// Define post date. Show Edition when not listing an Edition's Articles.
-			$date = empty( $args['econozel_edition'] ) ? econozel_get_edition_title( $article ) : false;
-			if ( ! $date ) {
+			$edition = empty( $args['econozel_edition'] ) ? econozel_get_edition( $article ) : false;
+			if ( ! $edition ) {
 				$date = mysql2date( get_option( 'date_format' ), $article->post_date );
+			} else {
+				$date = sprintf( '<a href="%s">%s</a>', econozel_get_edition_url( $edition ), econozel_get_edition_title( $edition ) );
 			}
 
 			$output .= sprintf( '<span class="post-date">%s</span>', $date );
