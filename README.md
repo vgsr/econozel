@@ -1,6 +1,6 @@
 # Econozel #
 
-Present d' Econozel on your site with Articles, Editions, and Volumes.
+Present d' Econozel on your site with articles, editions, and volumes.
 
 ## Description ##
 
@@ -20,6 +20,10 @@ Several widgets are added to present the plugin's content:
 * Article Comments
 
 For delegating article and plugin management to your users, the Econozel Editor role is available.
+
+### Theme compatibility ###
+
+This plugin is developed with no particular design in mind, so the pages should fit nicely in any theme. If you find Econozel having issues adjusting to your theme, simply add your own styles in an `econozel.css` file in your theme's root folder, and you're good to go!
 
 ## Installation ##
 

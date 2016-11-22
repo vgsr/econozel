@@ -26,6 +26,10 @@ Several widgets are added to present the plugin's content:
 
 For delegating article and plugin management to your users, the Econozel Editor role is available.
 
+=== Theme compatibility ===
+
+This plugin is developed with no particular design in mind, so the pages should fit nicely in any theme. If you find Econozel having issues adjusting to your theme, simply add your own styles in an `econozel.css` file in your theme's root folder, and you're good to go!
+
 == Installation ==
 
 If you download Econozel manually, make sure it is uploaded to "/wp-content/plugins/econozel/".
