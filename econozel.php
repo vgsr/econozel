@@ -241,7 +241,8 @@ final class Econozel {
 				'show_in_nav_menus'   => $access,
 				'can_export'          => $access,
 				'taxonomies'          => array( 'post_tag' ),
-				'menu_icon'           => 'dashicons-format-aside'
+				'menu_icon'           => 'dashicons-format-aside',
+				'vgsr'                => true
 			)
 		);
 	}
