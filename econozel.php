@@ -9,7 +9,7 @@
 
 /**
  * Plugin Name:       Econozel
- * Description:       Present d' Econozel on your site with Articles, Editions, and Volumes.
+ * Description:       Present d' Econozel on your site with articles, editions, and volumes.
  * Plugin URI:        https://github.com/vgsr/econozel/
  * Version:           1.0.0
  * Author:            Laurens Offereins
@@ -36,6 +36,7 @@ final class Econozel {
 	 * @since 1.0.0
 	 *
 	 * @uses Econozel::setup_globals()
+	 * @uses Econozel::includes()
 	 * @uses Econozel::setup_actions()
 	 * @return The single Econozel
 	 */
@@ -142,7 +143,7 @@ final class Econozel {
 			require( $this->includes_dir . 'settings.php' );
 		}
 
-		// Extend
+		// Extensions
 		require( $this->includes_dir . 'extend/buddypress.php' );
 	}
 
@@ -187,8 +188,6 @@ final class Econozel {
 	 * @since 1.0.0
 	 *
 	 * @uses apply_filters() Calls 'plugin_locale' with {@link get_locale()} value
-	 * @uses load_textdomain() To load the textdomain
-	 * @uses load_plugin_textdomain() To load the textdomain
 	 */
 	public function load_textdomain() {
 
