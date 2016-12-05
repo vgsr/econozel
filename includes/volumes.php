@@ -406,8 +406,9 @@ function econozel_the_volume_id() {
  * @since 1.0.0
  *
  * @param WP_Term|WP_Post|int $volume Optional. Defaults to the current volume.
+ * @param bool $prepended Optional. Whether to return a prepended title.
  */
-function econozel_the_volume_title( $volume = 0 ) {
+function econozel_the_volume_title( $volume = 0, $prepended = true ) {
 	echo econozel_get_volume_title( $volume );
 }
 
@@ -419,9 +420,10 @@ function econozel_the_volume_title( $volume = 0 ) {
 	 * @uses apply_filters() Calls 'econozel_get_volume_title'
 	 *
 	 * @param WP_Term|WP_Post|int $volume Optional. Defaults to the current volume.
+	 * @param bool $prepended Optional. Whether to return a prepended title.
 	 * @return string Volume title.
 	 */
-	function econozel_get_volume_title( $volume = 0 ) {
+	function econozel_get_volume_title( $volume = 0, $prepended = true ) {
 
 		// Define return var
 		$title = '';
@@ -432,11 +434,11 @@ function econozel_the_volume_title( $volume = 0 ) {
 		}
 
 		// Prepend title with 'Volume'
-		if ( ! empty( $title ) && econozel_prepend_volume_title() ) {
+		if ( ! empty( $title ) && $prepended && econozel_prepend_volume_title() ) {
 			$title = sprintf( esc_html__( 'Volume %s', 'econozel' ), $title );
 		}
 
-		return apply_filters( 'econozel_get_volume_title', $title, $volume );
+		return apply_filters( 'econozel_get_volume_title', $title, $volume, $prepended );
 	}
 
 /**
