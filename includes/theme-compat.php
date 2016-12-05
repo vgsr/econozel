@@ -73,7 +73,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 			'post_author' => 0,
 			'post_date'   => 0,
 			'post_type'   => '',
-			'post_title'  => esc_html__( 'Econozel', 'econozel' ),
+			'post_title'  => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
 			'is_single'   => true,
 			'template'    => array( 'content', 'econozel' ),
 		) );

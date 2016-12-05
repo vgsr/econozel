@@ -292,7 +292,7 @@ function econozel_nav_menu_get_items() {
 
 		// Econozel root
 		'root' => array(
-			'title'       => esc_html__( 'Econozel', 'econozel' ),
+			'title'       => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
 			'url'         => econozel_get_root_url(),
 			'is_current'  => econozel_is_root(),
 			'is_parent'   => econozel_is_article_archive() || econozel_is_volume_archive(),
