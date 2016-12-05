@@ -46,9 +46,9 @@ class Econozel_WPSEO {
 		$article = econozel_get_article_post_type();
 
 		// Admin
-		add_filter( "manage_{$article}_posts_columns", array( $this, 'admin_remove_columns'   ), 99    );
-		add_filter( "manage_edit-{$edition}_columns",  array( $this, 'admin_remove_columns'   ), 99    );
 		add_filter( "manage_edit-{$volume}_columns",   array( $this, 'admin_remove_columns'   ), 99    );
+		add_filter( "manage_edit-{$edition}_columns",  array( $this, 'admin_remove_columns'   ), 99    );
+		add_filter( "manage_{$article}_posts_columns", array( $this, 'admin_remove_columns'   ), 99    );
 		add_action( 'option_wpseo_titles',             array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 		add_action( 'site_option_wpseo_titles',        array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 
@@ -92,14 +92,14 @@ class Econozel_WPSEO {
 	public function admin_remove_metaboxes( $value, $option ) {
 
 		// Plugin objects
-		$article = econozel_get_article_post_type();
-		$edition = econozel_get_edition_tax_id();
 		$volume  = econozel_get_volume_tax_id();
+		$edition = econozel_get_edition_tax_id();
+		$article = econozel_get_article_post_type();
 
 		// Override metabox setting
-		$value["hideeditbox-{$article}"]     = true;
-		$value["hideeditbox-tax-{$edition}"] = true;
 		$value["hideeditbox-tax-{$volume}"]  = true;
+		$value["hideeditbox-tax-{$edition}"] = true;
+		$value["hideeditbox-{$article}"]     = true;
 
 		return $value;
 	}
