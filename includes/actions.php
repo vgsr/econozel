@@ -96,4 +96,5 @@ if ( is_admin() ) {
 
 /** Extend ********************************************************************/
 
-add_action( 'bp_loaded', 'econozel_buddypress' );
+add_action( 'bp_loaded',     'econozel_buddypress' );
+add_action( 'econozel_init', 'econozel_wpseo'      );

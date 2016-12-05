@@ -144,7 +144,8 @@ final class Econozel {
 		}
 
 		// Extensions
-		require( $this->includes_dir . 'extend/buddypress.php' );
+		require( $this->includes_dir . 'extend/buddypress.php'    );
+		require( $this->includes_dir . 'extend/wordpress-seo.php' );
 	}
 
 	/**
@@ -366,7 +367,7 @@ final class Econozel {
 }
 
 /**
- * Return single instance of this main plugin class
+ * Return single instance of the plugin's main class
  *
  * @since 1.0.0
  * 
