@@ -70,13 +70,22 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 	public function widget( $args, $instance ) {
 
 		// Filter comment query args
-		add_filter( 'widget_comment_args', array( $this, 'widget_comment_args' ) );
+		add_filter( 'widget_comments_args', array( $this, 'widget_comments_args' ) );
 
-		// Output parent widget content
-		parent::widget( $args, $instance );
+		// Pre-fetch the comments with widget query
+		$comments = get_comments( apply_filters( 'widget_comments_args', array(
+			'number'      => $number,
+			'status'      => 'approve',
+			'post_status' => 'publish'
+		) ) );
+
+		// Only output parent widget content with comments
+		if ( $comments ) {
+			parent::widget( $args, $instance );
+		}
 
 		// Remove comment query filter
-		remove_filter( 'widget_comment_args', array( $this, 'widget_comment_args' ) );
+		remove_filter( 'widget_comments_args', array( $this, 'widget_comments_args' ) );
 	}
 
 	/**
@@ -87,7 +96,7 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 	 * @param array $args Query arguments
 	 * @return array Query arguments
 	 */
-	public function widget_comment_args( $args ) {
+	public function widget_comments_args( $args ) {
 
 		// Define default query args
 		$args = wp_parse_args( $args, array(
