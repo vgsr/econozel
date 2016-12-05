@@ -307,27 +307,27 @@ class Econozel_BuddyPress {
 	public function bp_activity_get( $activity, $args ) {
 
 		// Walk queried activities
-		foreach ( $activity['activities'] as $k => $a ) {
+		foreach ( $activity['activities'] as $k => $_activity ) {
 
 			// This is a New Article activity item
-			if ( "new_{$this->article_post_type}" == $a->type ) {
+			if ( "new_{$this->article_post_type}" == $_activity->type ) {
 
 				// Skip when Article does not exist
-				if ( ! $article = econozel_get_article( (int) $a->secondary_item_id ) )
+				if ( ! $article = econozel_get_article( (int) $_activity->secondary_item_id ) )
 					continue;
 
 				// Redefine action string since it was inserted in the DB
-				if ( $action = bp_activity_generate_action_string( $a ) ) {
-					$a->action = $action;
+				if ( $action = bp_activity_generate_action_string( $_activity ) ) {
+					$_activity->action = $action;
 				}
 
 				// Add from Article description
 				if ( $content = econozel_get_article_description( $article ) ) {
-					$a->content = $content;
+					$_activity->content = $content;
 				}
 			}
 
-			$activity['activities'][ $k ] = $a;
+			$activity['activities'][ $k ] = $_activity;
 		}
 
 		return $activity;
