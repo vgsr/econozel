@@ -46,9 +46,11 @@ class Econozel_WPSEO {
 		$article = econozel_get_article_post_type();
 
 		// Admin
-		add_filter( "manage_{$article}_posts_columns", array( $this, 'admin_remove_columns' ), 99 );
-		add_filter( "manage_edit-{$edition}_columns",  array( $this, 'admin_remove_columns' ), 99 );
-		add_filter( "manage_edit-{$volume}_columns",   array( $this, 'admin_remove_columns' ), 99 );
+		add_filter( "manage_{$article}_posts_columns", array( $this, 'admin_remove_columns'   ), 99    );
+		add_filter( "manage_edit-{$edition}_columns",  array( $this, 'admin_remove_columns'   ), 99    );
+		add_filter( "manage_edit-{$volume}_columns",   array( $this, 'admin_remove_columns'   ), 99    );
+		add_action( 'option_wpseo_titles',             array( $this, 'admin_remove_metaboxes' ), 10, 2 );
+		add_action( 'site_option_wpseo_titles',        array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 
 		// Breadcrumbs
 		add_filter( 'wpseo_breadcrumb_links', array( $this, 'breadcrumb_links' ) );
@@ -76,6 +78,30 @@ class Econozel_WPSEO {
 		}
 
 		return $columns;
+	}
+
+	/**
+	 * Modify the wpseo_titles option value
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $value Option value
+	 * @param string $option Option name
+	 * @return array Option value
+	 */
+	public function admin_remove_metaboxes( $value, $option ) {
+
+		// Plugin objects
+		$article = econozel_get_article_post_type();
+		$edition = econozel_get_edition_tax_id();
+		$volume  = econozel_get_volume_tax_id();
+
+		// Override metabox setting
+		$value["hideeditbox-{$article}"]     = true;
+		$value["hideeditbox-tax-{$edition}"] = true;
+		$value["hideeditbox-tax-{$volume}"]  = true;
+
+		return $value;
 	}
 
 	/**
@@ -116,7 +142,7 @@ class Econozel_WPSEO {
 			// Define local variable(s)
 			$last = count( $crumbs ) - 1;
 
-			// Volume archive
+			// Volume archives
 			if ( econozel_is_volume_archive() ) {
 
 				// Append Volume crumb, 'cause there is none
@@ -150,7 +176,7 @@ class Econozel_WPSEO {
 					'allow_html' => false
 				);
 
-			// Article Archive
+			// Article archives
 			} elseif ( econozel_is_article_archive() ) {
 
 				// Set Article archives crumb. Overwrited default archive crumb.
