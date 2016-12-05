@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0.0
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool The user has access
+ * @return bool Has the user basic access?
  */
 function econozel_check_access( $user_id = 0 ) {
 
@@ -28,6 +28,31 @@ function econozel_check_access( $user_id = 0 ) {
 	}
 
 	return econozel_is_user_vgsr( $user_id ) || user_can( $user_id, 'econozel_editor' );
+}
+
+/**
+ * Return whether the current user has admin access
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id User ID. Optional. Defaults to the current user.
+ * @return bool Has the user admin access?
+ */
+function econozel_check_admin_access( $user_id = 0 ) {
+
+	// Default to the current user
+	if ( empty( $user_id ) ) {
+		$user_id = get_current_user_id();
+	}
+
+	// Restricted admin access
+	if ( is_admin() && econozel_toggle_admin_access() ) {
+		$user_is_lid = false;
+	} else {
+		$user_is_lid = econozel_is_user_lid( $user_id );
+	}
+
+	return $user_is_lid || user_can( $user_id, 'econozel_editor' );	
 }
 
 /**
@@ -186,6 +211,18 @@ function econozel_delete_rewrite_rules() {
  */
 function econozel_get_volumes_per_page( $default = 5 ) {
 	return (int) apply_filters( 'econozel_get_volumes_per_page', get_option( '_econozel_volumes_per_page', $default ) );
+}
+
+/**
+ * Return whether to restrict admin access to Econozel Editors only
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_toggle_admin_access'
+ * @return bool Restricted admin access
+ */
+function econozel_toggle_admin_access() {
+	return (bool) apply_filters( 'econozel_toggle_admin_access', get_option( '_econozel_toggle_admin_access', false ) );
 }
 
 /**

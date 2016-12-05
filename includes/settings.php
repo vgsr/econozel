@@ -58,6 +58,14 @@ function econozel_admin_get_settings_fields() {
 		// General settings
 		'econozel_settings_general' => array(
 
+			// Admin access
+			'_econozel_toggle_admin_access' => array(
+				'title'             => esc_html__( 'Admin Access', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_toggle_admin_access',
+				'sanitize_callback' => 'intval',
+				'args'              => array()
+			),
+
 			// Edition issue whitelist
 			'_econozel_edition_issue_whitelist' => array(
 				'title'             => esc_html__( 'Edition Issues', 'econozel' ),
@@ -155,6 +163,19 @@ function econozel_admin_get_settings_fields_for_section( $section_id = '' ) {
 function econozel_admin_setting_callback_general_section() { ?>
 
 	<p><?php esc_html_e( 'Define the available edition issues and other generic settings', 'econozel' ); ?></p>
+
+	<?php
+}
+
+/**
+ * Display the content of the Toggle Access settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_setting_callback_toggle_admin_access() { ?>
+
+	<input name="_econozel_toggle_admin_access" id="_econozel_toggle_admin_access" type="checkbox" value="1" <?php checked( econozel_toggle_admin_access() ); ?>>
+	<label for="_econozel_toggle_admin_access"><?php esc_html_e( 'Restrict Econozel admin access to Econozel Editors only', 'econozel' ); ?></label>
 
 	<?php
 }
