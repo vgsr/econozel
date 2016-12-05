@@ -74,7 +74,7 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 
 		// Pre-fetch the comments with widget query
 		$comments = get_comments( apply_filters( 'widget_comments_args', array(
-			'number'      => $number,
+			'number'      => 1,
 			'status'      => 'approve',
 			'post_status' => 'publish'
 		) ) );
