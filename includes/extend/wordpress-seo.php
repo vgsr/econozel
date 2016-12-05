@@ -49,6 +49,7 @@ class Econozel_WPSEO {
 		add_filter( "manage_edit-{$volume}_columns",   array( $this, 'admin_remove_columns'   ), 99    );
 		add_filter( "manage_edit-{$edition}_columns",  array( $this, 'admin_remove_columns'   ), 99    );
 		add_filter( "manage_{$article}_posts_columns", array( $this, 'admin_remove_columns'   ), 99    );
+		add_filter( 'manage_edit-post_tag_columns',    array( $this, 'admin_remove_columns'   ), 99    );
 		add_action( 'option_wpseo_titles',             array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 		add_action( 'site_option_wpseo_titles',        array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 
@@ -67,6 +68,13 @@ class Econozel_WPSEO {
 	 * @return array Admin columns
 	 */
 	public function admin_remove_columns( $columns ) {
+
+		// Get the current screen
+		$screen = get_current_screen();
+
+		// Bail when these are not the post tags in Econozel context
+		if ( 'post_tag' === $screen->taxonomy && econozel_get_article_post_type() !== $screen->post_type )
+			return $columns;
 
 		// Walk registered columns
 		foreach ( $columns as $column => $label ) {
