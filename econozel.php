@@ -85,6 +85,10 @@ final class Econozel {
 		$this->includes_dir = trailingslashit( $this->plugin_dir . 'includes' );
 		$this->includes_url = trailingslashit( $this->plugin_url . 'includes' );
 
+		// Assets
+		$this->assets_dir   = trailingslashit( $this->plugin_dir . 'assets' );
+		$this->assets_url   = trailingslashit( $this->plugin_url . 'assets' );
+
 		// Themes
 		$this->themes_dir   = trailingslashit( $this->plugin_dir . 'templates' );
 		$this->themes_url   = trailingslashit( $this->plugin_url . 'templates' );
