@@ -45,8 +45,8 @@ function econozel_get_template_stack() {
  */
 function econozel_get_template_locations() {
 	return apply_filters( 'econozel_get_template_locations', array(
-		'econozel', // econozel folder
-		''          // root folder
+		'econozel', // Plugin folder
+		''          // Root folder
 	) );
 }
 
@@ -229,7 +229,10 @@ function econozel_theme_compat_reset_post( $args = array() ) {
 	// If we are resetting a post, we are in theme compat
 	econozel_set_theme_compat_active( true );
 
-	// Render post content from template
+	/**
+	 * Render post content from template. Doing this here enables
+	 * the template to know whether we're in theme compat mode.
+	 */
 	if ( isset( $dummy['template'] ) ) {
 		$dummy['post_content'] = econozel_buffer_template_part( $dummy['template'][0], $dummy['template'][1], false );
 		unset( $dummy['template'] );
@@ -520,14 +523,14 @@ function econozel_enqueue_script( $handle = '', $file = '', $dependencies = arra
  */
 function econozel_is_theme_compat_active() {
 
-	// Get Econozel
-	$eco = econozel();
+	// Get plugin
+	$plugin = econozel();
 
 	// Compatibility is not set yet
-	if ( empty( $eco->theme_compat->active ) )
+	if ( empty( $plugin->theme_compat->active ) )
 		return false;
 
-	return (bool) $eco->theme_compat->active;
+	return (bool) $plugin->theme_compat->active;
 }
 
 /**
@@ -545,7 +548,7 @@ function econozel_set_theme_compat_active( $set = true ) {
 }
 
 /**
- * Load a custom Econozel functions file, similar to each theme's functions.php file.
+ * Load a custom plugin functions file, similar to each theme's functions.php file.
  *
  * @since 1.0.0
  *
@@ -554,7 +557,7 @@ function econozel_set_theme_compat_active( $set = true ) {
 function econozel_load_theme_functions() {
 	global $pagenow;
 
-	// When Econozel is being deactivated, do not load any more files
+	// When plugin is being deactivated, do not load any more files
 	if ( econozel_is_deactivation() )
 		return;
 
