@@ -390,7 +390,7 @@ function econozel_customize_nav_menu_available_items( $items, $type, $object, $p
 		foreach ( array_reverse( $_items ) as $item_id => $item ) {
 
 			// Redefine item details
-			$item['id']     = $post_type . '-' . $item_id;
+			$item['id']     = $object . '-' . $item_id;
 			$item['object'] = $item_id;
 
 			// Prepend item
