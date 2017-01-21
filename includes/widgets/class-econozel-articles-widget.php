@@ -103,17 +103,18 @@ class Econozel_Articles_Widget extends WP_Widget {
 		if ( econozel_query_articles( $r ) ) :
 
 			// List description
-			if ( $r['description'] ) : ?>
-			<em><?php echo is_string( $r['description'] ) ? $r['description'] : $this->widget_options['description']; ?></em>
-			<?php endif; ?>
+			if ( $r['description'] ) {
+				echo '<p>' . is_string( $r['description'] ) ? $r['description'] : $this->widget_options['description'] . '</p>';
+			}
 
-			<?php printf( '<ul>%s</ul>', walk_page_tree( econozel()->article_query->posts, 0, econozel_get_article_id(), $r ) ); ?>
+			printf( '<ul>%s</ul>', walk_page_tree( econozel()->article_query->posts, 0, econozel_get_article_id(), $r ) );
 
-		<?php else : ?>
+		// Nothing found
+		else :
 
-			<?php echo $r['none_found']; ?>
+			echo '<p>' . $r['none_found'] . '</p>';
 
-		<?php endif;
+		endif;
 
 		// Close widget
 		echo $args['after_widget'];
