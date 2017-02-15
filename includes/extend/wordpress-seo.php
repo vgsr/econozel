@@ -237,7 +237,7 @@ class Econozel_WPSEO {
 }
 
 /**
- * Setup the extension logic for BuddyPress
+ * Setup the extension logic for WP SEO
  *
  * @since 1.0.0
  *

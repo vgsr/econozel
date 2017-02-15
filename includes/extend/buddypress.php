@@ -161,7 +161,10 @@ class Econozel_BuddyPress {
 		// Article post type tracking
 		if ( $post_type == $this->article_post_type ) {
 
-			// Disable list filtering for Aritlce comments when Blog component is active
+			/**
+			 * Disable comment list filtering for Article comments when Blogs component is
+			 * active, because Article comments are jointly presented with Blog comments.
+			 */
 			$args->comments_tracking->contexts = ! bp_is_active( 'blogs' ) ? array( 'activity', 'member' ) : array();
 
 			// Set additional comments action strings

@@ -1049,6 +1049,10 @@ function econozel_filter_item_class( $classes ) {
 /**
  * Return url for the adjacent Volume/Edition
  *
+ * Manipulating the native adjacent query logic will not work for
+ * terms, so when linking to the next/previous Volume or Edition,
+ * we'll have to fully overwrite the adjacent link.
+ *
  * @since 1.0.0
  *
  * @param string $output Adjacent link

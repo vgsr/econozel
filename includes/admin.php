@@ -78,7 +78,7 @@ class Econozel_Admin {
 		add_action( "add_meta_boxes_{$post_type}",              array( $this, 'article_meta_boxes'     ), 99    );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_bulk_edit' )        );
-		add_filter( 'wp_dropdown_users_args',                   array( $this, 'dropdown_users_args'    ), 10, 2 );
+		add_filter( 'wp_dropdown_users_args',                   array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
