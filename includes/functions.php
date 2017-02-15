@@ -330,7 +330,7 @@ function econozel_nav_menu_get_items() {
 }
 
 /**
- * Add custom Econozel pages to the availabel nav menu items
+ * Add custom Econozel pages to the available nav menu items metabox
  *
  * @since 1.0.0
  *
@@ -456,8 +456,7 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 
 		// This is a registered custom menu item
 		if ( $item = wp_list_filter( econozel_nav_menu_get_items(), array( 'id' => $menu_item->object ) ) ) {
-			$item = array_values( $item );
-			$item = (object) $item[0];
+			$item = (object) reset( $item );
 
 			// Set item details
 			$menu_item->type_label = $item->type_label;
@@ -494,10 +493,13 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 		}
 
 	// Econozel post type (archive) or taxonomy
-	} elseif (
-		   ( in_array( $menu_item->type, array( 'post_type', 'post_type_archive' ) ) && econozel_get_article_post_type() == $menu_item->object )
-		|| ( 'taxonomy' == $menu_item->type && in_array( $menu_item->object, array( econozel_get_edition_tax_id(), econozel_get_volume_tax_id() ) ) )
-	) {
+	} elseif ( (
+	   in_array( $menu_item->type, array( 'post_type', 'post_type_archive' ) )
+	   && econozel_get_article_post_type() == $menu_item->object
+	) || (
+	   'taxonomy' === $menu_item->type
+	   && in_array( $menu_item->object, array( econozel_get_edition_tax_id(), econozel_get_volume_tax_id() ) )
+	) ) {
 
 		// Prevent rendering when the user has no access
 		if ( ! econozel_check_access() ) {
