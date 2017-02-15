@@ -339,7 +339,7 @@ function econozel_nav_menu_get_items() {
  * @param WP_Post_Type $post_type The current post type object for this menu item meta box.
  * @return array $items Nav menu items
  */
-function econozel_nav_menu_items( $items, $args, $post_type ) {
+function econozel_nav_menu_items_metabox( $items, $args, $post_type ) {
 	global $_wp_nav_menu_placeholder;
 
 	// Econozel items

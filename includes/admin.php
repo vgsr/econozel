@@ -94,7 +94,7 @@ class Econozel_Admin {
 		add_action( 'edit_user_profile_update', array( $this, 'user_save_profile_settings' ) );
 
 		// Menus
-		add_filter( "nav_menu_items_{$post_type}", 'econozel_nav_menu_items', 10, 3 );
+		add_filter( "nav_menu_items_{$post_type}", 'econozel_nav_menu_items_metabox', 10, 3 );
 
 		// Scripts & Styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
