@@ -144,7 +144,7 @@ function econozel_query_editions( $args = array() ) {
 	}
 
 	// Run query to get the taxonomy terms
-	if ( class_exists( 'WP_Term_Query' ) ) {
+	if ( is_a( $query, 'WP_Term_Query' ) ) {
 		$query->query( $r );
 	} else {
 		$query->terms = get_terms( $r['taxonomy'], $r );
@@ -597,7 +597,7 @@ function econozel_the_edition_title( $edition = 0 ) {
 
 		// Get Edition term object
 		if ( $edition = econozel_get_edition( $edition ) ) {
-			$title = $edition->name;
+			$title = get_term_field( 'name', $edition );
 		}
 
 		return apply_filters( 'econozel_get_edition_title', $title, $edition );

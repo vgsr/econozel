@@ -91,7 +91,7 @@ function econozel_query_volumes( $args = array() ) {
 	}
 
 	// Run query to get the taxonomy terms
-	if ( class_exists( 'WP_Term_Query' ) ) {
+	if ( is_a( $query, 'WP_Term_Query' ) ) {
 		$query->query( $r );
 	} else {
 		$query->terms = get_terms( $r['taxonomy'], $r );
@@ -430,7 +430,7 @@ function econozel_the_volume_title( $volume = 0, $prepended = true ) {
 
 		// Get Volume term object
 		if ( $volume = econozel_get_volume( $volume ) ) {
-			$title = $volume->name;
+			$title = get_term_field( 'name', $volume );
 		}
 
 		// Prepend title with 'Volume'
