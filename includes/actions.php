@@ -67,6 +67,7 @@ add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 )
 add_filter( 'customize_nav_menu_available_items', 'econozel_customize_nav_menu_available_items', 10, 4 );
 add_filter( 'customize_nav_menu_searched_items',  'econozel_customize_nav_menu_searched_items',  10, 2 );
 add_filter( 'wp_setup_nav_menu_item',             'econozel_setup_nav_menu_item'                       );
+add_filter( 'wp_nav_menu_objects',                'econozel_nav_menu_objects',                   10, 2 );
 
 /** Widgets *******************************************************************/
 

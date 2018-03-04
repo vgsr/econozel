@@ -510,6 +510,34 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 	return $menu_item;
 }
 
+/**
+ * Modify the sorted list of menu items
+ *
+ * @since 1.0.0
+ *
+ * @param  array $items Menu items
+ * @param  array $args Arguments for `wp_nav_menu()`
+ * @return array Menu items
+ */
+function econozel_nav_menu_objects( $items, $args ) {
+
+	// When Econozeling
+	if ( is_econozel() ) {
+		$posts_page = get_option( 'page_for_posts' );
+
+		foreach ( $items as $k => $item ) {
+
+			// Remove the posts page's parent status/class. By default WordPress
+			// appoints the posts page as parent for non-page pages. Please not.
+			if ( $item->object_id == $posts_page && in_array( 'current_page_parent', $item->classes ) ) {
+				unset( $items[ $k ]->classes[ array_search( 'current_page_parent', $item->classes ) ] );
+			}
+		}
+	}
+
+	return $items;
+}
+
 /** Utility *******************************************************************/
 
 /**
