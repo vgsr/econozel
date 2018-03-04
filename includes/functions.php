@@ -492,8 +492,28 @@ function econozel_setup_nav_menu_item( $menu_item ) {
 			$menu_item->_invalid = true;
 		}
 
+	// Edition page
+	} elseif ( 'taxonomy' === $menu_item->type && econozel_get_edition_tax_id() === $menu_item->object ) {
+
+		// Set item classes
+		if ( ! is_array( $menu_item->classes ) ) {
+			$menu_item->classes = array();
+		}
+
+		// This is the current page
+		if ( econozel_is_edition() && econozel_get_edition_id() == $menu_item->object_id ) {
+			$menu_item->classes[] = 'current_page_item';
+			$menu_item->classes[] = 'current-menu-item';
+
+		// This is the parent page
+		} elseif ( econozel_is_article() && econozel_get_article_edition() == $menu_item->object_id ) {
+			$menu_item->classes[] = 'current_page_parent';
+			$menu_item->classes[] = 'current-menu-parent';
+		}
+	}
+
 	// Econozel post type (archive) or taxonomy
-	} elseif ( (
+	if ( (
 	   in_array( $menu_item->type, array( 'post_type', 'post_type_archive' ) )
 	   && econozel_get_article_post_type() == $menu_item->object
 	) || (
