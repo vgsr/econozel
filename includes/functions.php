@@ -543,13 +543,13 @@ function econozel_nav_menu_objects( $items, $args ) {
 
 	// When Econozeling
 	if ( is_econozel() ) {
-		$posts_page = get_option( 'page_for_posts' );
+		$posts_page = (int) get_option( 'page_for_posts' );
 
 		foreach ( $items as $k => $item ) {
 
 			// Remove the posts page's parent status/class. By default WordPress
 			// appoints the posts page as parent for non-page pages. Please not.
-			if ( $item->object_id == $posts_page && in_array( 'current_page_parent', $item->classes ) ) {
+			if ( $item->object_id == $posts_page && 'post_type' == $menu_item->type && in_array( 'current_page_parent', $item->classes ) ) {
 				unset( $items[ $k ]->classes[ array_search( 'current_page_parent', $item->classes ) ] );
 			}
 		}
