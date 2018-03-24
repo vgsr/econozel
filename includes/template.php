@@ -55,7 +55,7 @@ function econozel_parse_query( $posts_query ) {
 	 * 404 and bail when the user has no Econozel access.
 	 */
 	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition ) || $is_article ) && ! econozel_check_access() ) {
-		$posts_query->set_404();
+		econozel_do_404();
 		return;
 	}
 
@@ -81,7 +81,7 @@ function econozel_parse_query( $posts_query ) {
 
 		// 404 and bail when Volumes are not returned in query
 		if ( ! econozel_query_volumes() ) {
-			$posts_query->set_404();
+			econozel_do_404();
 			return;
 		}
 
@@ -108,7 +108,7 @@ function econozel_parse_query( $posts_query ) {
 
 		// 404 and bail when Volume or Edition does not exist or the Edition has no Articles
 		if ( ! $the_volume || ! $the_edition || ! econozel_get_edition_article_count( $the_edition ) ) {
-			$posts_query->set_404();
+			econozel_do_404();
 			return;
 		}
 
@@ -146,7 +146,7 @@ function econozel_parse_query( $posts_query ) {
 
 		// 404 and bail when Volume does not exist or Editions are not returned in query
 		if ( ! $the_volume || ! econozel_query_editions( array( 'econozel_volume' => $the_volume->term_id ) ) ) {
-			$posts_query->set_404();
+			econozel_do_404();
 			return;
 		}
 
@@ -391,6 +391,34 @@ function econozel_filter_count_posts( $counts, $type, $perm ) {
 	}
 
 	return $counts;
+}
+
+/**
+ * Trigger a 404.
+ *
+ * @see bp_do_404()
+ *
+ * @since 1.0.0
+ *
+ * @uses WP_Query $wp_query
+ *
+ * @param string $redirect If 'remove_canonical_direct', remove WordPress' "helpful"
+ *                         redirect_canonical action. Default: 'remove_canonical_redirect'.
+ */
+function econozel_do_404( $redirect = 'remove_canonical_direct' ) {
+	global $wp_query;
+
+	// Mock a non-existent post type query in order to remove
+	// any suggestions of an existing post type query.
+	$wp_query->set( 'post_type', '_' );
+
+	$wp_query->set_404();
+	status_header( 404 );
+	nocache_headers();
+
+	if ( 'remove_canonical_direct' === $redirect ) {
+		remove_action( 'template_redirect', 'redirect_canonical' );
+	}
 }
 
 /** Is_* **********************************************************************/
