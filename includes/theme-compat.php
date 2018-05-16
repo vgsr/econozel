@@ -300,13 +300,16 @@ function econozel_buffer_template_part( $slug, $name = '', $echo = false ) {
  *
  * @since 1.0.0
  *
+ * @uses do_action() Calls 'econozel_get_template_part_{$slug}'
+ * @uses apply_filters() Calls 'econozel_get_template_part'
+ *
  * @param string $slug Template slug.
  * @param string $name Optional. Template name.
  */
 function econozel_get_template_part( $slug, $name = '' ) {
 
 	// Execute code for this part
-	do_action( 'get_template_part_' . $slug, $slug, $name );
+	do_action( "econozel_get_template_part_{$slug}", $slug, $name );
 
 	// Setup possible parts
 	$templates = array();
