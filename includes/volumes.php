@@ -152,8 +152,6 @@ function econozel_has_volumes() {
  * Setup next Volume in the current loop
  *
  * @since 1.0.0
- *
- * @return bool Are we still in the loop?
  */
 function econozel_the_volume() {
 
@@ -167,9 +165,9 @@ function econozel_the_volume() {
 	$query->current_term++;
 
 	// Get next term in list
-	$query->term = $query->terms[ $query->current_term ];
-
-	return $query->term;
+	if ( isset( $query->terms[ $query->current_term ] ) ) {
+		$query->term = $query->terms[ $query->current_term ];
+	}
 }
 
 /**

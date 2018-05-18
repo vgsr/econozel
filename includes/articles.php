@@ -153,11 +153,9 @@ function econozel_has_articles() {
  * Setup next Article in the current loop
  *
  * @since 1.0.0
- *
- * @return bool Are we still in the loop?
  */
 function econozel_the_article() {
-	return econozel()->article_query->the_post();
+	econozel()->article_query->the_post();
 }
 
 /**

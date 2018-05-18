@@ -205,8 +205,6 @@ function econozel_has_editions() {
  * Setup next Edition in the current loop
  *
  * @since 1.0.0
- *
- * @return bool Are we still in the loop?
  */
 function econozel_the_edition() {
 
@@ -220,9 +218,9 @@ function econozel_the_edition() {
 	$query->current_term++;
 
 	// Get next term in list
-	$query->term = $query->terms[ $query->current_term ];
-
-	return $query->term;
+	if ( isset( $query->terms[ $query->current_term ] ) ) {
+		$query->term = $query->terms[ $query->current_term ];
+	}
 }
 
 /**
