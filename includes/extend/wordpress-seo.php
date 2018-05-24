@@ -127,16 +127,22 @@ class Econozel_WPSEO {
 
 			// Define plugin crumb presets
 			$_crumbs = array(
+
+				// Econozel Home
 				'root' => array(
 					'text'       => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
 					'url'        => econozel_get_root_url(),
 					'allow_html' => false,
 				),
+
+				// Volume archives
 				'volumes' => array(
 					'text'       => esc_html_x( 'Volumes', 'volume archives breadcrumb title', 'econozel' ),
 					'url'        => econozel_get_volume_archive_url(),
 					'allow_html' => false,
 				),
+
+				// Article archives
 				'articles' => array(
 					'text'       => esc_html_x( 'Articles', 'article archives breadcrumb title', 'econozel' ),
 					'url'        => get_post_type_archive_link( econozel_get_article_post_type() ),
@@ -144,7 +150,7 @@ class Econozel_WPSEO {
 				)
 			);
 
-			// Always append Econozel root just after home
+			// Always append Econozel Home just after home
 			array_splice( $crumbs, 1, 0, array( $_crumbs['root'] ) );
 
 			// Define local variable(s)
@@ -171,15 +177,15 @@ class Econozel_WPSEO {
 			// Single Edition
 			} elseif ( econozel_is_edition() && $volume = econozel_get_edition_volume() ) {
 
-				// Prepend Volumes archives > {Volume}
-				array_splice( $crumbs, $last, 0, array( $_crumbs['volumes'], array(
-					'text'       => econozel_get_volume_title( $volume, false ),
+				// Prepend {Volume}
+				array_splice( $crumbs, $last, 0, array( array(
+					'text'       => econozel_get_volume_title( $volume ),
 					'url'        => econozel_get_volume_url( $volume ),
 					'allow_html' => false
 				) ) );
 
 				// Set Edition crumb. Overwrites default crumb on queried term.
-				$crumbs[ $last + 2 ] = array(
+				$crumbs[ $last + 1 ] = array(
 					'text'       => econozel_get_edition_title(),
 					'allow_html' => false
 				);
@@ -196,23 +202,22 @@ class Econozel_WPSEO {
 				// Published in Edition
 				if ( $edition = econozel_get_article_edition() ) {
 
-					// Get more ancestry details
-					$volume  = econozel_get_article_volume();
-					$numeric = econozel_is_edition_issue_numeric( $edition );
+					// Get article volume
+					$volume = econozel_get_article_volume();
 
-					// Prepend Volume archives
-					array_splice( $crumbs, $last, 0, array( $_crumbs['volumes'],
+					// Prepend {Volume} and {Edition}
+					array_splice( $crumbs, $last, 0, array(
 
 						// Volume
 						array(
-							'text'       => econozel_get_volume_title( $volume, false ),
+							'text'       => econozel_get_volume_title( $volume ),
 							'url'        => econozel_get_volume_url( $volume ),
 							'allow_html' => false
 						),
 
 						// Edition
 						array(
-							'text'       => $numeric ? econozel_get_edition_issue( $edition ) : econozel_get_edition_title( $edition ),
+							'text'       => econozel_get_edition_title( $edition ),
 							'url'        => econozel_get_edition_url( $edition ),
 							'allow_html' => false
 						),

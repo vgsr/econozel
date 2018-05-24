@@ -79,6 +79,7 @@ class Econozel_Admin {
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
 		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_bulk_edit' )        );
 		add_filter( 'wp_dropdown_users_args',                   array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
+		add_filter( 'post_updated_messages',                    array( $this, 'post_updated_messages'  )        );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
@@ -623,6 +624,33 @@ class Econozel_Admin {
 		}
 
 		return $query_args;
+	}
+
+	/**
+	 * Add post-type specific messages for post updates
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $messages Messages
+	 * @return array Messages
+	 */
+	public function post_updated_messages( $messages ) {
+
+		// Define view link
+		$view_article_link = sprintf( ' <a href="%s">%s</a>',
+			esc_url( get_permalink() ),
+			esc_html__( 'View Article', 'econozel' )
+		);
+
+		$messages[ $this->article_post_type ] = array(
+			 1 => __( 'Article updated.',   'econozel' ) . $view_article_link,
+			 4 => __( 'Article updated.',   'econozel' ),
+			 6 => __( 'Article created.',   'econozel' ) . $view_article_link,
+			 7 => __( 'Article saved.',     'econozel' ),
+			 8 => __( 'Article submitted.', 'econozel' ) . $view_article_link,
+		);
+
+		return $messages;
 	}
 
 	/** Edition ***************************************************************/
