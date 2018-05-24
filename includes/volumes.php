@@ -520,3 +520,59 @@ function econozel_the_volume_url( $volume = 0 ) {
 function econozel_get_volume_archive_url() {
 	return home_url( user_trailingslashit( econozel_get_volume_slug() ) );
 }
+
+/**
+ * Output the Volume's content
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ */
+function econozel_the_volume_content( $volume = 0 ) {
+	echo econozel_get_volume_content( $volume );
+}
+
+	/**
+	 * Return the Volume's content
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_volume_content'
+	 *
+	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @return string Volume content
+	 */
+	function econozel_get_volume_content( $volume = 0 ) {
+
+		// Define return var
+		$content = '';
+
+		if ( $volume = econozel_get_volume( $volume ) ) {
+
+			// Start output buffer
+			ob_start();
+
+			if ( econozel_query_editions( array(
+				'econozel_volume' => $volume->term_id
+			) ) ) : ?>
+
+			<ul class="volume-editions">
+
+				<?php while ( econozel_has_editions() ) : econozel_the_edition(); ?>
+
+				<li <?php econozel_term_class(); ?>>
+					<span class="edition-title"><?php econozel_the_edition_issue_link(); ?></a></span>
+					<span class="article-count"><?php econozel_edition_article_count(); ?></span>
+				</li>
+
+				<?php endwhile; ?>
+
+			</ul>
+
+			<?php endif;
+
+			$content = ob_get_clean();
+		}
+
+		return apply_filters( 'econozel_get_volume_content', $content, $volume );
+	}

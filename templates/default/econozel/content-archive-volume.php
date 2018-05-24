@@ -19,22 +19,7 @@
 
 			<h3 class="volume-title"><?php econozel_the_volume_link(); ?></h3>
 
-			<?php if ( econozel_query_editions() ) : ?>
-
-			<ul class="volume-editions">
-
-				<?php while ( econozel_has_editions() ) : econozel_the_edition(); ?>
-
-				<li <?php econozel_term_class(); ?>>
-					<span class="edition-title"><?php econozel_the_edition_issue_link(); ?></a></span>
-					<span class="article-count"><?php econozel_edition_article_count(); ?></span>
-				</li>
-
-				<?php endwhile; ?>
-
-			</ul>
-
-			<?php endif; ?>
+			<?php econozel_the_volume_content(); ?>
 
 		</div>
 
