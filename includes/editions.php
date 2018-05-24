@@ -853,3 +853,67 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 
 		return apply_filters( 'econozel_get_edition_article_count', $count, $edition );
 	}
+
+/**
+ * Output the Edition's content
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ */
+function econozel_the_edition_content( $edition = 0 ) {
+	echo econozel_get_edition_content( $edition );
+}
+
+	/**
+	 * Return the Edition's content
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_content'
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+	 * @return string Edition content
+	 */
+	function econozel_get_edition_content( $edition = 0 ) {
+
+		// Define return var
+		$content = '';
+
+		if ( $edition = econozel_get_edition( $edition ) ) {
+
+			// Start output buffer
+			ob_start();
+
+			if ( econozel_query_articles( array(
+				'econozel_edition' => $edition->term_id
+			) ) ) : ?>
+
+			<ul class="edition-articles">
+
+				<?php while ( econozel_has_articles() ) : econozel_the_article(); ?>
+
+				<li <?php post_class(); ?>>
+					<h4 class="article-title">
+						<a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a>
+					</h4>
+
+					<span class="article-author"><?php econozel_the_article_author_link(); ?></span>
+
+					<?php if ( get_comments_number() ) : ?>
+						<span class="comment-count"><?php comments_number(); ?></span>
+					<?php endif; ?>
+
+				</li>
+
+				<?php endwhile; ?>
+
+			</ul>
+
+			<?php endif;
+
+			$content = ob_get_clean();
+		}
+
+		return apply_filters( 'econozel_get_edition_content', $content, $edition );
+	}
