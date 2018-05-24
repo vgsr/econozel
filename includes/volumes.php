@@ -561,7 +561,7 @@ function econozel_the_volume_content( $volume = 0 ) {
 				<?php while ( econozel_has_editions() ) : econozel_the_edition(); ?>
 
 				<li <?php econozel_term_class(); ?>>
-					<span class="edition-title"><?php econozel_the_edition_issue_link(); ?></a></span>
+					<h4 class="edition-title"><?php econozel_the_edition_issue_link(); ?></a></h4>
 					<span class="article-count"><?php econozel_edition_article_count(); ?></span>
 				</li>
 
