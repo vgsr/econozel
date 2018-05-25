@@ -27,7 +27,7 @@ the_widget( 'Econozel_Articles_Widget', array(
 // Active Articles
 the_widget( 'Econozel_Articles_Widget', array(
 	'title'            => esc_html__( 'Active Articles', 'econozel' ),
-	'none_found'       => esc_html__( 'It seems there have been no articles commented on lately.', 'econozel' ),
+	'none_found'       => esc_html__( 'It seems there are no articles having been commented on lately.', 'econozel' ),
 	'comment_activity' => 30,
 	'show_date'        => true,
 ), $widget_args );

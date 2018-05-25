@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Volumes Loop
+ * Volumes Loop Template Part
  * 
  * @package Econozel
  * @subpackage Theme

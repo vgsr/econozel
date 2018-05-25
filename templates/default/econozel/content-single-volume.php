@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Editions Loop
+ * Single Volume Template Part
  * 
  * @package Econozel
  * @subpackage Theme
@@ -19,25 +19,7 @@
 
 			<h3 class="edition-title"><?php econozel_the_edition_issue_link(); ?></h3>
 
-			<?php if ( econozel_query_articles() ) : ?>
-
-			<ul class="edition-articles">
-
-				<?php while ( econozel_has_articles() ) : econozel_the_article(); ?>
-
-				<li <?php post_class(); ?>>
-					<span class="article-title"><a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a></span>
-					<span class="article-author"><?php econozel_the_article_author_link(); ?></span>
-					<?php if ( get_comments_number() ) : ?>
-						<span class="comment-count"><?php comments_number(); ?></span>
-					<?php endif; ?>
-				</li>
-
-				<?php endwhile; ?>
-
-			</ul>
-
-			<?php endif; ?>
+			<?php econozel_the_edition_content(); ?>
 
 		</div>
 
