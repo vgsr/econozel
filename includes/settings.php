@@ -114,18 +114,26 @@ function econozel_admin_get_settings_fields() {
 				'args'              => array()
 			),
 
-			// Article slug setting
-			'_econozel_article_slug' => array(
-				'title'             => esc_html__( 'Article', 'econozel' ),
-				'callback'          => 'econozel_admin_setting_callback_article_slug',
-				'sanitize_callback' => 'econozel_sanitize_slug',
-				'args'              => array()
-			),
-
 			// Volume slug setting
 			'_econozel_volume_slug' => array(
 				'title'             => esc_html__( 'Volume', 'econozel' ),
 				'callback'          => 'econozel_admin_setting_callback_volume_slug',
+				'sanitize_callback' => 'econozel_sanitize_slug',
+				'args'              => array()
+			),
+
+			// Edition slug setting
+			'_econozel_edition_slug' => array(
+				'title'             => esc_html__( 'Edition', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_edition_slug',
+				'sanitize_callback' => 'econozel_sanitize_slug',
+				'args'              => array()
+			),
+
+			// Article slug setting
+			'_econozel_article_slug' => array(
+				'title'             => esc_html__( 'Article', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_article_slug',
 				'sanitize_callback' => 'econozel_sanitize_slug',
 				'args'              => array()
 			),
@@ -277,18 +285,6 @@ function econozel_admin_setting_callback_root_slug() { ?>
 }
 
 /**
- * Display the content of the Article Slug settings field
- *
- * @since 1.0.0
- */
-function econozel_admin_setting_callback_article_slug() { ?>
-
-	<input name="_econozel_article_slug" id="_econozel_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_article_slug', 'articles', true ); ?>">
-
-	<?php
-}
-
-/**
  * Display the content of the Volume Slug settings field
  *
  * @since 1.0.0
@@ -296,6 +292,30 @@ function econozel_admin_setting_callback_article_slug() { ?>
 function econozel_admin_setting_callback_volume_slug() { ?>
 
 	<input name="_econozel_volume_slug" id="_econozel_volume_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_volume_slug', 'volumes', true ); ?>">
+
+	<?php
+}
+
+/**
+ * Display the content of the Edition Slug settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_setting_callback_edition_slug() { ?>
+
+	<input name="_econozel_edition_slug" id="_econozel_edition_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_edition_slug', 'editions', true ); ?>">
+
+	<?php
+}
+
+/**
+ * Display the content of the Article Slug settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_setting_callback_article_slug() { ?>
+
+	<input name="_econozel_article_slug" id="_econozel_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_article_slug', 'articles', true ); ?>">
 
 	<?php
 }

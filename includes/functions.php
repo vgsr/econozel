@@ -129,6 +129,18 @@ function econozel_get_volume_slug() {
 }
 
 /**
+ * Return the Edition rewrite slug
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_edition_slug'
+ * @return string Edition rewrite slug
+ */
+function econozel_get_edition_slug() {
+	return apply_filters( 'econozel_get_edition_slug', trailingslashit( econozel_get_root_slug() ) . get_option( '_econozel_edition_slug', 'editions' ) );
+}
+
+/**
  * Return the paged slug
  *
  * @since 1.0.0
@@ -175,6 +187,18 @@ function econozel_get_volume_rewrite_id() {
  */
 function econozel_get_volume_archive_rewrite_id() {
 	return apply_filters( 'econozel_get_volume_archive_rewrite_id', econozel_get_volume_tax_id() . '_archive' );
+}
+
+/**
+ * Return the Edition archive rewrite ID
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_edition_archive_rewrite_id'
+ * @return string Edition archive rewrite ID
+ */
+function econozel_get_edition_archive_rewrite_id() {
+	return apply_filters( 'econozel_get_edition_archive_rewrite_id', econozel_get_edition_tax_id() . '_archive' );
 }
 
 /**
@@ -291,7 +315,7 @@ function econozel_get_nav_menu_items() {
 				'title'       => esc_html_x( 'Econozel Home', 'root page title', 'econozel' ),
 				'url'         => econozel_get_root_url(),
 				'is_current'  => econozel_is_root(),
-				'is_parent'   => econozel_is_article_archive() || econozel_is_volume_archive(),
+				'is_parent'   => econozel_is_article_archive() || econozel_is_volume_archive() || econozel_is_edition_archive(),
 				'is_ancestor' => ! econozel_is_root() && is_econozel(),
 			),
 
@@ -301,7 +325,14 @@ function econozel_get_nav_menu_items() {
 				'url'         => econozel_get_volume_archive_url(),
 				'is_current'  => econozel_is_volume_archive(),
 				'is_parent'   => econozel_is_volume(),
-				'is_ancestor' => econozel_is_edition(),
+			),
+
+			// Edition archives
+			'edition-archive' => array(
+				'title'       => get_taxonomy( econozel_get_edition_tax_id() )->labels->all_items,
+				'url'         => econozel_get_edition_archive_url(),
+				'is_current'  => econozel_is_edition_archive(),
+				'is_parent'   => econozel_is_edition(),
 			),
 		) );
 

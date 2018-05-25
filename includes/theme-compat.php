@@ -106,6 +106,20 @@ function econozel_template_include_theme_compat( $template = '' ) {
 			'template'    => array( 'content', 'single-volume' ),
 		) );
 
+	// Edition Archive
+	} elseif ( econozel_is_edition_archive() ) {
+
+		// Reset post
+		econozel_theme_compat_reset_post( array(
+			'ID'          => 0,
+			'post_author' => 0,
+			'post_date'   => 0,
+			'post_type'   => '',
+			'post_title'  => esc_html__( 'Econozel Editions', 'econozel' ),
+			'is_archive'  => true,
+			'template'    => array( 'content', 'archive-edition' ),
+		) );
+
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 

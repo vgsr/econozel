@@ -142,6 +142,13 @@ class Econozel_WPSEO {
 					'allow_html' => false,
 				),
 
+				// Edition archives
+				'editions' => array(
+					'text'       => esc_html_x( 'Editions', 'edition archives breadcrumb title', 'econozel' ),
+					'url'        => econozel_get_edition_archive_url(),
+					'allow_html' => false,
+				),
+
 				// Article archives
 				'articles' => array(
 					'text'       => esc_html_x( 'Articles', 'article archives breadcrumb title', 'econozel' ),
@@ -173,6 +180,12 @@ class Econozel_WPSEO {
 					'text'       => econozel_get_volume_title(),
 					'allow_html' => false
 				);
+
+			// Edition archives
+			} elseif ( econozel_is_edition_archive() ) {
+
+				// Append Edition crumb, 'cause there is none
+				$crumbs[] = $_crumbs['editions'];
 
 			// Single Edition
 			} elseif ( econozel_is_edition() && $volume = econozel_get_edition_volume() ) {

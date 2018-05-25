@@ -791,6 +791,17 @@ function econozel_the_edition_url( $edition = 0 ) {
 	}
 
 /**
+ * Return the Edition archive url
+ *
+ * @since 1.0.0
+ *
+ * @return string Edition archive url
+ */
+function econozel_get_edition_archive_url() {
+	return home_url( user_trailingslashit( econozel_get_edition_slug() ) );
+}
+
+/**
  * Output or return the Edition's article count in a read-friendly format
  *
  * @since 1.0.0
