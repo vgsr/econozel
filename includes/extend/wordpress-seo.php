@@ -172,11 +172,11 @@ class Econozel_WPSEO {
 			// Single Volume
 			} elseif ( econozel_is_volume() ) {
 
-				// Prepend Volume archives
-				array_splice( $crumbs, $last, 0, array( $_crumbs['volumes'] ) );
+				// Append Volume archives
+				$crumbs[] = $_crumbs['volumes'];
 
-				// Set Volume crumb. Overwrites default crumb on queried term.
-				$crumbs[ $last + 1 ] = array(
+				// Set Volume crumb
+				$crumbs[] = array(
 					'text'       => econozel_get_volume_title(),
 					'allow_html' => false
 				);
@@ -190,15 +190,15 @@ class Econozel_WPSEO {
 			// Single Edition
 			} elseif ( econozel_is_edition() && $volume = econozel_get_edition_volume() ) {
 
-				// Prepend {Volume}
-				array_splice( $crumbs, $last, 0, array( array(
+				// Append Volume
+				$crumbs[] = array(
 					'text'       => econozel_get_volume_title( $volume ),
 					'url'        => econozel_get_volume_url( $volume ),
 					'allow_html' => false
-				) ) );
+				);
 
-				// Set Edition crumb. Overwrites default crumb on queried term.
-				$crumbs[ $last + 1 ] = array(
+				// Set Edition crumb
+				$crumbs[] = array(
 					'text'       => econozel_get_edition_title(),
 					'allow_html' => false
 				);
