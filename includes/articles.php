@@ -359,6 +359,59 @@ function econozel_the_article_description( $article = 0 ) {
 	}
 
 /**
+ * Output the Article's content for the Edition's Article loop
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Defaults to the current Article.
+ */
+function econozel_the_article_content( $article = 0 ) {
+	echo econozel_get_article_content( $article );
+}
+
+	/**
+	 * Return the Article's content for the Edition's Article loop
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_content'
+	 *
+	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @return string Article content
+	 */
+	function econozel_get_article_content( $article = 0 ) {
+
+		// Define return var
+		$content = '';
+
+		if ( $article = econozel_get_article( $article ) ) {
+
+			// Start output buffer
+			ob_start(); ?>
+
+			<?php econozel_the_article_description( $article ); ?>
+
+			<p class="article-meta">
+				<span class="article-author"><?php econozel_the_article_author_link( $article ); ?></span>
+
+				<?php if ( econozel_get_article_page_number( $article ) ) : ?>
+					<span class="article-page-number"><?php econozel_article_page_number( $article ); ?></span>
+				<?php endif; ?>
+
+				<?php if ( get_comments_number( $article ) ) : ?>
+					<span class="comment-count"><?php comments_number(); ?></span>
+				<?php endif; ?>
+			</p>
+
+			<?php
+
+			$content = ob_get_clean();
+		}
+
+		return apply_filters( 'econozel_get_article_content', $content, $article );
+	}
+
+/**
  * Return the Article's author(s)
  *
  * Considers to return multiple authors by way of an array.
