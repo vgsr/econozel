@@ -64,7 +64,6 @@ function econozel_parse_query( $posts_query ) {
 
 		// Looking at the root page
 		$posts_query->econozel_is_root = true;
-		$posts_query->is_archive       = true;
 
 		// Make sure 404 is not set
 		$posts_query->is_404 = false;
@@ -121,8 +120,6 @@ function econozel_parse_query( $posts_query ) {
 
 		// Looking at a single Edition
 		$posts_query->econozel_is_edition = true;
-		$posts_query->is_tax              = true;
-		$posts_query->is_archive          = true;
 
 		// Make sure 404 is not set
 		$posts_query->is_404 = false;
@@ -155,8 +152,6 @@ function econozel_parse_query( $posts_query ) {
 
 		// Looking at a single Volume
 		$posts_query->econozel_is_volume = true;
-		$posts_query->is_tax             = true;
-		$posts_query->is_archive         = true;
 
 		// Make sure 404 is not set
 		$posts_query->is_404 = false;

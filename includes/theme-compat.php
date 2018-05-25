@@ -103,7 +103,6 @@ function econozel_template_include_theme_compat( $template = '' ) {
 			'post_type'   => '',
 			'post_title'  => econozel_get_volume_title( get_queried_object_id() ),
 			'is_single'   => true,
-			'is_tax'      => true,
 			'template'    => array( 'content', 'single-volume' ),
 		) );
 
@@ -118,7 +117,6 @@ function econozel_template_include_theme_compat( $template = '' ) {
 			'post_type'   => '',
 			'post_title'  => econozel_get_edition_title( get_queried_object_id() ),
 			'is_single'   => true,
-			'is_tax'      => true,
 			'template'    => array( 'content', 'single-edition' ),
 		) );
 	}
