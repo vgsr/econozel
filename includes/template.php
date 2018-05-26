@@ -597,15 +597,16 @@ function econozel_is_article_archive() {
  *
  * @since 1.0.0
  *
+ * @param bool $singular Optional. Whether to check for a singular page. Defaults to false.
  * @return bool Is it an Article page?
  */
-function econozel_is_article() {
+function econozel_is_article( $singular = false ) {
 
 	// Assume false
 	$retval = false;
 
 	// Single article
-	if ( is_singular( econozel_get_article_post_type() ) ) {
+	if ( get_post_type() === econozel_get_article_post_type() && ( ! $singular || is_singular() ) ) {
 		$retval = true;
 	}
 
