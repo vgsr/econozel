@@ -522,6 +522,39 @@ function econozel_get_volume_archive_url() {
 }
 
 /**
+ * Output the Volume's description
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ */
+function econozel_the_volume_description( $volume = 0 ) {
+	echo econozel_get_volume_description( $volume );
+}
+
+	/**
+	 * Return the Volume's description
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_volume_description'
+	 *
+	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @return string Volume description
+	 */
+	function econozel_get_volume_description( $volume = 0 ) {
+
+		// Define return var
+		$description = '';
+
+		if ( $volume = econozel_get_volume( $volume ) ) {
+			$description = get_term_field( 'description', $volume );
+		}
+
+		return apply_filters( 'econozel_get_volume_description', $description, $volume );
+	}
+
+/**
  * Output the Volume's content
  *
  * @since 1.0.0

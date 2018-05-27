@@ -866,6 +866,39 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 	}
 
 /**
+ * Output the Edition's description
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ */
+function econozel_the_edition_description( $edition = 0 ) {
+	echo econozel_get_edition_description( $edition );
+}
+
+	/**
+	 * Return the Edition's description
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_description'
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+	 * @return string Edition description
+	 */
+	function econozel_get_edition_description( $edition = 0 ) {
+
+		// Define return var
+		$description = '';
+
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$description = get_term_field( 'description', $edition );
+		}
+
+		return apply_filters( 'econozel_get_edition_description', $description, $edition );
+	}
+
+/**
  * Output the Edition's table of contents
  *
  * @since 1.0.0
