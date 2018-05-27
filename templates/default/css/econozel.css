@@ -11,6 +11,10 @@
 	padding-left: 0px;
 }
 
+.econozel .table-of-contents {
+	margin-left: 0px;
+}
+
 .econozel .volume-editions .edition-title,
 .econozel .edition-articles .article-title {
 	display: block;

@@ -1131,6 +1131,10 @@ function econozel_get_the_archive_description( $description = '' ) {
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel articles archived on this site. You can browse them here or through the registered <a title="%1$s" href="%2$s">volumes</a> and <a title="%3$s" href="%4$s">editions</a> through which they have been published.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the edition archives', 'econozel' ), esc_url( econozel_get_edition_archive_url() ) );
+
+	// Single Edition
+	} elseif ( econozel_is_edition() ) {
+		$description = econozel_get_edition_toc();
 	}
 
 	return $description;

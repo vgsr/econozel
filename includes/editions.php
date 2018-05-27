@@ -866,6 +866,61 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 	}
 
 /**
+ * Output the Edition's table of contents
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+ */
+function econozel_the_edition_toc( $edition = 0 ) {
+	echo econozel_get_edition_toc( $edition );
+}
+
+	/**
+	 * Return the Edition's table of contents
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_toc'
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current post's Edition.
+	 * @return string Edition table of contents
+	 */
+	function econozel_get_edition_toc( $edition = 0 ) {
+
+		// Define return var
+		$toc = '';
+
+		if ( $edition = econozel_get_edition( $edition ) ) {
+
+			// Start output buffer
+			ob_start();
+
+			if ( econozel_query_articles( array(
+				'econozel_edition' => $edition->term_id
+			) ) ) : ?>
+
+			<ol class="table-of-contents">
+
+				<?php while ( econozel_has_articles() ) : econozel_the_article(); ?>
+
+				<li value="<?php econozel_the_article_page_number(); ?>">
+					<a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a>
+				</li>
+
+				<?php endwhile; ?>
+
+			</ol>
+
+			<?php endif;
+
+			$toc = ob_get_clean();
+		}
+
+		return apply_filters( 'econozel_get_edition_toc', $toc, $edition );
+	}
+
+/**
  * Output the Edition's content
  *
  * @since 1.0.0
