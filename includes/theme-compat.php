@@ -69,13 +69,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'          => 0,
-			'post_author' => 0,
-			'post_date'   => 0,
-			'post_type'   => '',
-			'post_title'  => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
-			'is_single'   => true,
-			'template'    => array( 'content', 'econozel' ),
+			'ID'           => 0,
+			'post_author'  => 0,
+			'post_date'    => 0,
+			'post_type'    => '',
+			'post_title'   => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
+			'post_content' => array( 'content', 'econozel' ),
+			'is_single'    => true,
 		) );
 
 	// Volume Archive
@@ -83,13 +83,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'          => 0,
-			'post_author' => 0,
-			'post_date'   => 0,
-			'post_type'   => '',
-			'post_title'  => esc_html__( 'Econozel Volumes', 'econozel' ),
-			'is_archive'  => true,
-			'template'    => array( 'content', 'archive-volume' ),
+			'ID'           => 0,
+			'post_author'  => 0,
+			'post_date'    => 0,
+			'post_type'    => '',
+			'post_title'   => esc_html__( 'Econozel Volumes', 'econozel' ),
+			'post_content' => array( 'content', 'archive-volume' ),
+			'is_archive'   => true,
 		) );
 
 	// Single Volume
@@ -97,13 +97,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'          => 0,
-			'post_author' => 0,
-			'post_date'   => 0,
-			'post_type'   => '',
-			'post_title'  => econozel_get_volume_title( get_queried_object_id() ),
-			'is_single'   => true,
-			'template'    => array( 'content', 'single-volume' ),
+			'ID'           => 0,
+			'post_author'  => 0,
+			'post_date'    => 0,
+			'post_type'    => '',
+			'post_title'   => econozel_get_volume_title( get_queried_object_id() ),
+			'post_content' => array( 'content', 'single-volume' ),
+			'is_single'    => true,
 		) );
 
 	// Edition Archive
@@ -111,13 +111,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'          => 0,
-			'post_author' => 0,
-			'post_date'   => 0,
-			'post_type'   => '',
-			'post_title'  => esc_html__( 'Econozel Editions', 'econozel' ),
-			'is_archive'  => true,
-			'template'    => array( 'content', 'archive-edition' ),
+			'ID'           => 0,
+			'post_author'  => 0,
+			'post_date'    => 0,
+			'post_type'    => '',
+			'post_title'   => esc_html__( 'Econozel Editions', 'econozel' ),
+			'post_content' => array( 'content', 'archive-edition' ),
+			'is_archive'   => true,
 		) );
 
 	// Single Edition
@@ -125,13 +125,13 @@ function econozel_template_include_theme_compat( $template = '' ) {
 
 		// Reset post
 		econozel_theme_compat_reset_post( array(
-			'ID'          => 0,
-			'post_author' => 0,
-			'post_date'   => 0,
-			'post_type'   => '',
-			'post_title'  => econozel_get_edition_title( get_queried_object_id() ),
-			'is_single'   => true,
-			'template'    => array( 'content', 'single-edition' ),
+			'ID'           => 0,
+			'post_author'  => 0,
+			'post_date'    => 0,
+			'post_type'    => '',
+			'post_title'   => econozel_get_edition_title( get_queried_object_id() ),
+			'post_content' => array( 'content', 'single-edition' ),
+			'is_single'    => true,
 		) );
 	}
 
@@ -242,12 +242,11 @@ function econozel_theme_compat_reset_post( $args = array() ) {
 	econozel_set_theme_compat_active( true );
 
 	/**
-	 * Render post content from template. Doing this here enables
+	 * Render post content from template definition. Doing this here enables
 	 * the template to know whether we're in theme compat mode.
 	 */
-	if ( isset( $dummy['template'] ) ) {
-		$dummy['post_content'] = econozel_buffer_template_part( $dummy['template'][0], $dummy['template'][1], false );
-		unset( $dummy['template'] );
+	if ( is_array( $dummy['post_content'] ) ) {
+		$dummy['post_content'] = call_user_func_array( 'econozel_buffer_template_part', (array) $dummy['post_content'] );
 	}
 
 	// Set the $post global
