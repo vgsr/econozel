@@ -646,6 +646,9 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
 	} elseif ( econozel_is_edition() ) {
 		$econozel_classes[] = 'econozel-edition';
 
+	} elseif ( econozel_is_article_archive() ) {
+		$econozel_classes[] = 'econozel-article-archive';
+
 	} elseif ( econozel_is_article() ) {
 		$econozel_classes[] = 'econozel-article';
 	}
@@ -728,17 +731,20 @@ function econozel_template_include_theme_supports( $template = '' ) {
 	// Root Page
 	if     ( econozel_is_root()            && ( $_template = econozel_get_root_template()            ) ) :
 
-	// Volume Archive
+	// Volume archives
 	elseif ( econozel_is_volume_archive()  && ( $_template = econozel_get_volume_archive_template()  ) ) :
 
 	// Single Volume
 	elseif ( econozel_is_volume()          && ( $_template = econozel_get_volume_template()          ) ) :
 
-	// Edition Archive
+	// Edition archives
 	elseif ( econozel_is_edition_archive() && ( $_template = econozel_get_edition_archive_template() ) ) :
 
 	// Single Edition
 	elseif ( econozel_is_edition()         && ( $_template = econozel_get_edition_template()         ) ) :
+
+	// Article archives
+	elseif ( econozel_is_article_archive() && ( $_template = econozel_get_article_archive_template() ) ) :
 	endif;
 
 	// Set included template file
@@ -892,6 +898,22 @@ function econozel_get_edition_template() {
 }
 
 /**
+ * Locate and return the Article archive page template
+ *
+ * @since 1.0.0
+ *
+ * @return string Path to template file
+ */
+function econozel_get_article_archive_template() {
+	$templates = array(
+		'archive-econozel-article.php', // Articles archive
+		'archive-econozel.php',         // Econozel archive
+	);
+
+	return econozel_get_query_template( 'econozel-articles', $templates );
+}
+
+/**
  * Locate and return the generic plugin page template
  *
  * @since 1.0.0
@@ -904,8 +926,8 @@ function econozel_get_theme_compat_template() {
 		'econozel.php'
 	);
 
-	// Use archive.php for Taxonomy archives
-	if ( econozel_is_volume_archive() || econozel_is_edition_archive() ) {
+	// Use archive.php for archive pages
+	if ( econozel_is_volume_archive() || econozel_is_edition_archive() || econozel_is_article_archive() ) {
 		$templates[] = 'archive.php';
 	}
 
@@ -935,19 +957,19 @@ function econozel_has_custom_query() {
 	$retval = false;
 
 	// Volume archives
-	if ( econozel_is_volume_archive() && econozel_has_volumes()  ) {
+	if ( econozel_is_volume_archive()        && econozel_has_volumes()  ) {
 		$retval = true;
 
 	// Single Volume
-	} elseif ( econozel_is_volume()   && econozel_has_editions() ) {
+	} elseif ( econozel_is_volume()          && econozel_has_editions() ) {
 		$retval = true;
 
 	// Edition archives
-	} elseif ( econozel_is_edition_archive() && econozel_has_editions()  ) {
+	} elseif ( econozel_is_edition_archive() && econozel_has_editions() ) {
 		$retval = true;
 
 	// Single Edition
-	} elseif ( econozel_is_edition()  && econozel_has_articles() ) {
+	} elseif ( econozel_is_edition()         && econozel_has_articles() ) {
 		$retval = true;
 	}
 
