@@ -64,75 +64,58 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	if ( econozel_is_template_included() )
 		return $template;
 
+	// Define local variable
+	$args = array();
+
 	// Root Page
 	if ( econozel_is_root() ) {
-
-		// Reset post
-		econozel_theme_compat_reset_post( array(
-			'ID'           => 0,
-			'post_author'  => 0,
-			'post_date'    => 0,
-			'post_type'    => '',
+		$args = array(
 			'post_title'   => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
 			'post_content' => array( 'content', 'econozel' ),
 			'is_single'    => true,
-		) );
+		);
 
-	// Volume Archive
+	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
-
-		// Reset post
-		econozel_theme_compat_reset_post( array(
-			'ID'           => 0,
-			'post_author'  => 0,
-			'post_date'    => 0,
-			'post_type'    => '',
+		$args = array(
 			'post_title'   => esc_html__( 'Econozel Volumes', 'econozel' ),
 			'post_content' => array( 'content', 'archive-volume' ),
 			'is_archive'   => true,
-		) );
+		);
 
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
-
-		// Reset post
-		econozel_theme_compat_reset_post( array(
-			'ID'           => 0,
-			'post_author'  => 0,
-			'post_date'    => 0,
-			'post_type'    => '',
+		$args = array(
 			'post_title'   => econozel_get_volume_title( get_queried_object_id() ),
 			'post_content' => array( 'content', 'single-volume' ),
 			'is_single'    => true,
-		) );
+		);
 
-	// Edition Archive
+	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
-
-		// Reset post
-		econozel_theme_compat_reset_post( array(
-			'ID'           => 0,
-			'post_author'  => 0,
-			'post_date'    => 0,
-			'post_type'    => '',
+		$args = array(
 			'post_title'   => esc_html__( 'Econozel Editions', 'econozel' ),
 			'post_content' => array( 'content', 'archive-edition' ),
 			'is_archive'   => true,
-		) );
+		);
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
+		$args = array(
+			'post_title'   => econozel_get_edition_title( get_queried_object_id() ),
+			'post_content' => array( 'content', 'single-edition' ),
+			'is_single'    => true,
+		);
+	}
 
-		// Reset post
-		econozel_theme_compat_reset_post( array(
+	// Reset post
+	if ( ! empty( $args ) ) {
+		econozel_theme_compat_reset_post( wp_parse_args( $args, array(
 			'ID'           => 0,
 			'post_author'  => 0,
 			'post_date'    => 0,
 			'post_type'    => '',
-			'post_title'   => econozel_get_edition_title( get_queried_object_id() ),
-			'post_content' => array( 'content', 'single-edition' ),
-			'is_single'    => true,
-		) );
+		) ) );
 	}
 
 	// So we're using theme compatibility?
