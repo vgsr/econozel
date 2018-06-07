@@ -8,7 +8,7 @@
  */
 
 // Econozel page description
-the_archive_description( '<p>', '</p>' );
+the_archive_description( '<div class="archive-description">', '</div>' );
 
 // Define widget args
 $widget_args = array(
