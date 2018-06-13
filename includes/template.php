@@ -309,12 +309,12 @@ function econozel_filter_wp_query( $request, $query ) {
 	if ( ! $query->is_main_query() )
 		return $request;
 
-	// Bail when not displaying root or custom query results
-	if ( ! econozel_is_root() && ! econozel_has_custom_query() )
-		return $request;
+	// When displaying plugin root or custom query results...
+	if ( econozel_is_root() || econozel_has_custom_query() ) {
 
-	// Query for nothing and your chicks for free
-	$request = "SELECT 1 FROM {$wpdb->posts} WHERE 0=1";
+		// ... query for nothing and your chicks for free
+		$request = "SELECT 1 FROM {$wpdb->posts} WHERE 0=1";
+	}
 
 	return $request;
 }
@@ -334,12 +334,14 @@ function econozel_bypass_wp_query( $retval, $query ) {
 	if ( ! $query->is_main_query() )
 		return $retval;
 
-	// Bail when not displaying root or custom query results
-	if ( ! econozel_is_root() && ! econozel_has_custom_query() )
-		return $retval;
+	// When displaying plugin root or custom query results...
+	if ( econozel_is_root() || econozel_has_custom_query() ) {
 
-	// Return something other than a null value to bypass WP_Query
-	return array();
+		// ... return something other than a null value to bypass WP_Query
+		$retval = array();
+	}
+
+	return $retval;
 }
 
 /**
