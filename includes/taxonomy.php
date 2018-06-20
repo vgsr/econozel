@@ -102,21 +102,17 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
 		return;
 
-	// Display add meta fields
-	add_action( "{$taxonomy}_add_form_fields", 'econozel_taxonomy_meta_add_fields' );
-
-	// Display edit meta fields
+	// Display meta fields on create and edit
+	add_action( "{$taxonomy}_add_form_fields",  'econozel_taxonomy_meta_add_fields'         );
 	add_action( "{$taxonomy}_edit_form_fields", 'econozel_taxonomy_meta_edit_fields', 10, 2 );
 
 	// Save meta fields on create and edit
 	add_action( "created_{$taxonomy}", 'econozel_taxonomy_meta_save_fields' );
 	add_action( "edited_{$taxonomy}",  'econozel_taxonomy_meta_save_fields' );
 
-	// Admin columns
-	add_filter( "manage_edit-{$taxonomy}_columns", 'econozel_taxonomy_meta_admin_columns' );
-
-	// Inline editing
-	add_action( 'quick_edit_custom_box', 'econozel_taxonomy_meta_inline_edit', 10, 3 );
+	// Admin and inline columns
+	add_filter( "manage_edit-{$taxonomy}_columns", 'econozel_taxonomy_meta_admin_columns'      );
+	add_action( 'quick_edit_custom_box',           'econozel_taxonomy_meta_inline_edit', 10, 3 );
 
 	// Walk fields
 	foreach ( $fields as $meta_key => $args ) {
