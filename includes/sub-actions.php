@@ -44,6 +44,17 @@ function econozel_init() {
 }
 
 /**
+ * Run dedicated admin init hook for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_admin_init'
+ */
+function econozel_admin_init() {
+	do_action( 'econozel_admin_init' );
+}
+
+/**
  * Run dedicated widgets hook for this plugin
  *
  * @since 1.0.0

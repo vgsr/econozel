@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /** Sub-actions ***************************************************************/
 
 add_action( 'init',                        'econozel_init'                     );
+add_action( 'admin_init',                  'econozel_admin_init'               );
 add_action( 'widgets_init',                'econozel_widgets_init'             );
 add_action( 'after_setup_theme',           'econozel_after_setup_theme'        );
 add_filter( 'map_meta_cap',                'econozel_map_meta_caps',     10, 4 );
