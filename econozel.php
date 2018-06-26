@@ -72,6 +72,7 @@ final class Econozel {
 		/** Versions **********************************************************/
 
 		$this->version      = '1.0.0-beta1';
+		$this->db_version   = 10000;
 
 		/** Paths *************************************************************/
 
@@ -127,6 +128,7 @@ final class Econozel {
 		require( $this->includes_dir . 'functions.php'    );
 		require( $this->includes_dir . 'sub-actions.php'  );
 		require( $this->includes_dir . 'taxonomy.php'     );
+		require( $this->includes_dir . 'update.php'       );
 		require( $this->includes_dir . 'users.php'        );
 		require( $this->includes_dir . 'volumes.php'      );
 

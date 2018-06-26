@@ -10,6 +10,68 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Versions ******************************************************************/
+
+/**
+ * Output the plugin version
+ *
+ * @since 1.0.0
+ */
+function econozel_version() {
+	echo econozel_get_version();
+}
+
+	/**
+	 * Return the plugin version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The plugin version
+	 */
+	function econozel_get_version() {
+		return econozel()->version;
+	}
+
+/**
+ * Output the plugin database version
+ *
+ * @since 1.0.0
+ */
+function econozel_db_version() {
+	echo econozel_get_db_version();
+}
+
+	/**
+	 * Return the plugin database version
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The plugin version
+	 */
+	function econozel_get_db_version() {
+		return econozel()->db_version;
+	}
+
+/**
+ * Output the plugin database version directly from the database
+ *
+ * @since 1.0.0
+ */
+function econozel_db_version_raw() {
+	echo econozel_get_db_version_raw();
+}
+
+	/**
+	 * Return the plugin database version directly from the database
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string The current plugin version
+	 */
+	function econozel_get_db_version_raw() {
+		return get_option( 'econozel_db_version', '' );
+	}
+
 /** User **********************************************************************/
 
 /**
@@ -584,68 +646,4 @@ function econozel_nav_menu_objects( $items, $args ) {
 	}
 
 	return $items;
-}
-
-/** Utility *******************************************************************/
-
-/**
- * Return the current plugin's version
- *
- * @since 1.0.0
- *
- * @return string Plugin version
- */
-function econozel_get_version() {
-	return econozel()->version;
-}
-
-/**
- * Determine if this plugin is being deactivated
- *
- * @since 1.0.0
- *
- * @param string $basename Optional. Plugin basename to check for.
- * @return bool True if deactivating the plugin, false if not
- */
-function econozel_is_deactivation( $basename = '' ) {
-	global $pagenow;
-
-	$eco    = econozel();
-	$action = false;
-
-	// Bail if not in admin/plugins
-	if ( ! ( is_admin() && ( 'plugins.php' === $pagenow ) ) ) {
-		return false;
-	}
-
-	if ( ! empty( $_REQUEST['action'] ) && ( '-1' !== $_REQUEST['action'] ) ) {
-		$action = $_REQUEST['action'];
-	} elseif ( ! empty( $_REQUEST['action2'] ) && ( '-1' !== $_REQUEST['action2'] ) ) {
-		$action = $_REQUEST['action2'];
-	}
-
-	// Bail if not deactivating
-	if ( empty( $action ) || ! in_array( $action, array( 'deactivate', 'deactivate-selected' ) ) ) {
-		return false;
-	}
-
-	// The plugin(s) being deactivated
-	if ( $action === 'deactivate' ) {
-		$plugins = isset( $_GET['plugin'] ) ? array( $_GET['plugin'] ) : array();
-	} else {
-		$plugins = isset( $_POST['checked'] ) ? (array) $_POST['checked'] : array();
-	}
-
-	// Set basename if empty
-	if ( empty( $basename ) && ! empty( $eco->basename ) ) {
-		$basename = $eco->basename;
-	}
-
-	// Bail if no basename
-	if ( empty( $basename ) ) {
-		return false;
-	}
-
-	// Is bbPress being deactivated?
-	return in_array( $basename, $plugins );
 }

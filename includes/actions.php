@@ -94,7 +94,8 @@ add_filter( 'vgsr_pre_user_query',    'econozel_vgsr_pre_user_query' ,   50, 2 )
 /** Admin *********************************************************************/
 
 if ( is_admin() ) {
-	add_action( 'econozel_init', 'econozel_admin' );
+	add_action( 'econozel_init',       'econozel_admin'              );
+	add_action( 'econozel_admin_init', 'econozel_setup_updater', 999 );
 }
 
 /** Extend ********************************************************************/
