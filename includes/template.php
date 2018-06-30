@@ -33,8 +33,8 @@ function econozel_parse_query( $posts_query ) {
 	if ( is_admin() )
 		return;
 
-	// Get Econozel
-	$eco = econozel();
+	// Get plugin
+	$plugin = econozel();
 
 	// Get query variables
 	$is_root            = $posts_query->get( econozel_get_root_rewrite_id()            );
@@ -53,7 +53,7 @@ function econozel_parse_query( $posts_query ) {
 	$is_article        = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] );
 
 	/**
-	 * 404 and bail when the user has no Econozel access.
+	 * 404 and bail when the user has no plugin access.
 	 */
 	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition_archive ) || ! empty( $is_edition ) || $is_article ) && ! econozel_check_access() ) {
 		econozel_do_404();
@@ -96,8 +96,8 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->is_home = false;
 
 		// Define query result
-		$posts_query->found_posts   = $eco->volume_query->found_terms;
-		$posts_query->max_num_pages = $eco->volume_query->max_num_pages;
+		$posts_query->found_posts   = $plugin->volume_query->found_terms;
+		$posts_query->max_num_pages = $plugin->volume_query->max_num_pages;
 
 	// Edition archives
 	} elseif ( ! empty( $is_edition_archive ) ) {
@@ -119,8 +119,8 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->is_home = false;
 
 		// Define query result
-		$posts_query->found_posts   = $eco->edition_query->found_terms;
-		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
+		$posts_query->found_posts   = $plugin->edition_query->found_terms;
+		$posts_query->max_num_pages = $plugin->edition_query->max_num_pages;
 
 	// Single Edition
 	} elseif ( ! empty( $is_volume ) && ! empty( $is_edition ) ) {
@@ -156,8 +156,8 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->queried_object_id = $the_edition->term_id;
 
 		// Define query result
-		$posts_query->found_posts   = $eco->article_query->found_posts;
-		$posts_query->max_num_pages = $eco->article_query->max_num_pages;
+		$posts_query->found_posts   = $plugin->article_query->found_posts;
+		$posts_query->max_num_pages = $plugin->article_query->max_num_pages;
 
 	// Single Volume
 	} elseif ( ! empty( $is_volume ) ) {
@@ -188,8 +188,8 @@ function econozel_parse_query( $posts_query ) {
 		$posts_query->queried_object_id = $the_volume->term_id;
 
 		// Define query result
-		$posts_query->found_posts   = $eco->edition_query->found_terms;
-		$posts_query->max_num_pages = $eco->edition_query->max_num_pages;
+		$posts_query->found_posts   = $plugin->edition_query->found_terms;
+		$posts_query->max_num_pages = $plugin->edition_query->max_num_pages;
 	}
 
 	// This is a Post Tag or Author query
