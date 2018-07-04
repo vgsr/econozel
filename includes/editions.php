@@ -266,7 +266,7 @@ function econozel_in_the_edition_loop() {
 function econozel_get_edition( $edition = 0, $by = 'id' ) {
 
 	// Default empty parameter to ...
-	if ( empty( $edition ) && ! econozel_is_article() ) {
+	if ( empty( $edition ) && ! econozel_is_article( true ) ) {
 
 		// ... the Edition in the loop
 		if ( econozel_in_the_edition_loop() ) {

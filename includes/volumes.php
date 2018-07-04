@@ -213,7 +213,7 @@ function econozel_in_the_volume_loop() {
 function econozel_get_volume( $volume = 0, $by = 'id' ) {
 
 	// Default empty parameter to ...
-	if ( empty( $volume ) && ! econozel_is_article() ) {
+	if ( empty( $volume ) && ! econozel_is_article( true ) ) {
 
 		// ... the Volume in the loop
 		if ( econozel_in_the_volume_loop() ) {
