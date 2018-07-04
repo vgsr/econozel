@@ -16,6 +16,7 @@ add_action( 'init',                        'econozel_init'                     )
 add_action( 'admin_init',                  'econozel_admin_init'               );
 add_action( 'widgets_init',                'econozel_widgets_init'             );
 add_action( 'after_setup_theme',           'econozel_after_setup_theme'        );
+add_filter( 'template_include',            'econozel_template_include'         );
 add_filter( 'map_meta_cap',                'econozel_map_meta_caps',     10, 4 );
 
 /** Utility *******************************************************************/
@@ -61,8 +62,8 @@ add_filter( 'econozel_get_article_description', 'strip_shortcodes', 1 );
 add_filter( 'econozel_get_article_description', 'wpautop'             );
 
 // Theme Compat
-add_filter( 'template_include', 'econozel_template_include_theme_supports', 10 );
-add_filter( 'template_include', 'econozel_template_include_theme_compat',   12 );
+add_filter( 'econozel_template_include',   'econozel_template_include_theme_supports', 10 );
+add_filter( 'econozel_template_include',   'econozel_template_include_theme_compat',   12 );
 
 /** Menus *********************************************************************/
 

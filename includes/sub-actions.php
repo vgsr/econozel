@@ -77,6 +77,20 @@ function econozel_after_setup_theme() {
 }
 
 /**
+ * Run dedicated template include filter for this plugin
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_template_include'
+ *
+ * @param string $template Template name
+ * @param string Template name
+ */
+function econozel_template_include( $template = '' ) {
+	return apply_filters( 'econozel_template_include', $template );
+}
+
+/**
  * Run dedicated map meta caps filter for this plugin
  *
  * @since 1.0.0
