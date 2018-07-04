@@ -9,6 +9,8 @@
 
 ?>
 
+<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
+
 <div id="econozel-editions">
 
 	<?php if ( econozel_has_editions() ) : ?>
@@ -17,9 +19,11 @@
 
 		<div id="term-<?php econozel_the_edition_id(); ?>" <?php econozel_term_class( 'widget_recent_entries' ); ?>>
 
-			<h3 class="edition-title"><?php econozel_the_edition_issue_link(); ?></h3>
+			<h2 class="edition-title"><?php econozel_the_edition_link(); ?></h2>
 
-			<?php econozel_the_edition_content(); ?>
+			<?php econozel_the_edition_description(); ?>
+
+			<?php econozel_the_edition_toc(); ?>
 
 		</div>
 

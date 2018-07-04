@@ -1054,7 +1054,7 @@ function econozel_document_title_parts( $title = array() ) {
 	if ( is_econozel() && ! econozel_is_root() ) {
 
 		// Define parent title part
-		$parent = array( 'parent' => esc_html_x( 'Econozel', 'root page title', 'econozel' ) );
+		$parent = array( 'parent' => esc_html_x( 'Econozel', 'Root page title', 'econozel' ) );
 
 		// Insert 'Econozel' part after title part, creates 'Title - Econozel - Site'
 		$title = array_slice( $title, 0, 1, true ) + $parent + array_slice( $title, 1, count( $title ) - 1, true );
@@ -1062,7 +1062,7 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Root page
 	if ( econozel_is_root() ) {
-		$_title = esc_html_x( 'Econozel', 'root page title', 'econozel' );
+		$_title = esc_html_x( 'Econozel', 'Root page title', 'econozel' );
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
@@ -1101,7 +1101,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Root page
 	if ( econozel_is_root() ) {
-		$title = esc_html__( 'Econozel', 'econozel' );
+		$title = esc_html_x( 'Econozel', 'Root page title', 'econozel' );
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {

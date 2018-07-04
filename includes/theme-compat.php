@@ -70,7 +70,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Root Page
 	if ( econozel_is_root() ) {
 		$args = array(
-			'post_title'   => esc_html_x( 'Econozel', 'root page title', 'econozel' ),
+			'post_title'   => econozel_get_the_archive_title(),
 			'post_content' => array( 'content', 'econozel' ),
 			'is_single'    => true,
 		);
@@ -78,7 +78,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$args = array(
-			'post_title'   => esc_html__( 'Econozel Volumes', 'econozel' ),
+			'post_title'   => econozel_get_the_archive_title(),
 			'post_content' => array( 'content', 'archive-volume' ),
 			'is_archive'   => true,
 		);
@@ -86,7 +86,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
 		$args = array(
-			'post_title'   => econozel_get_volume_title( get_queried_object_id() ),
+			'post_title'   => econozel_get_the_archive_title(),
 			'post_content' => array( 'content', 'single-volume' ),
 			'is_single'    => true,
 		);
@@ -94,7 +94,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
 		$args = array(
-			'post_title'   => esc_html__( 'Econozel Editions', 'econozel' ),
+			'post_title'   => econozel_get_the_archive_title(),
 			'post_content' => array( 'content', 'archive-edition' ),
 			'is_archive'   => true,
 		);
@@ -102,7 +102,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 		$args = array(
-			'post_title'   => econozel_get_edition_title( get_queried_object_id() ),
+			'post_title'   => econozel_get_the_archive_title(),
 			'post_content' => array( 'content', 'single-edition' ),
 			'is_single'    => true,
 		);
