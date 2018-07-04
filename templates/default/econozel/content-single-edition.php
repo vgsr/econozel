@@ -9,6 +9,8 @@
 
 ?>
 
+<?php the_archive_description( '<div class="archive-description">', '</div>' ); ?>
+
 <div id="econozel-articles">
 
 	<?php if ( econozel_has_articles() ) : ?>
@@ -17,11 +19,13 @@
 
 		<div id="post-<?php econozel_the_article_id(); ?>" <?php post_class(); ?>>
 
-			<h3 class="article-title">
-				<a href="<?php echo esc_url( get_permalink() ); ?>"><?php the_title(); ?></a>
-			</h3>
+			<h2 class="article-title"><?php the_title( sprintf( '<a href="%s">', esc_url( get_permalink() ) ), '</a>' ); ?></h2>
 
-			<?php econozel_the_article_content(); ?>
+			<p class="article-meta">
+				<span class="article-author"><?php printf( esc_html__( 'Written by %s', 'econozel' ), econozel_get_article_author_link( 0, true ) ); ?></span>
+			</p>
+
+			<?php econozel_the_article_description(); ?>
 
 		</div>
 
