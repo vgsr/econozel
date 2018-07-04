@@ -442,10 +442,11 @@ function econozel_get_article_author( $article = 0 ) {
  * @since 1.0.0
  *
  * @param WP_Post|int $article Optional. Defaults to the current Article.
- * @param string $sep Optional. Whether to return urls as string using param as separator.
+ * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
+ *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
  */
-function econozel_the_article_author_link( $article = 0, $sep = ', ' ) {
-	echo econozel_get_article_author_link( $article, $sep );
+function econozel_the_article_author_link( $article = 0, $concat = true ) {
+	echo econozel_get_article_author_link( $article, $concat );
 }
 
 	/**
@@ -454,10 +455,11 @@ function econozel_the_article_author_link( $article = 0, $sep = ', ' ) {
 	 * @since 1.0.0
 	 *
 	 * @param WP_Post|int $article Optional. Defaults to the current Article.
-	 * @param string $sep Optional. Whether to return urls as string using param as separator.
+	 * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
+	 *                            it will be used as the item separator. Defaults to false.
 	 * @return string|array Article author link(s)
 	 */
-	function econozel_get_article_author_link( $article = 0, $sep = null ) {
+	function econozel_get_article_author_link( $article = 0, $concat = false ) {
 
 		// Define return value
 		$link = array();
@@ -476,8 +478,8 @@ function econozel_the_article_author_link( $article = 0, $sep = ', ' ) {
 		}
 
 		// Stringify links
-		if ( null !== $sep ) {
-			$link = implode( $sep, $link );
+		if ( false !== $concat ) {
+			$link = true === $concat ? wp_sprintf_l( '%l', $link ) : implode( $concat, $link );
 		}
 
 		return $link;
@@ -489,10 +491,11 @@ function econozel_the_article_author_link( $article = 0, $sep = ', ' ) {
  * @since 1.0.0
  *
  * @param WP_Post|int $article Optional. Defaults to the current Article.
- * @param string $sep Optional. Whether to return urls as string using param as separator.
+ * @param bool|string $concat Optional. Whether to concatenate the urls into a single string. When provided a string value,
+ *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
  */
-function econozel_the_article_author_url( $article = 0, $sep = ', ' ) {
-	echo econozel_get_article_author_url( $article, $sep );
+function econozel_the_article_author_url( $article = 0, $concat = true ) {
+	echo econozel_get_article_author_url( $article, $concat );
 }
 
 	/**
@@ -501,10 +504,11 @@ function econozel_the_article_author_url( $article = 0, $sep = ', ' ) {
 	 * @since 1.0.0
 	 *
 	 * @param WP_Post|int $article Optional. Defaults to the current Article.
-	 * @param string $sep Optional. Whether to return urls as string using param as separator.
+	 * @param bool|string $concat Optional. Whether to concatenate the urls into a single string. When provided a string value,
+	 *                            it will be used as the item separator. Defaults to false.
 	 * @return string|array Article author url(s)
 	 */
-	function econozel_get_article_author_url( $article = 0, $sep = null ) {
+	function econozel_get_article_author_url( $article = 0, $concat = false ) {
 
 		// Define return value
 		$url = array();
@@ -524,8 +528,8 @@ function econozel_the_article_author_url( $article = 0, $sep = ', ' ) {
 		}
 
 		// Stringify urls
-		if ( null !== $sep ) {
-			$url = implode( $sep, $url );
+		if ( false !== $concat ) {
+			$url = true === $concat ? wp_sprintf_l( '%l', $url ) : implode( $concat, $url );
 		}
 
 		return $url;
