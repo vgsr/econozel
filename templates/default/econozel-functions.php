@@ -45,6 +45,11 @@ class Econozel_Default {
 	 * @since 1.0.0
 	 */
 	public function enqueue_styles() {
+
+		// Bail when not an a plugin page
+		if ( ! is_econozel() )
+			return;
+
 		econozel_enqueue_style( 'econozel', 'css/econozel.css', array(), econozel_get_version(), 'screen' );
 	}
 
