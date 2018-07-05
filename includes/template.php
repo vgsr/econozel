@@ -1306,6 +1306,7 @@ function econozel_get_term_class( $class = '', $term_id = null ) {
 		return $classes;
 	}
 
+	$classes[] = 'econozel-term';
 	$classes[] = 'term-' . $term->term_id;
 	if ( ! is_admin() )
 		$classes[] = $term->taxonomy;

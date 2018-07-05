@@ -17,7 +17,9 @@
 
 		<div id="term-<?php econozel_the_volume_id(); ?>" <?php econozel_term_class( 'widget_recent_entries' ); ?>>
 
-			<h3 class="volume-title"><?php econozel_the_volume_link(); ?></h3>
+			<h2 class="volume-title"><?php econozel_the_volume_link(); ?></h2>
+
+			<?php econozel_the_volume_description(); ?>
 
 			<?php econozel_the_volume_content(); ?>
 

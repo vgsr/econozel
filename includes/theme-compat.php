@@ -78,7 +78,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$args = array(
-			'post_title'   => econozel_get_the_archive_title(),
+			'post_title'   => '',
 			'post_content' => array( 'content', 'archive-volume' ),
 			'is_archive'   => true,
 		);
@@ -94,7 +94,7 @@ function econozel_template_include_theme_compat( $template = '' ) {
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
 		$args = array(
-			'post_title'   => econozel_get_the_archive_title(),
+			'post_title'   => '',
 			'post_content' => array( 'content', 'archive-edition' ),
 			'is_archive'   => true,
 		);

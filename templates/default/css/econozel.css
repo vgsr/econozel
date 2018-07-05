@@ -1,9 +1,22 @@
 /**
- * Econozel Theme-Compat Styles
+ * Econozel Default Theme-Compat Styles
  *
  * @package Econozel
  * @subpackage Theme
  */
+
+#econozel-volumes .econozel-term:first-child .volume-title,
+.econozel .volume-editions > li:first-child > .edition-title,
+body:not(.econozel-volume) #econozel-editions .econozel-term:first-child .edition-title,
+.econozel .edition-articles > li:first-child > .article-title {
+	margin-top: 0px;
+}
+
+#econozel-volumes > .econozel-term:not(:first-child),
+#econozel-editions > .econozel-term:not(:first-child) {
+	margin-top: 35px;
+	border-top: 1px solid #efefef;
+}
 
 .econozel .volume-editions,
 .econozel .edition-articles {
