@@ -67,7 +67,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 			'description'      => false,
 			'show_date'        => false,
 			'none_found'       => esc_html__( 'There were no articles found.', 'econozel' ),
-			'walker'           => new Walker_Econozel_Article,
+			'walker'           => new Econozel_Walker_Article,
 			'item_spacing'     => 'preserve',
 
 			// Query args

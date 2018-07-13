@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel Article Page Walker
+ * Econozel Article Page Walker class
  *
  * @package Econozel
  * @subpackage Walker
@@ -10,7 +10,7 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'Walker_Econozel_Article' ) ) :
+if ( ! class_exists( 'Econozel_Walker_Article' ) ) :
 /**
  * The Econozel Walker Article class
  *
@@ -18,7 +18,7 @@ if ( ! class_exists( 'Walker_Econozel_Article' ) ) :
  *
  * @since 1.0.0
  */
-class Walker_Econozel_Article extends Walker_Page {
+class Econozel_Walker_Article extends Walker_Page {
 
 	/**
 	 * Outputs the beginning of the current element in the tree.
