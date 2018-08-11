@@ -663,7 +663,7 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
 
 	/** Clean up **************************************************************/
 
-	// Add Econozel class when on an Econozel page
+	// Add plugin class when on a plugin page
 	if ( ! empty( $econozel_classes ) ) {
 		$econozel_classes[] = 'econozel';
 	}
@@ -675,11 +675,11 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
 }
 
 /**
- * Use the is_() functions to return if on any Econozel page
+ * Use the is_() functions to return if on any plugin page
  *
  * @since 1.0.0
  *
- * @return bool On an Econozel page
+ * @return bool On a plugin page
  */
 function is_econozel() {
 
@@ -1050,7 +1050,7 @@ function econozel_document_title_parts( $title = array() ) {
 	// Define local var
 	$_title = '';
 
-	// Econozel page, not the root page
+	// Plugin page, not the root page
 	if ( is_econozel() && ! econozel_is_root() ) {
 
 		// Define parent title part

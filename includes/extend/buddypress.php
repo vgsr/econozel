@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel BuddyPress Functions
+ * Econozel Extension for BuddyPress
  *
  * @package Econozel
  * @subpackage BuddyPress

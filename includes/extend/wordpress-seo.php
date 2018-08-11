@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Econozel WP SEO Functions
+ * Econozel Extension for WP SEO
  *
  * @package Econozel
  * @subpackage WP SEO
