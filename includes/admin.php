@@ -666,7 +666,7 @@ class Econozel_Admin {
 	public function edition_columns( $columns ) {
 
 		// Insert Volume taxonomy column before 'issue' column
-		$volume  = array( "taxonomy-{$this->volume_tax_id}" => esc_html__( 'Volume', 'econoel' ) );
+		$volume  = array( "taxonomy-{$this->volume_tax_id}" => esc_html__( 'Volume', 'econozel' ) );
 		$pos     = array_search( 'issue', array_keys( $columns ) );
 		$columns = array_slice( $columns, 0, $pos, true ) + $volume + array_slice( $columns, $pos, count( $columns ) - 1, true );
 
