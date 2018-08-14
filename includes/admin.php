@@ -83,7 +83,7 @@ class Econozel_Admin {
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
-		add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'edition_column_content' ), 10, 3 );
+		add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'edition_column_content' ), 20, 3 );
 		add_action( 'quick_edit_custom_box',            array( $this, 'edition_inline_edit'    ), 10, 3 );
 		add_action( "{$taxonomy}_add_form_fields",      array( $this, 'edition_add_fields'     ),  5    );
 		add_action( "{$taxonomy}_edit_form_fields",     array( $this, 'edition_edit_fields'    ),  5, 2 );

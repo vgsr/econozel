@@ -125,7 +125,7 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 			add_action( "manage_{$taxonomy}_custom_column", is_callable( $args['admin_column_cb'] )
 				? $args['admin_column_cb']
 				: 'econozel_taxonomy_meta_admin_column_content',
-				10, 3
+				20, 3
 			);
 		}
 	}
