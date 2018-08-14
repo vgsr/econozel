@@ -90,6 +90,10 @@ final class Econozel {
 		$this->assets_dir   = trailingslashit( $this->plugin_dir . 'assets' );
 		$this->assets_url   = trailingslashit( $this->plugin_url . 'assets' );
 
+		// Extensions
+		$this->extend_dir   = trailingslashit( $this->includes_dir . 'extend' );
+		$this->extend_url   = trailingslashit( $this->includes_url . 'extend' );
+
 		// Themes
 		$this->themes_dir   = trailingslashit( $this->plugin_dir . 'templates' );
 		$this->themes_url   = trailingslashit( $this->plugin_url . 'templates' );
@@ -150,8 +154,8 @@ final class Econozel {
 		}
 
 		// Extensions
-		require( $this->includes_dir . 'extend/buddypress.php'    );
-		require( $this->includes_dir . 'extend/wordpress-seo.php' );
+		require( $this->includes_dir . 'extend/buddypress/buddypress.php' );
+		require( $this->includes_dir . 'extend/wordpress-seo.php'         );
 	}
 
 	/**
