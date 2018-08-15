@@ -53,7 +53,8 @@ class Econozel_WPSEO {
 		add_action( 'option_wpseo_titles',             array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 		add_action( 'site_option_wpseo_titles',        array( $this, 'admin_remove_metaboxes' ), 10, 2 );
 
-		// Breadcrumbs
+		// Titles & Breadcrumbs
+		add_filter( 'wpseo_title',            array( $this, 'wpseo_title'      ) );
 		add_filter( 'wpseo_breadcrumb_links', array( $this, 'breadcrumb_links' ) );
 	}
 
@@ -110,6 +111,53 @@ class Econozel_WPSEO {
 		$value["hideeditbox-{$article}"]     = true;
 
 		return $value;
+	}
+
+	/** Titles & Breadcrumbs ********************************************/
+
+	/**
+	 * Modify the page title for WP SEO
+	 *
+	 * @see WPSEO_Frontend::generate_title()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param  string $title Page title
+	 * @return string Page title
+	 */
+	public function wpseo_title( $title ) {
+
+		// Get separator token
+		$replacer  = new WPSEO_Replace_Vars();
+		$separator = $replacer->replace( '%%sep%%', array() );
+		$separator = ' ' . trim( $separator ) . ' ';
+
+		// Get separator position
+		$site_title = WPSEO_Utils::get_site_name();
+		$sepleft    = 0 !== strpos( $title, $site_title );
+
+		// When on a plugin page
+		if ( is_econozel() ) {
+			$parts = econozel_document_title_parts( array() );
+
+			// Article archives. Replace page name
+			if ( econozel_is_article_archive() ) {
+				$title = $sepleft ? $parts['title'] . $separator . $site_title : $site_title . $separator . $parts['title'];
+			}
+
+			// Article or Article archives
+			if ( econozel_is_article( true ) || econozel_is_article_archive() ) {
+
+				// Insert 'Econozel' part after title part, creating 'Title - Econozel - Site'
+				$title = str_replace(
+					$sepleft ? $separator . $site_title : $site_title . $separator,
+					$sepleft ? $separator . $parts['parent'] . $separator . $site_title :  $site_title . $separator . $parts['parent'] . $separator,
+					$title
+				);
+			}
+		}
+
+		return $title;
 	}
 
 	/**
