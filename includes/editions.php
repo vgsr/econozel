@@ -265,8 +265,13 @@ function econozel_in_the_edition_loop() {
  */
 function econozel_get_edition( $edition = 0, $by = 'id' ) {
 
+	// Get Edition by Article
+	if ( ( empty( $edition ) && econozel_is_article() ) || ( $edition instanceof WP_Post ) ) {
+		$article = econozel_get_article( $edition );
+		$edition = econozel_get_article_edition( $article, true );
+
 	// Default empty parameter to ...
-	if ( empty( $edition ) && ! econozel_is_article( true ) ) {
+	} elseif ( empty( $edition ) && ! econozel_is_article( true ) ) {
 
 		// ... the Edition in the loop
 		if ( econozel_in_the_edition_loop() ) {
@@ -276,11 +281,6 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
 		} elseif ( get_query_var( 'econozel_edition' ) ) {
 			$edition = get_term( (int) get_query_var( 'econozel_edition' ), econozel_get_edition_tax_id() );
 		}
-
-	// Get Edition by Article
-	} elseif ( ( empty( $edition ) && econozel_is_article() ) || ( $edition instanceof WP_Post ) ) {
-		$article = econozel_get_article( $edition );
-		$edition = econozel_get_article_edition( $article, true );
 
 	// Get the term by id or slug
 	} elseif ( ! $edition instanceof WP_Term ) {

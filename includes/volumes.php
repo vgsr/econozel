@@ -212,8 +212,13 @@ function econozel_in_the_volume_loop() {
  */
 function econozel_get_volume( $volume = 0, $by = 'id' ) {
 
+	// Get Volume by Article
+	if ( ( empty( $volume ) && econozel_is_article() ) || ( $volume instanceof WP_Post ) ) {
+		$article = econozel_get_article( $volume );
+		$volume  = econozel_get_article_volume( $article, true );
+
 	// Default empty parameter to ...
-	if ( empty( $volume ) && ! econozel_is_article( true ) ) {
+	} elseif ( empty( $volume ) && ! econozel_is_article( true ) ) {
 
 		// ... the Volume in the loop
 		if ( econozel_in_the_volume_loop() ) {
@@ -223,11 +228,6 @@ function econozel_get_volume( $volume = 0, $by = 'id' ) {
 		} elseif ( get_query_var( 'econozel_volume' ) ) {
 			$volume = get_term( (int) get_query_var( 'econozel_volume' ), econozel_get_volume_tax_id() );
 		}
-
-	// Get Volume by Article
-	} elseif ( ( empty( $volume ) && econozel_is_article() ) || ( $volume instanceof WP_Post ) ) {
-		$article = econozel_get_article( $volume );
-		$volume  = econozel_get_article_volume( $article, true );
 
 	// Get the term by id or slug
 	} elseif ( ! $volume instanceof WP_Term ) {
