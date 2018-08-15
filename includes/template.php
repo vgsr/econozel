@@ -1066,7 +1066,7 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
-		$_title = esc_html__( 'Volume Archives', 'econozel' );
+		$_title = esc_html__( 'Econozel Volumes', 'econozel' );
 
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
@@ -1074,11 +1074,15 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
-		$_title = esc_html__( 'Edition Archives', 'econozel' );
+		$_title = esc_html__( 'Econozel Editions', 'econozel' );
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 		$_title = econozel_get_edition_title();
+
+	// Article archives
+	} elseif ( econozel_is_article_archive() ) {
+		$_title = esc_html__( 'Econozel Articles', 'econozel' );
 	}
 
 	// Overwrite document title
@@ -1105,7 +1109,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
-		$title = sprintf( __( 'Archives: %s' ), esc_html__( 'Econozel Volumes', 'econozel' ) );
+		$title = esc_html__( 'Econozel Volumes', 'econozel' );
 
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
@@ -1113,7 +1117,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
-		$title = sprintf( __( 'Archives: %s' ), esc_html__( 'Econozel Editions', 'econozel' ) );
+		$title = esc_html__( 'Econozel Editions', 'econozel' );
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
@@ -1125,6 +1129,10 @@ function econozel_get_the_archive_title( $title = '' ) {
 		if ( econozel_is_edition_issue_numeric() ) {
 			$title = sprintf( _x( 'Econozel %s', 'Numeric issue edition title', 'econozel' ), $title );
 		}
+
+	// Article archives
+	} elseif ( econozel_is_article_archive() ) {
+		$title = esc_html__( 'Econozel Articles', 'econozel' );
 	}
 
 	return $title;
@@ -1156,13 +1164,13 @@ function econozel_get_the_archive_description( $description = '' ) {
 	} elseif ( econozel_is_edition_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel editions with their articles. You can browse here to find articles that have been archived or published on this site. To view all published articles, go to the <a title="%1$s" href="%2$s">article archives</a>.', 'econozel' ), esc_attr__( 'Permalink to the article archives', 'econozel' ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ) );
 
-	// Article archives
-	} elseif ( econozel_is_article_archive() ) {
-		$description = sprintf( __( 'This page lists all Econozel articles archived on this site. You can browse them here or through the registered <a title="%1$s" href="%2$s">volumes</a> and <a title="%3$s" href="%4$s">editions</a> through which they have been published.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the edition archives', 'econozel' ), esc_url( econozel_get_edition_archive_url() ) );
-
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
 		$description = econozel_get_edition_description() . econozel_get_edition_toc();
+
+	// Article archives
+	} elseif ( econozel_is_article_archive() ) {
+		$description = sprintf( __( 'This page lists all Econozel articles archived on this site. You can browse them here or through the registered <a title="%1$s" href="%2$s">volumes</a> and <a title="%3$s" href="%4$s">editions</a> through which they have been published.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the edition archives', 'econozel' ), esc_url( econozel_get_edition_archive_url() ) );
 	}
 
 	return $description;
