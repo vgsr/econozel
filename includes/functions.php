@@ -355,6 +355,26 @@ function econozel_get_edition_issue_whitelist( $flat = true ) {
 	return $issues;
 }
 
+/** Post Type *****************************************************************/
+
+/**
+ * Return the post type title
+ *
+ * @since 1.0.0
+ *
+ * @param string $post_type Post type name
+ * @return string Post type title
+ */
+function econozel_post_type_title( $post_type = '' ) {
+	$title = '';
+
+	if ( post_type_exists( $post_type ) ) {
+		$title = get_post_type_object( $post_type )->labels->name;
+	}
+
+	return $title;
+}
+
 /** Menus *********************************************************************/
 
 /**

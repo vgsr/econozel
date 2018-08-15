@@ -718,6 +718,24 @@ function econozel_term_link( $link, $term, $taxonomy ) {
 /** Template Tags *************************************************************/
 
 /**
+ * Return the taxonomy title
+ *
+ * @since 1.0.0
+ *
+ * @param string $taxonomy Taxonomy name
+ * @return string Taxonomy title
+ */
+function econozel_taxonomy_title( $taxonomy = '' ) {
+	$title = '';
+
+	if ( taxonomy_exists( $taxonomy ) ) {
+		$title = get_taxonomy( $taxonomy )->labels->name;
+	}
+
+	return $title;
+}
+
+/**
  * Display or retrieve the HTML dropdown list of Volumes
  *
  * @see wp_dropdown_categories()

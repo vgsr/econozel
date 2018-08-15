@@ -1066,7 +1066,7 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
-		$_title = esc_html__( 'Econozel Volumes', 'econozel' );
+		$_title = econozel_taxonomy_title( econozel_get_volume_tax_id() );
 
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
@@ -1074,7 +1074,7 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
-		$_title = esc_html__( 'Econozel Editions', 'econozel' );
+		$_title = econozel_taxonomy_title( econozel_get_edition_tax_id() );
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
@@ -1082,7 +1082,7 @@ function econozel_document_title_parts( $title = array() ) {
 
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
-		$_title = esc_html__( 'Econozel Articles', 'econozel' );
+		$_title = econozel_post_type_title( econozel_get_article_post_type() );
 	}
 
 	// Overwrite document title
@@ -1109,7 +1109,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
-		$title = esc_html__( 'Econozel Volumes', 'econozel' );
+		$title = econozel_taxonomy_title( econozel_get_volume_tax_id() );
 
 	// Single Volume
 	} elseif ( econozel_is_volume() ) {
@@ -1117,7 +1117,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Edition archives
 	} elseif ( econozel_is_edition_archive() ) {
-		$title = esc_html__( 'Econozel Editions', 'econozel' );
+		$title = econozel_taxonomy_title( econozel_get_edition_tax_id() );
 
 	// Single Edition
 	} elseif ( econozel_is_edition() ) {
@@ -1132,7 +1132,7 @@ function econozel_get_the_archive_title( $title = '' ) {
 
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
-		$title = esc_html__( 'Econozel Articles', 'econozel' );
+		$title = econozel_post_type_title( econozel_get_article_post_type() );
 	}
 
 	return $title;
