@@ -1,0 +1,94 @@
+.wp-term-media {
+	position: relative;
+	max-width: 150px;
+	width: 100%;
+	display: inline;
+}
+
+.wp-list-table .wp-term-media.has-image {
+	max-width: 75px;
+}
+
+.wp-term-media.has-image,
+.wp-term-media.has-image .wp-term-media-set {
+	display: inline-block;
+}
+
+.wp-term-media-set img {
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	vertical-align: bottom;
+}
+
+.wp-term-media .wp-term-media-remove {
+	position: relative;
+	left: -9999em;
+	color: #a00;
+	text-decoration: none;
+}
+
+.wp-term-media .wp-term-media-remove:before {
+	content: '';
+	display: block;
+}
+
+.wp-term-media .wp-term-media-remove:hover,
+.wp-term-media .wp-term-media-remove:hover {
+	color: #f00;
+	border: none;
+}
+
+tr:hover .wp-term-media:not(.has-image) .wp-term-media-remove,
+.wp-term-media:not(.has-image) .wp-term-media-remove:focus,
+tr:hover .wp-term-media:not(.has-image) .wp-term-media-remove .screen-reader-text,
+.wp-term-media:not(.has-image) .wp-term-media-remove:focus .screen-reader-text {
+	position: static !important; /* Overrule .screen-reader-text's absolute !important */
+	clip-path: initial;
+	margin: auto;
+}
+
+.wp-term-media.has-image .wp-term-media-remove {
+	position: absolute;
+	top: 0;
+	background: #f1f1f1;
+}
+
+.striped > tbody > :nth-child(odd) .wp-term-media.has-image .wp-term-media-remove {
+	background: #f9f9f9;
+}
+
+.striped > tbody > :nth-child(even) .wp-term-media.has-image .wp-term-media-remove {
+	background: #fff;
+}
+
+tr:hover .wp-term-media.has-image .wp-term-media-remove,
+.wp-term-media.has-image .wp-term-media-remove:focus {
+	right: 0;
+	left: auto;
+}
+
+.wp-term-media.has-image .wp-term-media-remove:after {
+	content: '\f158'; /* dashicons-no */
+	font-family: dashicons;
+	display: block;
+	width: 32px;
+	height: 32px;
+	text-align: center;
+	font-size: 24px;
+	line-height: 33px;
+}
+
+@media screen and (max-width: 782px) {
+	.wp-term-media.has-image .wp-term-media-remove {
+		right: 0;
+		left: auto;
+	}
+
+	.wp-term-media.has-image .wp-term-media-remove:after {
+		width: 42px;
+		height: 42px;
+		font-size: 32px;
+		line-height: 43px;
+	}
+}

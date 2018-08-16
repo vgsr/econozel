@@ -26,14 +26,15 @@ add_action( 'econozel_deactivation',       'econozel_delete_rewrite_rules' );
 
 /** Taxonomy ******************************************************************/
 
-add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',      5    );
-add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',   10, 3 );
-add_filter( 'register_taxonomy_args',      'econozel_register_taxonomy_args',   10, 3 );
-add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args', 10, 2 ); // Since WP 4.4
-add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      10, 3 );
-add_filter( 'list_cats',                   'econozel_list_cats',                10, 2 );
-add_filter( 'wp_dropdown_cats',            'econozel_dropdown_cats',            10, 2 );
-add_filter( 'term_link',                   'econozel_term_link',                10, 3 );
+add_filter( 'econozel_get_taxonomy_meta',  'econozel_add_edition_tax_meta',          5    );
+add_action( 'registered_taxonomy',         'econozel_register_taxonomy_meta',       10, 3 );
+add_action( 'registered_taxonomy',         'econozel_register_taxonomy_media_meta', 10, 1 );
+add_filter( 'register_taxonomy_args',      'econozel_register_taxonomy_args',       10, 3 );
+add_filter( 'get_terms_defaults',          'econozel_query_terms_default_args',     10, 2 ); // Since WP 4.4
+add_filter( 'terms_clauses',               'econozel_query_terms_clauses',          10, 3 );
+add_filter( 'list_cats',                   'econozel_list_cats',                    10, 2 );
+add_filter( 'wp_dropdown_cats',            'econozel_dropdown_cats',                10, 2 );
+add_filter( 'term_link',                   'econozel_term_link',                    10, 3 );
 
 /** Query *********************************************************************/
 

@@ -47,6 +47,14 @@ function econozel_register_taxonomy_args( $args, $taxonomy, $object_types ) {
 		}
 	}
 
+	// Register media meta flags
+	$fields = econozel_get_taxonomy_meta( $taxonomy );
+	$fields = wp_list_filter( $fields, array( 'type' => 'media' ) );
+
+	foreach ( array_keys( $fields ) as $meta_key ) {
+		$args["term_meta_{$meta_key}"] = true;
+	}
+
 	return $args;
 }
 
@@ -65,7 +73,7 @@ function econozel_register_taxonomy_args( $args, $taxonomy, $object_types ) {
  */
 function econozel_get_taxonomy_meta( $taxonomy, $meta_key = false ) {
 
-	// Get all meta. Structured as `array( 'taxonomy' => array( 'meta_key' => array( args ) ) )`
+	// Get all metas. Structured as `array( string $taxonomy => array( stringi $meta_key => array $args ) )`
 	$meta = (array) apply_filters( 'econozel_get_taxonomy_meta', array() );
 
 	// Select a taxonomy's meta
@@ -93,13 +101,15 @@ function econozel_get_taxonomy_meta( $taxonomy, $meta_key = false ) {
  * @since 1.0.0
  *
  * @param string $taxonomy Taxonomy name
- * @param string $object_type Object name
- * @param array $args Taxonomy registration arguments
  */
-function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
+function econozel_register_taxonomy_meta( $taxonomy ) {
 
-	// Bail when the taxonomy has no meta fields
-	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
+	// Get non-media meta fields
+	$fields = econozel_get_taxonomy_meta( $taxonomy );
+	$fields = wp_list_filter( $fields, array( 'type' => 'media' ), 'NOT' );
+
+	// Bail when there are no other meta fields
+	if ( ! $fields )
 		return;
 
 	// Display meta fields on create and edit
@@ -122,7 +132,7 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
 
 		// Admin column
 		if ( isset( $args['admin_column_cb'] ) && $args['admin_column_cb'] ) {
-			add_action( "manage_{$taxonomy}_custom_column", is_callable( $args['admin_column_cb'] )
+			add_filter( "manage_{$taxonomy}_custom_column", is_callable( $args['admin_column_cb'] )
 				? $args['admin_column_cb']
 				: 'econozel_taxonomy_meta_admin_column_content',
 				20, 3
@@ -140,8 +150,12 @@ function econozel_register_taxonomy_meta( $taxonomy, $object_type, $args ) {
  */
 function econozel_taxonomy_meta_add_fields( $taxonomy ) {
 
+	// Get non-media meta fields
+	$fields = econozel_get_taxonomy_meta( $taxonomy );
+	$fields = wp_list_filter( $fields, array( 'type' => 'media' ), 'NOT' );
+
 	// Bail when the taxonomy has no meta fields
-	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
+	if ( ! $fields )
 		return;
 
 	// Walk fields to output
@@ -174,8 +188,12 @@ function econozel_taxonomy_meta_add_fields( $taxonomy ) {
  */
 function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
 
+	// Get non-media meta fields
+	$fields = econozel_get_taxonomy_meta( $taxonomy );
+	$fields = wp_list_filter( $fields, array( 'type' => 'media' ), 'NOT' );
+
 	// Bail when the taxonomy has no meta fields
-	if ( ! $fields = econozel_get_taxonomy_meta( $taxonomy ) )
+	if ( ! $fields )
 		return;
 
 	// Walk fields to output
@@ -369,7 +387,7 @@ function econozel_taxonomy_meta_admin_columns( $columns ) {
 		foreach ( econozel_get_taxonomy_meta( get_current_screen()->taxonomy ) as $meta_key => $args ) {
 
 			// Skip when no column
-			if ( ! isset( $args['admin_column_cb'] ) )
+			if ( ! isset( $args['admin_column_cb'] ) || empty( $args['admin_column_cb'] ) )
 				continue;
 
 			// Add column
@@ -393,7 +411,8 @@ function econozel_taxonomy_meta_admin_columns( $columns ) {
 function econozel_taxonomy_meta_admin_column_content( $content, $column, $term_id ) {
 
 	// Get the meta field
-	if ( $meta = econozel_get_taxonomy_meta( get_current_screen()->taxonomy, $column ) ) {
+	$meta = econozel_get_taxonomy_meta( get_current_screen()->taxonomy, $column );
+	if ( $meta && 'media' !== $meta['type'] ) {
 
 		// Get meta value
 		$value = get_term_meta( $term_id, $column, true );
@@ -457,6 +476,54 @@ function econozel_taxonomy_meta_inline_edit( $column, $screen_type, $taxonomy = 
 	</fieldset>
 
 	<?php
+}
+
+/**
+ * Register media term meta fields
+ *
+ * @since 1.0.0
+ *
+ * @param array|string $fields_or_taxonomy Taxonomy meta fields or taxonomy name
+ * @return array Remaining non-media meta fields
+ */
+function econozel_register_taxonomy_media_meta( $fields_or_taxonomy ) {
+	global $wp_taxonomies;
+
+	// Define local variables
+	$plugin   = econozel();
+	$taxonomy = false;
+	$fields   = array();
+
+	// Set term media collection
+	if ( ! isset( $plugin->term_media ) ) {
+		$plugin->term_media = new stdClass;
+	}
+
+	// Default to the taxonomy's meta fields
+	if ( is_array( $fields_or_taxonomy ) ) {
+		$fields = $fields_or_taxonomy;
+	} elseif ( is_string( $fields_or_taxonomy ) && taxonomy_exists( $fields_or_taxonomy ) ) {
+		$taxonomhy = $fields_or_taxonomy;
+		$fields    = econozel_get_taxonomy_meta( $fields_or_taxonomy );
+	}
+
+	// Walk media metas
+	foreach ( wp_list_filter( $fields, array( 'type' => 'media' ) ) as $meta_key => $args ) {
+
+		// Bail when the meta key is invalid or already registered
+		if ( ! $meta_key || isset( $plugin->term_media->{$meta_key} ) )
+			return false;
+
+		// Require term meta classes
+		require_once( $plugin->includes_dir . 'classes/class-wp-term-meta-ui.php' );
+		require_once( $plugin->includes_dir . 'classes/class-wp-term-media.php'   );
+
+		// Define term meta key
+		$args['meta_key'] = $meta_key;
+
+		// Register new `WP_Term_Media`
+		$plugin->term_media->{$meta_key} = new WP_Term_Media( $plugin->file, $args );
+	}
 }
 
 /** Query *********************************************************************/
