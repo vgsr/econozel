@@ -75,24 +75,26 @@ function econozel_add_edition_tax_meta( $meta ) {
 			'inline_edit'     => true
 		),
 
-		// Main file
-		'file' => array(
-			'label'           => esc_html__( 'File', 'econozel' ),
-			'description'     => esc_html__( 'The published Edition as a PDF file.', 'econozel' ),
-			'type'            => 'upload',
-			'mime_type'       => 'pdf',
-			'sanitize_cb'     => 'intval',
-			'admin_column_cb' => true
-		),
+		// Document
+		'document' => array(
+			'labels'          => array(
+				'singular'        => esc_html__( 'Document', 'econozel' ),
+				'plural'          => esc_html__( 'Documents', 'econozel' ),
+				'description'     => esc_html__( 'The published document as a PDF file.', 'econozel' ),
 
-		// Cover image
-		'cover_image' => array(
-			'label'           => esc_html__( 'Cover Image', 'econozel' ),
-			'description'     => esc_html__( 'The cover image of the published Edition.', 'econozel' ),
-			'type'            => 'upload',
-			'mime_type'       => 'image',
-			'sanitize_cb'     => 'intval'
-		)
+				// Help tab
+				'help_title'      => esc_html__( 'Document', 'econozel' ),
+				'help_content'    => esc_html__( 'The document is the digital reference to the physical publication.', 'econozel' ),
+
+				// JS interface
+				'setTermMedia'    => esc_html__( 'Set document', 'econozel' ),
+				'termMediaTitle'  => esc_html__( '%s Document', 'econozel' ),
+				'removeTermMedia' => esc_html__( 'Remove %s document', 'econozel' ),
+				'error'           => esc_html__( "Could not set that as the document. Try a different attachment.", 'econozel' ),
+			),
+			'type'            => 'media',
+			'mime_type'       => 'application/pdf',
+		),
 	);
 
 	return $meta;
@@ -1018,4 +1020,93 @@ function econozel_the_edition_content( $edition = 0 ) {
 		}
 
 		return apply_filters( 'econozel_get_edition_content', $content, $edition );
+	}
+
+/**
+ * Output the Edition's document ID
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ */
+function econozel_the_edition_document( $edition = 0 ) {
+	echo econozel_get_edition_document( $edition );
+}
+
+	/**
+	 * Return the Edition's document ID
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_document'
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+	 * @return string Edition document ID
+	 */
+	function econozel_get_edition_document( $edition = 0 ) {
+
+		// Define return value
+		$document = false;
+
+		// Get Edition identifiers
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$meta = get_term_meta( $edition->term_id, 'document', true );
+
+			// Check if attachment exists
+			if ( $meta && $post = get_post( $meta ) ) {
+				$document = (int) $post->ID;
+			}
+		}
+
+		return apply_filters( 'econozel_get_edition_document', $document, $edition );
+	}
+
+/**
+ * Return whether the Edition has a document
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ * @return bool Does the Edition have a document?
+ */
+function econozel_has_edition_document( $edition = 0 ) {
+	return (bool) econozel_get_edition_document( $edition );
+}
+
+/**
+ * Output the Edition's document url
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+ */
+function econozel_the_edition_document_url( $edition = 0 ) {
+	echo esc_url( econozel_get_edition_document_url( $edition ) );
+}
+
+	/**
+	 * Return the Edition's document url
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_document_url'
+	 *
+	 * @param WP_Term|int $edition Optional. Defaults to the current Edition.
+	 * @return string Edition document url
+	 */
+	function econozel_get_edition_document_url( $edition = 0 ) {
+
+		// Define return value
+		$url = '';
+
+		// Get Edition identifiers
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$document = econozel_get_edition_document( $edition );
+
+			if ( $document ) {
+				$url = wp_get_attachment_url( $document );
+			}
+		}
+
+		return apply_filters( 'econozel_get_edition_document_url', $url, $edition );
 	}
