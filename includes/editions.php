@@ -63,8 +63,11 @@ function econozel_add_edition_tax_meta( $meta ) {
 
 		// Issue number
 		'issue' => array(
-			'label'           => esc_html__( 'Issue', 'econozel' ),
-			'description'     => esc_html__( "The Edition's issue type within the Volume.", 'econozel' ),
+			'labels'          => array(
+				'singular'        => esc_html__( 'Issue', 'econozel' ),
+				'plural'          => esc_html__( 'Issues', 'econozel' ),
+				'description'     => esc_html__( "The Edition's issue type within the Volume.", 'econozel' ),
+			),
 			'type'            => 'select',
 			'options'         => econozel_get_edition_issue_whitelist( false ),
 			'sanitize_cb'     => 'econozel_edition_whitelist_issue',

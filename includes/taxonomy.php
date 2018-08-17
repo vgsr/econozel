@@ -162,15 +162,15 @@ function econozel_taxonomy_meta_add_fields( $taxonomy ) {
 	foreach ( $fields as $meta_key => $args ) : ?>
 
 	<div class="form-field term-<?php echo $meta_key; ?>">
-		<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['label']; ?></label>
+		<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['labels']['singular']; ?></label>
 		<?php econozel_taxonomy_meta_field_input( wp_parse_args( $args, array(
 			'taxonomy' => $taxonomy,
 			'meta_key' => $meta_key
 		) ) ); ?>
 
-		<?php if ( ! empty( $args['description'] ) ) : ?>
+		<?php if ( ! empty( $args['labels']['description'] ) ) : ?>
 
-		<p><?php echo $args['description']; ?></p>
+		<p><?php echo $args['labels']['description']; ?></p>
 
 		<?php endif; ?>
 	</div>
@@ -201,7 +201,7 @@ function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
 
 	<tr class="form-field term-<?php echo $meta_key; ?>-wrap">
 		<th scope="row">
-			<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['label']; ?></label>
+			<label for="<?php echo "{$taxonomy}_{$meta_key}"; ?>"><?php echo $args['labels']['singular']; ?></label>
 		</th>
 		<td>
 			<?php econozel_taxonomy_meta_field_input( wp_parse_args( $args, array(
@@ -210,9 +210,9 @@ function econozel_taxonomy_meta_edit_fields( $term, $taxonomy ) {
 				'term'     => $term
 			) ) ); ?>
 
-			<?php if ( ! empty( $args['description'] ) ) : ?>
+			<?php if ( ! empty( $args['labels']['description'] ) ) : ?>
 
-			<p class="description"><?php echo $args['description']; ?></p>
+			<p class="description"><?php echo $args['labels']['description']; ?></p>
 
 			<?php endif; ?>
 		</td>
@@ -391,7 +391,7 @@ function econozel_taxonomy_meta_admin_columns( $columns ) {
 				continue;
 
 			// Add column
-			$columns[ $meta_key ] = $args['label'];
+			$columns[ $meta_key ] = $args['labels']['singular'];
 		}
 	}
 
@@ -469,7 +469,7 @@ function econozel_taxonomy_meta_inline_edit( $column, $screen_type, $taxonomy = 
 	<fieldset>
 		<div class="inline-edit-col">
 		<label>
-			<span class="title"><?php echo $meta['label']; ?></span>
+			<span class="title"><?php echo $meta['labels']['singular']; ?></span>
 			<span class="input-text-wrap"><?php econozel_taxonomy_meta_field_input( $meta ); ?></span>
 		</label>
 		</div>
