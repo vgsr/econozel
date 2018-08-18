@@ -549,10 +549,10 @@ function econozel_query_terms_default_args( $args, $taxonomies ) {
 			case econozel_get_edition_tax_id() :
 
 				// Order by issue meta value, list latest issue first
-				$args['orderby'] = 'meta_issue';
+				$args['orderby'] = 'edition_issue';
 				$args['order']   = 'DESC';
 				$args['meta_query'] = array(
-					'meta_issue' => array(
+					'edition_issue' => array(
 						'key'     => 'issue',
 						'compare' => 'EXISTS',
 						'type'    => 'NUMERIC'
@@ -618,7 +618,7 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			$clauses['where'] .= $tax_clauses['where'];
 
 		// ... by all Volumes, ordering by issue
-		} elseif ( 'meta_issue' === $args['orderby'] ) {
+		} elseif ( 'edition_issue' === $args['orderby'] ) {
 
 			/**
 			 * Append clauses to join on Volume term relationships
@@ -841,10 +841,10 @@ function econozel_dropdown_editions( $args = array() ) {
 		/**
 		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
 		 */
-		'orderby'    => 'meta_issue',
+		'orderby'    => 'edition_issue',
 		'order'      => 'DESC',
 		'meta_query' => array(
-			'meta_issue' => array(
+			'edition_issue' => array(
 				'key'     => 'issue',
 				'compare' => 'EXISTS'
 			)
