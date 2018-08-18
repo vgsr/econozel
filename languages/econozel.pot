@@ -3,354 +3,467 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-31 15:34+0000\n"
+"POT-Creation-Date: 2018-08-18 22:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco - https://localise.biz/"
+"X-Generator: Loco https://localise.biz/"
 
-#: econozel.php:233
+#: ../../../../src/wp-content/plugins/econozel/econozel.php:242
 msgid "Econozel articles"
 msgstr ""
 
-#: includes/admin.php:119 includes/admin.php:148
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:121
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:150
 msgid "Econozel Settings"
 msgstr ""
 
-#: includes/admin.php:119
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:121
 msgid "Settings"
 msgstr ""
 
-#: includes/admin.php:213 includes/admin.php:409 includes/admin.php:411
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:215
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:411
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:413
 msgid "Page Number"
 msgstr ""
 
-#: includes/admin.php:325 includes/admin.php:473
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:327
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:475
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:127
 msgid "Edition"
 msgstr ""
 
-#: includes/admin.php:375
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:377
 msgid "Article Details"
 msgstr ""
 
-#: includes/admin.php:401
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:403
 msgid "Volume & Edition"
 msgstr ""
 
-#: includes/admin.php:421
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:423
 #, php-format
 msgid "Page Number: %d"
 msgstr ""
 
-#: includes/admin.php:427
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:429
 msgid "&mdash; Not published in an Edition &mdash;"
 msgstr ""
 
-#: includes/admin.php:660 includes/admin.php:685 includes/admin.php:725
-#: includes/settings.php:119
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:642
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:45
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:46
+msgid "View Article"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:646
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:647
+msgid "Article updated."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:648
+msgid "Article created."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:649
+msgid "Article saved."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:650
+msgid "Article submitted."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:669
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:724
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:749
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:789
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:119
 msgid "Volume"
 msgstr ""
 
-#: includes/admin.php:667 includes/admin.php:695
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:731
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:759
 msgid "The Volume is the periodic collection an Edition belongs to."
 msgstr ""
 
 #. Name of the plugin
-#: includes/admin.php:789 includes/articles.php:37 includes/functions.php:258
-#: includes/template.php:845 includes/template.php:853
-#: includes/template.php:888 includes/theme-compat.php:76
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:853
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:37
 msgid "Econozel"
 msgstr ""
 
-#: includes/admin.php:794
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:858
 msgid "Econozel Role"
 msgstr ""
 
-#: includes/admin.php:797
+#: ../../../../src/wp-content/plugins/econozel/includes/admin.php:861
 msgid "&mdash; No Econozel role &mdash;"
 msgstr ""
 
-#: includes/articles.php:36 includes/extend/buddypress.php:127
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:36
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:43
 msgid "Econozel Articles"
 msgstr ""
 
-#: includes/articles.php:38
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:38
 msgid "Econozel Article"
 msgstr ""
 
-#: includes/articles.php:39
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:39
 msgid "All Articles"
 msgstr ""
 
-#: includes/articles.php:40 includes/articles.php:44
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:40
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:44
 msgid "New Article"
 msgstr ""
 
-#: includes/articles.php:41
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:41
 msgid "Create New Article"
 msgstr ""
 
-#: includes/articles.php:42
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:42
 msgid "Edit"
 msgstr ""
 
-#: includes/articles.php:43
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:43
 msgid "Edit Article"
 msgstr ""
 
-#: includes/articles.php:45 includes/articles.php:46
-msgid "View Article"
-msgstr ""
-
-#: includes/articles.php:47
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:47
 msgid "View Articles"
 msgstr ""
 
-#: includes/articles.php:48
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:48
 msgid "Search Articles"
 msgstr ""
 
-#: includes/articles.php:49
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:49
 msgid "No articles found"
 msgstr ""
 
-#: includes/articles.php:50
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:50
 msgid "No articles found in Trash"
 msgstr ""
 
-#: includes/articles.php:51
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:51
 msgid "Insert into article"
 msgstr ""
 
-#: includes/articles.php:52
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:52
 msgid "Uploaded to this article"
 msgstr ""
 
-#: includes/articles.php:53
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:53
 msgid "Filter articles list"
 msgstr ""
 
-#: includes/articles.php:54
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:54
 msgid "Articles list navigation"
 msgstr ""
 
-#: includes/articles.php:55
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:55
 msgid "Articles list"
 msgstr ""
 
-#: includes/articles.php:535
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:591
 #, php-format
 msgid "Page %d"
 msgstr ""
 
-#: includes/capabilities.php:414
+#: ../../../../src/wp-content/plugins/econozel/includes/capabilities.php:457
 msgid "Econozel Editor"
 msgstr ""
 
-#: includes/editions.php:36
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:36
 msgid "Econozel Editions"
 msgstr ""
 
-#: includes/editions.php:37 includes/settings.php:91
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:37
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:99
 msgid "Editions"
 msgstr ""
 
-#: includes/editions.php:38
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:38
 msgid "Econozel Edition"
 msgstr ""
 
-#: includes/editions.php:39
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:39
 msgid "Search Editions"
 msgstr ""
 
-#: includes/editions.php:41
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:41
 msgid "All Editions"
 msgstr ""
 
-#: includes/editions.php:42
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:42
 msgid "No Edition"
 msgstr ""
 
-#: includes/editions.php:43
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:43
 msgid "Edit Edition"
 msgstr ""
 
-#: includes/editions.php:44
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:44
 msgid "Update Edition"
 msgstr ""
 
-#: includes/editions.php:45
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:45
 msgid "Add New Edition"
 msgstr ""
 
-#: includes/editions.php:46
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:46
 msgid "New Edition Name"
 msgstr ""
 
-#: includes/editions.php:47
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:47
 msgid "View Edition"
 msgstr ""
 
-#: includes/editions.php:66
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:67
 msgid "Issue"
 msgstr ""
 
-#: includes/editions.php:67
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:68
+msgid "Issues"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:69
 msgid "The Edition's issue type within the Volume."
 msgstr ""
 
-#: includes/editions.php:77
-msgid "File"
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:81
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:86
+msgid "Document"
 msgstr ""
 
-#: includes/editions.php:78
-msgid "The published Edition as a PDF file."
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:82
+msgid "Documents"
 msgstr ""
 
-#: includes/editions.php:87
-msgid "Cover Image"
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:83
+msgid "The published document as a PDF file."
 msgstr ""
 
-#: includes/editions.php:88
-msgid "The cover image of the published Edition."
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:87
+msgid "The document is the digital reference to the physical publication."
 msgstr ""
 
-#: includes/editions.php:683
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:90
+msgid "Set document"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:91
+#, php-format
+msgid "%s Document"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:92
+#, php-format
+msgid "Remove %s document"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:93
+msgid "Could not set that as the document. Try a different attachment."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:103
+msgid "Cover photo"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:104
+msgid "Cover photos"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:105
+msgid "The cover photo of the published item."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:108
+msgid "Cover Photo"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:109
+msgid "The cover photo is the visual identity of the publication."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:112
+msgid "Set cover photo"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:113
+#, php-format
+msgid "%s Cover Photo"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:114
+msgid "Remove cover photo"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:115
+msgid "Could not set that as the cover photo. Try a different attachment."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:711
 #, php-format
 msgid "Issue %d"
 msgstr ""
 
-#: includes/editions.php:730 includes/volumes.php:472
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:757
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:473
 #, php-format
 msgid "View articles in %s"
 msgstr ""
 
-#: includes/editions.php:812
+#: ../../../../src/wp-content/plugins/econozel/includes/editions.php:850
 #, php-format
 msgid "%d article"
 msgid_plural "%d articles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:281
+#: ../../../../src/wp-content/plugins/econozel/includes/functions.php:441
+msgctxt "root page title"
+msgid "Econozel Home"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/functions.php:471
 msgctxt "customizer menu type label"
 msgid "Econozel Page"
 msgstr ""
 
-#: includes/settings.php:26
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:26
 msgid "General Settings"
 msgstr ""
 
-#: includes/settings.php:33
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:33
 msgid "Per Page Settings"
 msgstr ""
 
-#: includes/settings.php:40
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:40
 msgid "Econozel Slugs"
 msgstr ""
 
-#: includes/settings.php:63
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:63
+msgid "Admin Access"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:71
 msgid "Edition Issues"
 msgstr ""
 
-#: includes/settings.php:71
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:79
 msgid "Volume Title"
 msgstr ""
 
-#: includes/settings.php:83 includes/volumes.php:37
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:91
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:37
 msgid "Volumes"
 msgstr ""
 
-#: includes/settings.php:103
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:111
 msgid "Econozel Root"
 msgstr ""
 
-#: includes/settings.php:111
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:135
 msgid "Article"
 msgstr ""
 
-#: includes/settings.php:157
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:173
 msgid "Define the available edition issues and other generic settings"
 msgstr ""
 
-#: includes/settings.php:170
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:186
+msgid "Restrict Econozel admin access to Econozel Editors only"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:199
 msgid "Comma separated list of available issues"
 msgstr ""
 
-#: includes/settings.php:183
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:212
 msgid ""
 "Prefix all volume titles with the term 'Volume' (Useful when you have only "
 "numeric volumes)"
 msgstr ""
 
-#: includes/settings.php:197
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:226
 msgid "How many volumes and editions to show per page"
 msgstr ""
 
-#: includes/settings.php:210 includes/settings.php:223
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:239
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:252
 msgid "per page"
 msgstr ""
 
-#: includes/settings.php:223
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:252
 msgid "Note: when showing volume editions this setting is ignored"
 msgstr ""
 
-#: includes/settings.php:241
+#: ../../../../src/wp-content/plugins/econozel/includes/settings.php:270
 msgid "Customize your econozel slugs"
 msgstr ""
 
-#: includes/taxonomy.php:678
+#: ../../../../src/wp-content/plugins/econozel/includes/taxonomy.php:794
 msgid "Current Edition"
 msgstr ""
 
-#: includes/taxonomy.php:758
+#: ../../../../src/wp-content/plugins/econozel/includes/taxonomy.php:895
 msgid "&mdash; No Edition &mdash;"
 msgstr ""
 
-#: includes/template.php:857
-msgid "Volume Archives"
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1063
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1071
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1114
+msgctxt "Root page title"
+msgid "Econozel"
 msgstr ""
 
-#: includes/template.php:892 includes/theme-compat.php:90
-#: includes/volumes.php:36
-msgid "Econozel Volumes"
-msgstr ""
-
-#: includes/template.php:896
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1122
 #, php-format
 msgctxt "Single volume title"
 msgid "Econozel %s"
 msgstr ""
 
-#: includes/template.php:906
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1136
 #, php-format
 msgctxt "Numeric issue edition title"
 msgid "Econozel %s"
 msgstr ""
 
-#: includes/template.php:925
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1159
 #, php-format
 msgid ""
 "This page lists recent Econozel activity on this site. You can browse the <a "
-"title=\"%1$s\" href=\"%2$s\">volume archives</a> or <a title=\"%3$s\" "
-"href=\"%4$s\">article archives</a> to find all articles that have been "
-"archived or published on this site."
+"title=\"%1$s\" href=\"%2$s\">volume archives</a>, <a title=\"%5$s\" "
+"href=\"%6$s\">edition archives</a> or <a title=\"%3$s\" href=\"%4$s\">"
+"article archives</a> to find all articles that have been archived or "
+"published on this site."
 msgstr ""
 
-#: includes/template.php:925 includes/template.php:933
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1159
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1184
 msgid "Permalink to the volume archives"
 msgstr ""
 
-#: includes/template.php:925 includes/template.php:929
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1159
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1163
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1171
 msgid "Permalink to the article archives"
 msgstr ""
 
-#: includes/template.php:929
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1159
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1184
+msgid "Permalink to the edition archives"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1163
 #, php-format
 msgid ""
 "This page lists all Econozel volumes with their respective editions. You can "
@@ -359,205 +472,277 @@ msgid ""
 "href=\"%2$s\">article archives</a>."
 msgstr ""
 
-#: includes/template.php:933
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1171
+#, php-format
+msgid ""
+"This page lists all Econozel editions with their articles. You can browse "
+"here to find articles that have been archived or published on this site. To "
+"view all published articles, go to the <a title=\"%1$s\" href=\"%2$s\">"
+"article archives</a>."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1179
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-single-volume.php:29
+msgid "Download the Edition's document file"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1184
 #, php-format
 msgid ""
 "This page lists all Econozel articles archived on this site. You can browse "
-"them here or through the registered <a title=\"%1$s\" href=\"%2$s\">volumes "
-"and editions</a> in which they have been published."
+"them here or through the registered <a title=\"%1$s\" href=\"%2$s\">"
+"volumes</a> and <a title=\"%3$s\" href=\"%4$s\">editions</a> through which "
+"they have been published."
 msgstr ""
 
-#: includes/template.php:1144
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1404
 msgid "Older volumes"
 msgstr ""
 
-#: includes/template.php:1145
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1405
 msgid "Newer volumes"
 msgstr ""
 
-#: includes/template.php:1146
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1406
 msgid "Volumes navigation"
 msgstr ""
 
-#: includes/template.php:1152
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1412
+msgid "Older editions"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1413
+msgid "Newer editions"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1414
+msgid "Editions navigation"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1420
 msgid "Older articles"
 msgstr ""
 
-#: includes/template.php:1153
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1421
 msgid "Newer articles"
 msgstr ""
 
-#: includes/template.php:1154
+#: ../../../../src/wp-content/plugins/econozel/includes/template.php:1422
 msgid "Articles navigation"
 msgstr ""
 
-#: includes/volumes.php:38
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:36
+msgid "Econozel Volumes"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:38
 msgid "Econozel Volume"
 msgstr ""
 
-#: includes/volumes.php:39
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:39
 msgid "Search Volumes"
 msgstr ""
 
-#: includes/volumes.php:41
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:41
 msgid "All Volumes"
 msgstr ""
 
-#: includes/volumes.php:42
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:42
 msgid "No Volume"
 msgstr ""
 
-#: includes/volumes.php:43
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:43
 msgid "Edit Volume"
 msgstr ""
 
-#: includes/volumes.php:44
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:44
 msgid "Update Volume"
 msgstr ""
 
-#: includes/volumes.php:45
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:45
 msgid "Add New Volume"
 msgstr ""
 
-#: includes/volumes.php:46
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:46
 msgid "New Volume Name"
 msgstr ""
 
-#: includes/volumes.php:47
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:47
 msgid "View Volume"
 msgstr ""
 
-#: includes/volumes.php:436
+#: ../../../../src/wp-content/plugins/econozel/includes/volumes.php:436
 #, php-format
 msgid "Volume %s"
 msgstr ""
 
-#: includes/extend/buddypress.php:74
-msgid "Article summaries"
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/wordpress-seo.php:181
+msgctxt "root page title"
+msgid "Econozel"
 msgstr ""
 
-#: includes/extend/buddypress.php:126
-msgid "New Econozel Article"
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/wordpress-seo.php:188
+msgctxt "volume archives breadcrumb title"
+msgid "Volumes"
 msgstr ""
 
-#: includes/extend/buddypress.php:128
-#, php-format
-msgid "%1$s posted the <a href=\"%2$s\">article</a>"
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/wordpress-seo.php:195
+msgctxt "edition archives breadcrumb title"
+msgid "Editions"
 msgstr ""
 
-#: includes/extend/buddypress.php:129
-#, php-format
-msgid "%1$s posted the <a href=\"%2$s\">article</a>, on the site %3$s"
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/wordpress-seo.php:202
+msgctxt "article archives breadcrumb title"
+msgid "Articles"
 msgstr ""
 
-#: includes/extend/buddypress.php:130
-#, php-format
-msgid "%1$s posted the article %2$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:131
-#, php-format
-msgid "%1$s posted the article %2$s, on the site %3$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:132
-#, php-format
-msgid "%1$s posted the article %2$s in edition %3$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:133
-#, php-format
-msgid "%1$s posted the article %2$s in edition %3$s, on the site %4$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:140
-msgid "New Article Comment"
-msgstr ""
-
-#: includes/extend/buddypress.php:142
-#, php-format
-msgid "%1$s commented on the <a href=\"%2$s\">article</a>"
-msgstr ""
-
-#: includes/extend/buddypress.php:143
-#, php-format
-msgid "%1$s commented on the <a href=\"%2$s\">article</a>, on the site %3$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:168
-#, php-format
-msgid "%1$s commented on the article %2$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:169
-#, php-format
-msgid "%1$s commented on the article %2$s, on the site %3$s"
-msgstr ""
-
-#: includes/extend/buddypress.php:478
-msgid "Display more fancy article summaries when they contain media"
-msgstr ""
-
-#: includes/widgets/class-econozel-articles-widget.php:29
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:29
 msgid "Econozel Recent Articles"
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:30
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:30
 msgid "A list of the most recent articles."
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:66
-#: templates/default/econozel/content-econozel.php:23
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:66
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-econozel.php:23
 msgid "Recent Articles"
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:68
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:69
 msgid "There were no articles found."
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:87
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:89
 #, php-format
 msgid "Articles in %s"
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:167
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:172
 msgid "Filter articles by edition:"
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:179
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:184
 msgid "For an edition, the title will be overridden."
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:182
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:187
 msgid "Number of articles to show:"
 msgstr ""
 
-#: includes/widgets/class-econozel-articles-widget.php:184
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:189
 msgid "For an edition, all articles are shown."
 msgstr ""
 
-#: includes/widgets/class-econozel-comments-widget.php:35
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-articles-widget.php:193
+msgid "Display edition or post date?"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-comments-widget.php:35
 msgid "Econozel Recent Comments"
 msgstr ""
 
-#: includes/widgets/class-econozel-comments-widget.php:37
+#: ../../../../src/wp-content/plugins/econozel/includes/widgets/class-econozel-comments-widget.php:37
 msgid "A list of the most recent article comments."
 msgstr ""
 
-#: templates/default/econozel/content-econozel.php:28
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:42
+msgid "New Econozel Article"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:44
+#, php-format
+msgid "%1$s posted the <a href=\"%2$s\">article</a>"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:45
+#, php-format
+msgid "%1$s posted the <a href=\"%2$s\">article</a>, on the site %3$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:46
+#, php-format
+msgid "%1$s posted the article %2$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:47
+#, php-format
+msgid "%1$s posted the article %2$s, on the site %3$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:48
+#, php-format
+msgid "%1$s posted the article %2$s in edition %3$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:49
+#, php-format
+msgid "%1$s posted the article %2$s in edition %3$s, on the site %4$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:56
+msgid "New Article Comment"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:58
+#, php-format
+msgid "%1$s commented on the <a href=\"%2$s\">article</a>"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:59
+#, php-format
+msgid "%1$s commented on the <a href=\"%2$s\">article</a>, on the site %3$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:87
+#, php-format
+msgid "%1$s commented on the article %2$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/activity.php:88
+#, php-format
+msgid "%1$s commented on the article %2$s, on the site %3$s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/settings.php:28
+msgid "Article summaries"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/settings.php:46
+msgid "Display more fancy article summaries when they contain media"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-econozel.php:29
 msgid "Active Articles"
 msgstr ""
 
-#: templates/default/econozel/content-econozel.php:29
-msgid "It seems there have been no articles commented on lately."
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-econozel.php:30
+msgid "It seems there are no articles having been commented on lately."
 msgstr ""
 
-#: templates/default/econozel/content-econozel.php:35
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-econozel.php:37
 msgid "Recent Comments"
 msgstr ""
 
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/content-single-edition.php:25
+#, php-format
+msgid "Written by %s"
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/feedback-no-articles.php:13
+msgid "Oh bother! There were no Articles found here."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/feedback-no-editions.php:13
+msgid "Oh bother! There were no Editions found here."
+msgstr ""
+
+#: ../../../../src/wp-content/plugins/econozel/templates/default/econozel/feedback-no-volumes.php:13
+msgid "Oh bother! There were no Volumes found here."
+msgstr ""
+
 #. Description of the plugin
-msgid "Present d' Econozel on your site with Articles, Editions, and Volumes."
+msgid "Present d' Econozel on your site with articles, editions, and volumes."
 msgstr ""
 
 #. URI of the plugin
