@@ -124,12 +124,13 @@ function econozel_query_editions( $args = array() ) {
 
 	// Define query args
 	$r = wp_parse_args( $args, array(
-		'econozel_volume' => econozel_get_volume_id(),
-		'taxonomy'        => econozel_get_edition_tax_id(),
-		'number'          => econozel_get_editions_per_page(),
-		'paged'           => econozel_get_paged(),
-		'fields'          => 'all',
-		'hide_empty'      => true
+		'econozel_volume'    => econozel_get_volume_id(),
+		'taxonomy'           => econozel_get_edition_tax_id(),
+		'number'             => econozel_get_editions_per_page(),
+		'paged'              => econozel_get_paged(),
+		'fields'             => 'all',
+		'hide_empty'         => true,
+		'show_with_document' => false
 	) );
 
 	// When querying by Volume, query all

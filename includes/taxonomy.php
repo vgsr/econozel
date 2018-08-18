@@ -554,8 +554,7 @@ function econozel_query_terms_default_args( $args, $taxonomies ) {
 				$args['meta_query'] = array(
 					'edition_issue' => array(
 						'key'     => 'issue',
-						'compare' => 'EXISTS',
-						'type'    => 'NUMERIC'
+						'compare' => 'EXISTS'
 					)
 				);
 
@@ -640,6 +639,36 @@ function econozel_query_terms_clauses( $clauses, $taxonomies, $args ) {
 			 */
 			$clauses['orderby'] = str_replace( 'ORDER BY ', "ORDER BY FIELD( volumes_tr.term_taxonomy_id, $volumes ), ", $clauses['orderby'] );
 			$clauses['order']   = 'DESC';
+		}
+
+		// Show empty Editions that have a document
+		if ( $args['hide_empty'] && isset( $args['show_with_document'] ) && $args['show_with_document'] ) {
+
+			/**
+			 * Setup meta query object to query by meta value
+			 */
+			$meta_query = new WP_Meta_Query( array(
+				array(
+					'key'     => 'document',
+					'value'   => 0,
+					'compare' => '>'
+				)
+			) );
+
+			// Get meta query SQL. 't' is the query's terms table alias
+			$meta_clauses = $meta_query->get_sql( 'term', 't', 'term_id' );
+
+			// Parse meta clauses to force unique aliases
+			$alias = 'edition_document';
+			$join  = str_replace( array( "{$wpdb->termmeta} ", "{$wpdb->termmeta}." ), array( "{$wpdb->termmeta} AS {$alias} ", "{$alias}." ), $meta_clauses['join'] );
+			$where = str_replace( $wpdb->termmeta, $alias, str_replace( 'AND', 'OR', $meta_clauses['where'] ) );
+
+			/**
+			 * Apply meta clauses
+			 * Append OR statement to the part that checks for non-empty terms.
+			 */
+			$clauses['join'] .= $join;
+			$clauses['where'] = str_replace( 'tt.count > 0', "(tt.count > 0 {$where})", $clauses['where'] );
 		}
 
 	// When querying Volumes ...
@@ -838,6 +867,7 @@ function econozel_dropdown_editions( $args = array() ) {
 		'taxonomy'            => econozel_get_edition_tax_id(),
 		'show_option_none'    => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
 		'show_option_current' => false,
+
 		/**
 		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
 		 */

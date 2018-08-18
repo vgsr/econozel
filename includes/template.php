@@ -103,7 +103,10 @@ function econozel_parse_query( $posts_query ) {
 	} elseif ( ! empty( $is_edition_archive ) ) {
 
 		// 404 and bail when Editions are not returned in query
-		if ( ! econozel_query_editions( array( 'econozel_volume' => null ) ) ) {
+		if ( ! econozel_query_editions( array(
+			'econozel_volume'    => null,
+			'show_with_document' => true
+		) ) ) {
 			econozel_do_404();
 			return;
 		}
@@ -166,7 +169,10 @@ function econozel_parse_query( $posts_query ) {
 		$the_volume = econozel_get_volume( $is_volume, 'slug' );
 
 		// 404 and bail when Volume does not exist or Editions are not returned in query
-		if ( ! $the_volume || ! econozel_query_editions( array( 'econozel_volume' => $the_volume->term_id ) ) ) {
+		if ( ! $the_volume || ! econozel_query_editions( array(
+			'econozel_volume'    => $the_volume->term_id,
+			'show_with_document' => true
+		) ) ) {
 			econozel_do_404();
 			return;
 		}
