@@ -466,9 +466,10 @@ function econozel_the_volume_link( $volume = 0 ) {
 		$link = '';
 
 		if ( $volume = econozel_get_volume( $volume ) ) {
+			$url  = econozel_get_volume_url( $volume );
 			$link = sprintf(
-				'<a href="%1$s" title="%2$s" rel="collection">%3$s</a>',
-				esc_url( econozel_get_volume_url( $volume ) ),
+				$url ? '<a href="%1$s" title="%2$s" rel="collection">%3$s</a>' : '%3$s',
+				esc_url( $url ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_volume_title( $volume ) ) ),
 				econozel_get_volume_title( $volume )
 			);

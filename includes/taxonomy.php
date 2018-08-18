@@ -797,7 +797,10 @@ function econozel_term_link( $link, $term, $taxonomy ) {
 			$volume = econozel_get_edition_volume( $term );
 			$issue  = econozel_get_edition_issue( $term );
 
-			if ( $volume && $issue ) {
+			// Do not point to Editions without Articles
+			if ( empty( $term->count ) ) {
+				$link = '';
+			} elseif ( $volume && $issue ) {
 				$link = user_trailingslashit( trailingslashit( econozel_get_volume_url( $volume ) ) . $issue );
 			}
 			break;

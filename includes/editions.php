@@ -726,11 +726,10 @@ function econozel_the_edition_link( $edition = 0 ) {
 		$link = '';
 
 		if ( $edition = econozel_get_edition( $edition ) ) {
-
-			// Construct link
+			$url  = econozel_get_edition_url( $edition );
 			$link = sprintf(
-				'<a href="%1$s" title="%2$s" rel="collection">%3$s</a>',
-				esc_url( econozel_get_edition_url( $edition ) ),
+				$url ? '<a href="%1$s" title="%2$s" rel="collection">%3$s</a>' : '%3$s',
+				esc_url( $url ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
 				$issue_title ? econozel_get_edition_issue_title( $edition ) : econozel_get_edition_title( $edition )
 			);
