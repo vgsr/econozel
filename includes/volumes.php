@@ -358,17 +358,17 @@ function econozel_get_adjacent_volume( $previous = false ) {
 		if ( $result ) {
 			$volume = econozel_get_volume( $result );
 		}
-	}
+	} else {
+		$result = $wpdb->get_var( $query );
+		if ( null === $result ) {
+			$result = '';
+		}
 
-	$result = $wpdb->get_var( $query );
-	if ( null === $result ) {
-		$result = '';
-	}
+		wp_cache_set( $query_key, $result, 'counts' );
 
-	wp_cache_set( $query_key, $result, 'counts' );
-
-	if ( $result ) {
-		$volume = econozel_get_volume( $result );
+		if ( $result ) {
+			$volume = econozel_get_volume( $result );
+		}
 	}
 
 	return apply_filters( 'econozel_get_adjacent_volume', $volume, $previous );

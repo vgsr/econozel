@@ -533,19 +533,19 @@ function econozel_get_adjacent_edition( $previous = false ) {
 	$result = wp_cache_get( $query_key, 'counts' );
 	if ( false !== $result ) {
 		if ( $result ) {
-			return apply_filters( 'econozel_get_adjacent_edition', econozel_get_edition( $result ), $previous );
+			$edition = econozel_get_edition( $result );
 		}
-	}
+	} else {
+		$result = $wpdb->get_var( $query );
+		if ( null === $result ) {
+			$result = '';
+		}
 
-	$result = $wpdb->get_var( $query );
-	if ( null === $result ) {
-		$result = '';
-	}
+		wp_cache_set( $query_key, $result, 'counts' );
 
-	wp_cache_set( $query_key, $result, 'counts' );
-
-	if ( $result ) {
-		$edition = econozel_get_edition( $result );
+		if ( $result ) {
+			$edition = econozel_get_edition( $result );
+		}
 	}
 
 	return apply_filters( 'econozel_get_adjacent_edition', $edition, $previous );
