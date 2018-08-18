@@ -154,8 +154,8 @@ final class Econozel {
 		}
 
 		// Extensions
-		require( $this->includes_dir . 'extend/buddypress/buddypress.php' );
-		require( $this->includes_dir . 'extend/wordpress-seo.php'         );
+		require( $this->extend_dir . 'buddypress/buddypress.php' );
+		require( $this->extend_dir . 'wordpress-seo.php'         );
 	}
 
 	/**
