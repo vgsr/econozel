@@ -176,7 +176,7 @@ function econozel_in_the_article_loop() {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current post.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
  * @return WP_Post|bool Post object when it is an Article, else False.
  */
 function econozel_get_article( $article = 0 ) {
@@ -199,7 +199,7 @@ function econozel_get_article( $article = 0 ) {
  *
  * @uses apply_filters() Calls 'econozel_get_article_volume'
  *
- * @param WP_Post|int $article Optional. Defaults to the current post.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
  * @return WP_Term|int|bool Volume term object or ID when found, else False.
  */
@@ -222,7 +222,7 @@ function econozel_get_article_volume( $article = 0, $object = false ) {
  *
  * @uses apply_filters() Calls 'econozel_get_article_edition'
  *
- * @param WP_Post|int $article Optional. Defaults to the current post.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
  * @param bool $object Optional. Whether to return term object or ID. Defaults to ID.
  * @return WP_Term|int|bool Edition term object or ID when found, else False.
  */
@@ -252,7 +252,7 @@ function econozel_get_article_edition( $article = 0, $object = false ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current post.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
  * @return bool Article has a Edition
  */
 function econozel_has_article_edition( $article = 0 ) {
@@ -264,7 +264,7 @@ function econozel_has_article_edition( $article = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current post.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
  */
 function econozel_the_article_edition_label( $article = 0 ) {
 	echo econozel_get_article_edition_label( $article );
@@ -277,7 +277,7 @@ function econozel_the_article_edition_label( $article = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_article_edition_label'
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current post.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current post.
 	 * @return string Article Edition label
 	 */
 	function econozel_get_article_edition_label( $article = 0 ) {
@@ -320,7 +320,7 @@ function econozel_the_article_id() {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  */
 function econozel_the_article_description( $article = 0 ) {
 	echo econozel_get_article_description( $article = 0 );
@@ -333,7 +333,7 @@ function econozel_the_article_description( $article = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_article_description'
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
 	 * @return string Article description
 	 */
 	function econozel_get_article_description( $article = 0 ) {
@@ -363,7 +363,7 @@ function econozel_the_article_description( $article = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  */
 function econozel_the_article_content( $article = 0 ) {
 	echo econozel_get_article_content( $article );
@@ -376,7 +376,7 @@ function econozel_the_article_content( $article = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_article_content'
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
 	 * @return string Article content
 	 */
 	function econozel_get_article_content( $article = 0 ) {
@@ -420,7 +420,7 @@ function econozel_the_article_content( $article = 0 ) {
  *
  * @uses apply_filters() Calls 'econozel_get_article_author'
  *
- * @param WP_Post|int Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  * @return array Article author user ID(s)
  */
 function econozel_get_article_author( $article = 0 ) {
@@ -441,7 +441,7 @@ function econozel_get_article_author( $article = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
  *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
  */
@@ -454,7 +454,7 @@ function econozel_the_article_author_link( $article = 0, $concat = true ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
 	 * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
 	 *                            it will be used as the item separator. Defaults to false.
 	 * @return string|array Article author link(s)
@@ -490,7 +490,7 @@ function econozel_the_article_author_link( $article = 0, $concat = true ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  * @param bool|string $concat Optional. Whether to concatenate the urls into a single string. When provided a string value,
  *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
  */
@@ -503,7 +503,7 @@ function econozel_the_article_author_url( $article = 0, $concat = true ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
 	 * @param bool|string $concat Optional. Whether to concatenate the urls into a single string. When provided a string value,
 	 *                            it will be used as the item separator. Defaults to false.
 	 * @return string|array Article author url(s)
@@ -574,7 +574,7 @@ function econozel_the_user_displayname( $user_id ) {
  *
  * @uses apply_filters() Calls 'econozel_article_page_number'
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  * @param bool $echo Optional. Whether to output the return value. Defaults to true.
  * @return string Article page number in read-friendly format.
  */
@@ -606,7 +606,7 @@ function econozel_article_page_number( $article = 0, $echo = true ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Defaults to the current Article.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
  */
 function econozel_the_article_page_number( $article = 0 ) {
 	echo econozel_get_article_page_number( $article );
@@ -619,7 +619,7 @@ function econozel_the_article_page_number( $article = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_article_page_number'
 	 *
-	 * @param WP_Post|int $article Optional. Defaults to the current Article.
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
 	 * @return int Article page number
 	 */
 	function econozel_get_article_page_number( $article = 0 ) {
