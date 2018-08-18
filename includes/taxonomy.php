@@ -386,12 +386,10 @@ function econozel_taxonomy_meta_admin_columns( $columns ) {
 		// Walk all fields
 		foreach ( econozel_get_taxonomy_meta( get_current_screen()->taxonomy ) as $meta_key => $args ) {
 
-			// Skip when no column
-			if ( ! isset( $args['admin_column_cb'] ) || empty( $args['admin_column_cb'] ) )
-				continue;
-
 			// Add column
-			$columns[ $meta_key ] = $args['labels']['singular'];
+			if ( isset( $args['admin_column_cb'] ) && $args['admin_column_cb'] ) {
+				$columns[ $meta_key ] = $args['labels']['singular'];
+			}
 		}
 	}
 

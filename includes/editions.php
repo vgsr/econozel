@@ -94,6 +94,7 @@ function econozel_add_edition_tax_meta( $meta ) {
 			),
 			'type'            => 'media',
 			'mime_type'       => 'application/pdf',
+			'admin_column_cb' => true,
 		),
 	);
 
