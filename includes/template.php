@@ -1239,6 +1239,8 @@ function econozel_adjacent_post_link( $output, $format, $link, $post, $adjacent 
 		if ( $term = econozel_get_adjacent_volume( $previous ) ) {
 			$title = econozel_get_volume_title( $term );
 			$url   = econozel_get_volume_url( $term );
+		} else {
+			$output = '';
 		}
 
 	// Single Edition
@@ -1246,6 +1248,8 @@ function econozel_adjacent_post_link( $output, $format, $link, $post, $adjacent 
 		if ( $term = econozel_get_adjacent_edition( $previous ) ) {
 			$title = econozel_get_edition_title( $term );
 			$url   = econozel_get_edition_url( $term );
+		} else {
+			$output = '';
 		}
 	}
 
