@@ -524,6 +524,32 @@ function econozel_register_taxonomy_media_meta( $fields_or_taxonomy ) {
 	}
 }
 
+/**
+ * Act when term metadata is updated
+ *
+ * @since 1.0.0
+ *
+ * @param int    $meta_id    ID of updated metadata entry.
+ * @param int    $object_id  Object ID.
+ * @param string $meta_key   Meta key.
+ * @param mixed  $meta_value Meta value.
+ */
+function econozel_updated_term_meta( $meta_id, $object_id, $meta_key, $_meta_value ) {
+
+	// Edition
+	if ( $edition = econozel_get_edition( $object_id ) ) {
+		switch ( $meta_key ) {
+
+			// Document
+			case 'document' :
+
+				// Update noindexed documents in htaccess file
+				econozel_update_htaccess();
+				break;
+		}
+	}
+}
+
 /** Query *********************************************************************/
 
 /**

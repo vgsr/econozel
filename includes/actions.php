@@ -35,6 +35,7 @@ add_filter( 'terms_clauses',               'econozel_query_terms_clauses',      
 add_filter( 'list_cats',                   'econozel_list_cats',                    10, 2 );
 add_filter( 'wp_dropdown_cats',            'econozel_dropdown_cats',                10, 2 );
 add_filter( 'term_link',                   'econozel_term_link',                    10, 3 );
+add_filter( 'updated_term_meta',           'econozel_updated_term_meta',            10, 4 );
 
 /** Query *********************************************************************/
 

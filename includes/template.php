@@ -1176,7 +1176,7 @@ function econozel_get_the_archive_description( $description = '' ) {
 
 		// Document link
 		if ( econozel_has_edition_document() ) {
-			$description .= sprintf( ' <a href="%s" target="_blank">%s</a>', esc_url( econozel_get_edition_document_url() ), esc_html__( "Download the Edition's document file", 'econozel' ) );
+			$description .= sprintf( ' <a href="%s" target="_blank" rel="nofollow">%s</a>', esc_url( econozel_get_edition_document_url() ), esc_html__( "Download the Edition's document file", 'econozel' ) );
 		}
 
 	// Article archives

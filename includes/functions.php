@@ -285,6 +285,50 @@ function econozel_delete_rewrite_rules() {
 	delete_option( 'rewrite_rules' );
 }
 
+/**
+ * Update WP's htaccess file with plugin specific rules
+ *
+ * @since 1.0.0
+ *
+ * @uses WPDB $wpdb
+ * @uses apply_filters() Calls 'econozel_update_htaccess'
+ */
+function econozel_update_htaccess() {
+	global $wpdb;
+
+	$lines = array();
+
+	/** Editions **************************************************************/
+
+	/**
+	 * Prevent crawlers from indexing Edition documents.
+	 */
+
+	// Query Edition documents at once
+	$query     = $wpdb->prepare( "SELECT meta_value FROM {$wpdb->termmeta} WHERE meta_key = %s", 'document' );
+	$documents = array_unique( $wpdb->get_col( $query ) );
+
+	// Get file paths from documents
+	foreach ( $documents as $k => $attachment_id ) {
+		if ( $path = get_attached_file( $attachment_id, true ) ) {
+			$documents[ $k ] = basename( $path );
+		} else {
+			unset( $documents[ $k ] );
+		}
+	}
+
+	if ( $documents ) {
+		$lines[] = '';
+		$lines[] = '# block edition documents from being indexed';
+		$lines[] = '<FilesMatch "^(' . implode( '|', $documents ) . ')$">';
+		$lines[] = 'Header Set X-Robots-Tag "noindex, noarchive, nosnippet"';
+		$lines[] = '</FilesMatch>';
+	}
+
+	// Update plugin section in htaccess file
+	insert_with_markers( get_home_path() . '.htaccess', 'Econozel', (array) apply_filters( 'econozel_update_htaccess', $lines ) );
+}
+
 /** Options *******************************************************************/
 
 /**
