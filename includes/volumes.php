@@ -206,7 +206,7 @@ function econozel_in_the_volume_loop() {
  *
  * @since 1.0.0
  *
- * @param WP_Post|string|int $volume Optional. Defaults to the current Volume.
+ * @param WP_Post|string|int $volume Optional. Article post object or Volume slug or ID. Defaults to the current Volume.
  * @param string $by Optional. Method to fetch term through `get_term_by()`. Defaults to 'id'.
  * @return WP_Term|bool Volume term object when found, else False.
  */
@@ -249,7 +249,7 @@ function econozel_get_volume( $volume = 0, $by = 'id' ) {
  *
  * @uses apply_filters() Calls 'econozel_get_volume_editions'
  *
- * @param WP_Term|int $volume Optional. Defaults to the current Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current Volume.
  * @param bool $object Optional. Whether to return term objects. Defaults to false.
  * @return array Volume Edition term objects or ID's.
  */
@@ -279,7 +279,7 @@ function econozel_get_volume_editions( $volume = 0, $object = false ) {
  *
  * @uses apply_filters() Calls 'econozel_get_volume_articles'
  *
- * @param WP_Term|int $volume Optional. Defaults to the current Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current Volume.
  * @param bool $object Optional. Whether to return post objects. Defaults to false.
  * @return array Volume Article post objects or ID's.
  */
@@ -444,7 +444,7 @@ function econozel_the_volume_title( $volume = 0, $prepended = true ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
  */
 function econozel_the_volume_link( $volume = 0 ) {
 	echo econozel_get_volume_link( $volume );
@@ -457,7 +457,7 @@ function econozel_the_volume_link( $volume = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_volume_link'
 	 *
-	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
 	 * @return string Volume permalink
 	 */
 	function econozel_get_volume_link( $volume = 0 ) {
@@ -482,7 +482,7 @@ function econozel_the_volume_link( $volume = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
  */
 function econozel_the_volume_url( $volume = 0 ) {
 	echo esc_url( econozel_get_volume_url( $volume ) );
@@ -495,7 +495,7 @@ function econozel_the_volume_url( $volume = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_volume_url'
 	 *
-	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
 	 * @return string Volume url
 	 */
 	function econozel_get_volume_url( $volume = 0 ) {
@@ -526,7 +526,7 @@ function econozel_get_volume_archive_url() {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
  */
 function econozel_the_volume_description( $volume = 0 ) {
 	echo econozel_get_volume_description( $volume );
@@ -539,7 +539,7 @@ function econozel_the_volume_description( $volume = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_volume_description'
 	 *
-	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
 	 * @return string Volume description
 	 */
 	function econozel_get_volume_description( $volume = 0 ) {
@@ -559,7 +559,7 @@ function econozel_the_volume_description( $volume = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+ * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
  */
 function econozel_the_volume_content( $volume = 0 ) {
 	echo econozel_get_volume_content( $volume );
@@ -572,7 +572,7 @@ function econozel_the_volume_content( $volume = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_volume_content'
 	 *
-	 * @param WP_Term|int $volume Optional. Defaults to the current post's Volume.
+	 * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
 	 * @return string Volume content
 	 */
 	function econozel_get_volume_content( $volume = 0 ) {
