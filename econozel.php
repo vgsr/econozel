@@ -71,8 +71,8 @@ final class Econozel {
 
 		/** Versions **********************************************************/
 
-		$this->version      = '1.0.0-beta1';
-		$this->db_version   = 10000;
+		$this->version      = '1.0.0-beta2';
+		$this->db_version   = 20180819;
 
 		/** Paths *************************************************************/
 

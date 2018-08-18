@@ -12,7 +12,7 @@ There are three ways to browse the archived articles:
 
 1. The plugin's root page at `/econozel/` displays a summary of recent article activity
 2. The usual article post type archives, which you can visit at `/econozel/articles/`
-3. The volume or edition archives, which you can visit at `/econozel/volumes/{volume}/{edition}/`
+3. The volume or edition archives, which you can visit starting at `/econozel/volumes//` or `/econozel/editions/`
 
 Several widgets are added to present the plugin's content:
 

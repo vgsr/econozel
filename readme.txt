@@ -2,8 +2,8 @@
 Contributors: Offereins
 Tags: vgsr, econozel, magazine, article, edition, volume
 Requires at least: 4.4
-Tested up to: 4.7
-Stable tag: 1.0.0-beta1
+Tested up to: 4.9.8
+Stable tag: 1.0.0-beta2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,7 +17,7 @@ There are three ways to browse the archived articles:
 
 1. The plugin's root page at `/econozel/` displays a summary of recent article activity
 2. The usual article post type archives, which you can visit at `/econozel/articles/`
-3. The volume or edition archives, which you can visit at `/econozel/volumes/{volume}/{edition}/`
+3. The volume or edition archives, which you can visit starting at `/econozel/volumes/` or `/econozel/editions/`
 
 Several widgets are added to present the plugin's content:
 
