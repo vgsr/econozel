@@ -790,7 +790,7 @@ function econozel_dropdown_cats( $dd, $args ) {
 	if ( econozel_get_edition_tax_id() == $args['taxonomy'] && $args['show_option_current'] ) {
 
 		// Define option for the current Edition
-		$selected = selected( 'current', $r['selected'], false );
+		$selected = selected( 'current', $args['selected'], false );
 		$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
 
 		// Insert new option before the first term item
