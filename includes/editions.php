@@ -303,6 +303,22 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
 }
 
 /**
+ * Return the Edition associated with the current page
+ *
+ * @since 1.0.0
+ *
+ * @param int $edition_id Optional. Edition ID. Defaults to the crurent Edition.
+ * @return WP_Term|bool Edition term object when found, else False.
+ */
+function econozel_get_current_edition( $edition_id = 0 ) {
+	return ( $edition_id && is_numeric( $edition_id ) )
+		? econozel_get_edition( (int) $edition_id )
+		: ( econozel_is_article( true ) || econozel_is_edition() )
+			? econozel_get_edition()
+			: false;
+}
+
+/**
  * Return the Edition taxonomy term by issue and Volume
  *
  * @since 1.0.0

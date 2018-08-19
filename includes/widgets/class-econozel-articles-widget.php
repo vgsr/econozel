@@ -77,7 +77,8 @@ class Econozel_Articles_Widget extends WP_Widget {
 
 		// Detect whether to query by the current Edition
 		if ( $r['econozel_edition'] ) {
-			$r['econozel_edition'] = is_numeric( $r['econozel_edition'] ) ? (int) $r['econozel_edition'] : econozel_get_edition_id();
+			$edition = econozel_get_current_edition( $r['econozel_edition'] );
+			$r['econozel_edition'] = $edition ? $edition->term_id : false;
 		}
 
 		// When querying by Edition, query all its Articles and override the title
