@@ -155,6 +155,7 @@ final class Econozel {
 
 		// Extensions
 		require( $this->extend_dir . 'buddypress/buddypress.php' );
+		require( $this->extend_dir . 'woosidebars.php'           );
 		require( $this->extend_dir . 'wordpress-seo.php'         );
 	}
 
