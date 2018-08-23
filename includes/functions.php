@@ -419,6 +419,30 @@ function econozel_post_type_title( $post_type = '' ) {
 	return $title;
 }
 
+/**
+ * Return whether the post query is (exclusively) for Econozel Articles
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Query $posts_query Query object
+ * @param bool $exclusive Optional. Whether the query should be exclusively for Articles.
+ * @return bool Is this an Econozel Article query?
+ */
+function econozel_is_article_query( $posts_query, $exclusive = false ) {
+
+	// Require a `WP_Query` object
+	$retval = is_a( $posts_query, 'WP_Query' );
+
+	if ( $retval ) {
+		$query_var = array_values( (array) $posts_query->get( 'post_type' ) );
+		$retval    = $exclusive
+			? array( econozel_get_article_post_type() ) === $query_var
+			: in_array( econozel_get_article_post_type(), $query_var, true );
+	}
+
+	return $retval;
+}
+
 /** Menus *********************************************************************/
 
 /**

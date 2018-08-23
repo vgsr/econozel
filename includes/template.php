@@ -363,7 +363,7 @@ function econozel_posts_where( $where, $query ) {
 	global $wpdb;
 
 	// Bail when not an Econozel query
-	if ( econozel_get_article_post_type() !== $query->get( 'post_type' ) )
+	if ( ! econozel_is_article_query( $query ) )
 		return $where;
 
 	// For non-Econozel Editors, hide other's draft/pending posts
