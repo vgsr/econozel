@@ -1,0 +1,102 @@
+/**
+ * Econozel Admin Styles
+ *
+ * @package Econozel
+ * @subpackage Administration
+ */
+
+/* Single Post */
+
+#econozel-author .post-author {
+	position: relative;
+	width: 100%;
+}
+
+	#econozel-author .post-author select {
+		position: relative;
+		width: 100%;
+		max-width: 100%;
+		z-index: 1;
+	}
+
+	#econozel-author .post-author .remove-extra-author {
+		position: absolute;
+		top: 0px;
+		width: 28px;
+		height: 28px;
+		margin: 1px 0px;
+		background: #fff;
+		color: #32373c;
+		border-left: 1px solid #e5e5e5;
+		border-radius: 14px 0px 0px 14px;
+		text-align: left;
+		text-decoration: none;
+		z-index: 0;
+		-webkit-transform: translateX( 2px );
+		transform: translateX( 2px );
+		transition: transform .3s ease-out, width .3s ease-out;
+	}
+
+		#econozel-author .post-author:hover .remove-extra-author,
+		#econozel-author .post-author .remove-extra-author:hover,
+		#econozel-author .post-author .remove-extra-author:focus {
+			width: calc( 100% + 28px + 1px );
+			-webkit-transform: translateX( -28px );
+			transform: translateX( -28px );
+		}
+
+		#econozel-author .post-author .remove-extra-author:not(:hover):not(:focus) {
+			color: #72777c;
+		}
+
+		#econozel-author .post-author .remove-extra-author:before {
+			margin: 4px;
+		}
+
+#econozel-author .author-actions {
+	width: 100%;
+	text-align: right;
+}
+
+/* Admin: single column */
+@media only screen and (max-width: 850px) {
+	#econozel-author .post-author .remove-extra-author,
+	#econozel-author .post-author:hover .remove-extra-author,
+	#econozel-author .post-author .remove-extra-author:hover,
+	#econozel-author .post-author .remove-extra-author:focus {
+		right: 0px;
+		width: 100%;
+		text-align: right;
+		border-radius: 0px 14px 14px 0px;
+		-webkit-transform: translateX( 1px );
+		transform: translateX( 1px );
+	}
+
+	#econozel-author .post-author select {
+		width: calc( 100% - 4px - 28px - 4px );
+	}
+}
+
+/* Admin: small screens */
+@media screen and (max-width: 782px) {
+	#econozel-author .remove-extra-author,
+	#econozel-author .post-author:hover .remove-extra-author,
+	#econozel-author .post-author .remove-extra-author:hover,
+	#econozel-author .post-author .remove-extra-author:focus {
+		height: 36px;
+		background: none;
+		border: none;
+		border-radius: 0px 18px 18px 0px;
+	}
+
+	#econozel-author .remove-extra-author:before {
+		width: 36px;
+		height: 36px;
+		font-size: 28px;
+		margin: 5px 0px 0px;
+	}
+
+	#econozel-author .post-author select {
+		width: calc( 100% - 4px - 36px - 4px );
+	}
+}

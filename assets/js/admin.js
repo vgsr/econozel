@@ -11,6 +11,8 @@
 	var settings = econozelAdmin.settings, l10n = econozelAdmin.l10n,
 	    wp_inline_edit, wp_bulk_edit;
 
+	/* Taxonomy Terms */
+
 	// Extend inlineEditTax to contain custom edit fields
 	if ( typeof inlineEditTax !== 'undefined' ) {
 
@@ -47,6 +49,8 @@
 			$( ':input[name="' + settings.editionTaxId + '-issue"]', editRow ).val( val );
 		};
 	}
+
+	/* Posts */
 
 	// Extend inlineEditPost to contain custom edit fields
 	if ( typeof inlineEditPost !== 'undefined' ) {
@@ -144,5 +148,20 @@
 			}
 		};
 	}
+
+	/* Single Post */
+
+	// Multiple authors
+	var $metabox = $( '#econozel-author' );
+
+	$metabox
+		.on( 'click', '.add-extra-author', function() {
+			$metabox.find( '.post-author.hidden' ).clone()
+				.insertBefore( $metabox.find( '.post-author.hidden' ) )
+				.removeClass( 'hidden' ).find( 'select' ).removeAttr( 'disabled' );
+		})
+		.on( 'click', '.remove-extra-author', function() {
+			$(this).parent().remove();
+		});
 
 })( jQuery );

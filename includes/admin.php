@@ -77,6 +77,7 @@ class Econozel_Admin {
 		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
 		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'     ), 99    );
 		add_action( 'econozel_save_article',                   array( $this, 'article_save_meta_box'  )        );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_author'    )        );
 		add_action( 'econozel_save_article',                   array( $this, 'article_save_bulk_edit' )        );
 		add_filter( 'wp_dropdown_users_args',                  array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
 		add_filter( 'post_updated_messages',                   array( $this, 'post_updated_messages'  )        );
@@ -171,23 +172,23 @@ class Econozel_Admin {
 		$screen      = get_current_screen();
 		$styles      = array();
 		$load_script = false;
+		$load_style  = false;
 
 		// Article edit.php
 		if ( "edit-{$this->article_post_type}" == $screen->id ) {
 			$load_script = true;
 
 			// Define additional styles
-			$styles[] = ".fixed .column-econozel_author, .fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
-		}
+			$styles[] = ".fixed .column-econozel-author, .fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
 
 		// Article post.php
 		} elseif ( 'post' == $screen->base && $this->article_post_type == $screen->id ) {
 			$load_script = true;
+			$load_style  = true;
 
 			// Define additional styles
 			$styles[] = "#article-details .article-edition label, #article-details .article-page-number label { display: inline-block; margin: .5em 0px; vertical-align: bottom; font-weight: 600; }";
 			$styles[] = "#article-details select#taxonomy-{$this->edition_tax_id} { width: 100%; max-width: 100%; }";
-			$styles[] = "#article-details p:last-of-type { margin-bottom: 0px; }";
 
 		// Edition edit-tags.php
 		} elseif ( "edit-{$this->edition_tax_id}" == $screen->id ) {
@@ -225,6 +226,11 @@ class Econozel_Admin {
 					'userCanAssignEditions' => current_user_can( $tax_edition->cap->assign_terms ),
 				)
 			) );
+		}
+
+		// Enqueue admin styles
+		if ( $load_style ) {
+			wp_enqueue_style( 'econozel-admin', econozel()->assets_url . 'css/admin.css', array( 'common' ), econozel_get_version() );
 		}
 
 		// Attach styles to admin's common.css
@@ -329,7 +335,7 @@ class Econozel_Admin {
 
 		// Reuse author column with custom content
 		$column_keys = array_keys( $columns );
-		$column_keys[ array_search( 'author', $column_keys ) ] = 'econozel_author';
+		$column_keys[ array_search( 'author', $column_keys ) ] = 'econozel-author';
 		$columns     = array_combine( $column_keys, $columns );
 
 		return $columns;
@@ -346,7 +352,7 @@ class Econozel_Admin {
 	public function article_column_content( $column, $post_id ) {
 
 		switch ( $column ) {
-			case 'econozel_author' :
+			case 'econozel-author' :
 
 				// Provide admin posts url
 				add_filter( 'econozel_get_article_author_url', array( $this, 'admin_posts_author_url' ), 99, 3 );
@@ -409,7 +415,7 @@ class Econozel_Admin {
 
 		// Multi-author
 		remove_meta_box( 'authordiv', null, 'normal' );
-		add_meta_box( 'econozel-author', __( 'Author' ), array( $this, 'econozel_author_meta_box' ), null, 'side', 'high' );
+		add_meta_box( 'econozel-author', __( 'Author' ), array( $this, 'article_author_meta_box' ), null, 'side', 'high' );
 	}
 
 	/**
@@ -426,6 +432,9 @@ class Econozel_Admin {
 		$tax        = get_taxonomy( $this->edition_tax_id );
 		$terms      = $tax && wp_count_terms( $tax->name );
 		$can_assign = $terms && current_user_can( $tax->cap->assign_terms );
+
+		// Metabox nonce
+		wp_nonce_field( 'econozel_edition_metabox_save', 'econozel_edition_metabox' );
 
 		// When the user can assign Editions
 		if ( $can_assign ) : ?>
@@ -448,7 +457,7 @@ class Econozel_Admin {
 
 			<?php if ( econozel_get_article_edition( $post ) ) : ?>
 
-			<p><?php econozel_the_article_edition_label( $post ); ?></p>
+				<p><?php econozel_the_article_edition_label( $post ); ?></p>
 
 				<?php if ( $post->menu_order ) : ?>
 
@@ -458,14 +467,65 @@ class Econozel_Admin {
 
 			<?php else : ?>
 
-			<p><?php esc_html_e( '&mdash; Not published in an Edition &mdash;', 'econozel' ); ?></p>
+				<p><?php esc_html_e( '&mdash; Not published in an Edition &mdash;', 'econozel' ); ?></p>
 
 			<?php endif; ?>
 
 		<?php endif;
+	}
 
-		// Metabox nonce
-		wp_nonce_field( 'econozel_edition_metabox_save', 'econozel_edition_metabox' );
+	/**
+	 * Display the custom Author meta box
+	 *
+	 * @see post_author_meta_box()
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post $post Post object
+	 */
+	public function article_author_meta_box( $post ) { ?>
+
+		<label class="screen-reader-text" for="post_author_override"><?php _e( 'Author' ); ?></label>
+		<?php
+
+		// Collect post author(s)
+		$user_ids = econozel_get_article_author( $post );
+		if ( empty( $user_ids ) ) {
+			$user_ids = array( $GLOBALS['user_ID'] );
+		}
+
+		// Define remove button
+		$remove_button = ' <button type="button" class="button-link remove-extra-author dashicons-before dashicons-no-alt"><span class="screen-reader-text">' . esc_html__( 'Remove author', 'econozel' ) . '</span></button>';
+
+		foreach ( $user_ids as $k => $user_id ) {
+			$first    = 0 === $k;
+			$dropdown = wp_dropdown_users(
+				array(
+					'who'              => 'authors',
+					'id'               => 'post_author_override',
+					'name'             => $first ? 'post_author_override' : 'econozel-author[]',
+					'selected'         => $user_id,
+					'include_selected' => true,
+					'show'             => 'display_name_with_login',
+					'echo'             => false
+				)
+			);
+
+			echo '<div class="post-author">' . $dropdown . ( ! $first ? $remove_button : '' ) . '</div>';
+		}
+
+		// Makes ure the input name is for extra authors, remove selection
+		$dropdown = str_replace( "name='post_author_override'", "name='econozel-author[]'", $dropdown );
+		$dropdown = str_replace( "id='", "disabled id='", str_replace( " selected='selected'", '', $dropdown ) );
+
+		?>
+
+		<div class="post-author hidden"><?php echo $dropdown . $remove_button ?></div>
+		<p class="author-actions">
+			<button type="button" class="button add-extra-author"><?php esc_html_e( 'Add author', 'econozel' ); ?></button>
+		</p>
+
+		<?php
 	}
 
 	/**
@@ -542,6 +602,42 @@ class Econozel_Admin {
 			// Remove Article Edition
 			} elseif ( $edition = econozel_get_article_edition( $post_id ) ) {
 				wp_remove_object_terms( $post_id, array( $edition ), $this->edition_tax_id );
+			}
+		}
+	}
+
+	/**
+	 * Save the input from the Author meta box
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param int $post_id Post ID
+	 */
+	public function article_save_author( $post_id ) {
+
+		// Author
+		if ( isset( $_REQUEST['econozel-author'] ) ) {
+			// var_dump( $_REQUEST ); exit;
+
+			// Remove previous meta instances
+			delete_post_meta( $post_id, 'post_author' );
+
+			// Get user ids
+			$user_ids = array_map( 'absint', (array) $_REQUEST['econozel-author'] );
+			$user_ids = array_unique( array_filter( $user_ids ) );
+
+			// When the post is multi-author, store canonical author in meta as well
+			if ( $user_ids ) {
+				$post_author = get_post( $post_id )->post_author;
+
+				if ( ! in_array( $post_author, $user_ids ) ) {
+					$user_ids[] = $post_author;
+				}
+			}
+
+			// Update post meta
+			foreach ( $user_ids as $user_id ) {
+				add_post_meta( $post_id, 'post_author', $user_id );
 			}
 		}
 	}
