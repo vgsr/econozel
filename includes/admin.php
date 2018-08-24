@@ -180,7 +180,7 @@ class Econozel_Admin {
 			$load_script = true;
 
 			// Define additional styles
-			$styles[] = ".fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
+			$styles[] = ".fixed .column-econozel_author, .fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
 		}
 
 		// Article post.php
@@ -328,6 +328,11 @@ class Econozel_Admin {
 		$pos     = array_search( 'author', array_keys( $columns ) ) + 1;
 		$columns = array_slice( $columns, 0, $pos, true ) + $edition + array_slice( $columns, $pos, count( $columns ) - 1, true );
 
+		// Reuse author column with custom content
+		$column_keys = array_keys( $columns );
+		$column_keys[ array_search( 'author', $column_keys ) ] = 'econozel_author';
+		$columns     = array_combine( $column_keys, $columns );
+
 		return $columns;
 	}
 
@@ -342,6 +347,19 @@ class Econozel_Admin {
 	public function article_column_content( $column, $post_id ) {
 
 		switch ( $column ) {
+			case 'econozel_author' :
+
+				// Provide admin posts url
+				add_filter( 'econozel_get_article_author_url', array( $this, 'admin_posts_author_url' ), 99, 3 );
+
+				// Display author link(s)
+				econozel_the_article_author_link( $post_id, ', ' );
+
+				// Unhook admin posts url
+				remove_filter( 'econozel_get_article_author_url', array( $this, 'admin_posts_author_url' ), 99, 3 );
+
+				break;
+
 			case "taxonomy-{$this->edition_tax_id}" :
 
 				// Get Article Edition label
@@ -355,6 +373,20 @@ class Econozel_Admin {
 
 				break;
 		}
+	}
+
+	/**
+	 * Return the url that points to the author's posts
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $url Post author url
+	 * @param int $user_id User ID
+	 * @param WP_Post $post Post object
+	 * @return string Post author url
+	 */
+	public function admin_posts_author_url( $url, $user_id, $post ) {
+		return add_query_arg( array( 'post_type' => econozel_get_article_post_type(), 'author' => $user_id ), 'edit.php' );
 	}
 
 	/**
