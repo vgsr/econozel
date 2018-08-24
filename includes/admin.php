@@ -76,8 +76,8 @@ class Econozel_Admin {
 		add_action( 'quick_edit_custom_box',                   array( $this, 'article_inline_edit'    ), 10, 2 );
 		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
 		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'     ), 99    );
-		add_action( "save_post_{$post_type}",                  array( $this, 'article_save_meta_box'  )        );
-		add_action( "save_post_{$post_type}",                  array( $this, 'article_save_bulk_edit' )        );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_meta_box'  )        );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_bulk_edit' )        );
 		add_filter( 'wp_dropdown_users_args',                  array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
 		add_filter( 'post_updated_messages',                   array( $this, 'post_updated_messages'  )        );
 
@@ -529,27 +529,8 @@ class Econozel_Admin {
 	 */
 	public function article_save_meta_box( $post_id ) {
 
-		// Bail when doing an autosave
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return;
-
-		// Bail when not a post request
-		if ( 'POST' != strtoupper( $_SERVER['REQUEST_METHOD'] ) )
-			return;
-
 		// Bail when nonce does not verify
 		if ( empty( $_POST['econozel_edition_metabox'] ) || ! wp_verify_nonce( $_POST['econozel_edition_metabox'], 'econozel_edition_metabox_save' ) )
-			return;
-
-		// Only save for Article post-types
-		if ( ! $article = econozel_get_article( $post_id ) )
-			return;
-
-		// Get post type object
-		$post_type_object = get_post_type_object( $article->post_type );
-
-		// Bail when current user is not capable
-		if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 			return;
 
 		// Get Edition taxonomy
@@ -578,27 +559,8 @@ class Econozel_Admin {
 	 */
 	public function article_save_bulk_edit( $post_id ) {
 
-		// Bail when doing an autosave
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return;
-
-		// Bail when not a get request
-		if ( 'GET' != strtoupper( $_SERVER['REQUEST_METHOD'] ) )
-			return;
-
 		// Bail when not bulk editing or nonce does not verify
 		if ( ! isset( $_REQUEST['bulk_edit'] ) || ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-posts' ) )
-			return;
-
-		// Only save for Article post-types
-		if ( ! $article = econozel_get_article( $post_id ) )
-			return;
-
-		// Get post type object
-		$post_type_object = get_post_type_object( $article->post_type );
-
-		// Bail when current user is not capable
-		if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
 			return;
 
 		// Edition

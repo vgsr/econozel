@@ -106,3 +106,32 @@ function econozel_template_include( $template = '' ) {
 function econozel_map_meta_caps( $caps = array(), $cap = '', $user_id = 0, $args = array() ) {
 	return apply_filters( 'econozel_map_meta_caps', $caps, $cap, $user_id, $args );
 }
+
+/**
+ * Run post update hook when validly updating an Article
+ *
+ * @since 1.0.0
+ *
+ * @uses do_action() Calls 'econozel_save_article'
+ *
+ * @param int $post_id Post ID
+ */
+function econozel_save_article( $post_id ) {
+
+	// Bail when doing an autosave
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+		return;
+
+	// Only save for Article type posts
+	if ( ! $article = econozel_get_article( $post_id ) )
+		return;
+
+	// Get post type object
+	$post_type_object = get_post_type_object( $article->post_type );
+
+	// Bail when current user is not capable to edit
+	if ( ! current_user_can( $post_type_object->cap->edit_post, $post_id ) )
+		return;
+
+	do_action( 'econozel_save_article', $post_id );
+}
