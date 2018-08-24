@@ -431,6 +431,14 @@ function econozel_get_article_author( $article = 0 ) {
 	// Get author from post object
 	if ( $article = econozel_get_article( $article ) ) {
 		$author[] = $article->post_author;
+
+		// Get multi-author data from post meta
+		foreach ( get_post_meta( $article->ID, 'post_author', false ) as $post_author ) {
+			$author[] = (int) $post_author;
+		}
+
+		// Only unique values
+		$author = array_unique( $author );
 	}
 
 	return (array) apply_filters( 'econozel_get_article_author', $author, $article );
@@ -468,13 +476,13 @@ function econozel_the_article_author_link( $article = 0, $concat = true ) {
 		$url = econozel_get_article_author_url( $article );
 
 		// Loop Article author url(s)
-		foreach ( $url as $user_id => $_url ) {
+		foreach ( $url as $user_id => $user_url ) {
 
 			// Setup user link
-			$_link = sprintf( ! empty( $_url ) ? '<a href="%1$s">%2$s</a>' : '%2$s', esc_url( $_url ), econozel_get_user_displayname( $user_id ) );
+			$_link = sprintf( ! empty( $user_url ) ? '<a href="%1$s">%2$s</a>' : '%2$s', esc_url( $user_url ), econozel_get_user_displayname( $user_id ) );
 
 			// Enable plugin filtering
-			$link[ $user_id ] = apply_filters( 'econozel_get_article_author_link', $_link, $user_id, $_url, $article );
+			$link[ $user_id ] = apply_filters( 'econozel_get_article_author_link', $_link, $user_id, $user_url, $article );
 		}
 
 		// Stringify links
