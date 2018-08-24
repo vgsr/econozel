@@ -71,15 +71,15 @@ class Econozel_Admin {
 		add_filter( 'econozel_map_meta_caps', array( $this, 'map_settings_meta_caps' ), 10, 4 );
 
 		// Article
-		add_filter( "manage_{$post_type}_posts_columns",        array( $this, 'article_columns'        )        );
-		add_action( "manage_{$post_type}_posts_column_content", array( $this, 'article_column_content' ), 10, 2 );
-		add_action( 'quick_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
-		add_action( 'bulk_edit_custom_box',                     array( $this, 'article_inline_edit'    ), 10, 2 );
-		add_action( "add_meta_boxes_{$post_type}",              array( $this, 'article_meta_boxes'     ), 99    );
-		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_meta_box'  )        );
-		add_action( "save_post_{$post_type}",                   array( $this, 'article_save_bulk_edit' )        );
-		add_filter( 'wp_dropdown_users_args',                   array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
-		add_filter( 'post_updated_messages',                    array( $this, 'post_updated_messages'  )        );
+		add_filter( "manage_{$post_type}_posts_columns",       array( $this, 'article_columns'        )        );
+		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'article_column_content' ), 10, 2 );
+		add_action( 'quick_edit_custom_box',                   array( $this, 'article_inline_edit'    ), 10, 2 );
+		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
+		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'     ), 99    );
+		add_action( "save_post_{$post_type}",                  array( $this, 'article_save_meta_box'  )        );
+		add_action( "save_post_{$post_type}",                  array( $this, 'article_save_bulk_edit' )        );
+		add_filter( 'wp_dropdown_users_args',                  array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
+		add_filter( 'post_updated_messages',                   array( $this, 'post_updated_messages'  )        );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
