@@ -319,6 +319,31 @@ function econozel_get_current_edition( $edition_id = 0 ) {
 }
 
 /**
+ * Return the latest Edition
+ *
+ * @since 1.0.0
+ *
+ * @param bool $object Optional. Whether to return Term object or ID. Defaults to False.
+ * @return WP_Term|int|bool Edition object or ID, else False.
+ */
+function econozel_get_latest_edition( $object = false ) {
+
+	// Define return value
+	$edition = false;
+
+	// Use `get_terms()` to enable query filtering
+	$terms = get_terms( econozel_get_edition_tax_id(), array(
+		'fields' => $object ? 'all' : 'ids'
+	) );
+
+	if ( $terms ) {
+		$edition = $terms[0];
+	}
+
+	return apply_filters( 'econozel_get_latest_edition', $edition, $object );
+}
+
+/**
  * Return the Edition taxonomy term by issue and Volume
  *
  * @since 1.0.0
