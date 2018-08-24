@@ -26,8 +26,8 @@ class Econozel_Articles_Widget extends WP_Widget {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		parent::__construct( false, esc_html__( 'Econozel Recent Articles', 'econozel' ), array(
-			'description' => esc_html__( 'A list of the most recent articles.', 'econozel' ),
+		parent::__construct( false, esc_html__( 'Econozel Articles', 'econozel' ), array(
+			'description' => esc_html__( 'A list of (recent) articles.', 'econozel' ),
 			'classname'   => 'widget_recent_entries',
 			'customize_selective_refresh' => true
 		) );
@@ -63,7 +63,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$r = wp_parse_args( $instance, array(
 
 			// Widget details
-			'title'            => esc_html__( 'Recent Articles', 'econozel' ),
+			'title'            => econozel_post_type_title( econozel_get_article_post_type() ),
 			'description'      => false,
 			'show_date'        => false,
 			'none_found'       => esc_html__( 'There were no articles found.', 'econozel' ),
@@ -72,6 +72,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 
 			// Query args
 			'econozel_edition' => false,
+			'econozel_archive' => false,
 			'posts_per_page'   => 5,
 		) );
 
@@ -149,6 +150,8 @@ class Econozel_Articles_Widget extends WP_Widget {
 			$instance['econozel_edition'] = false;
 		}
 
+		$instance['econozel_archive'] = (bool) $new_instance['econozel_archive'];
+
 		return $instance;
 	}
 
@@ -166,6 +169,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$posts_per_page   = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
 		$econozel_edition = isset( $instance['econozel_edition'] ) ? (bool) $instance['econozel_edition'] : false;
 		$show_date        = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
+		$econozel_archive = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
 
 		?>
 
@@ -192,6 +196,10 @@ class Econozel_Articles_Widget extends WP_Widget {
 		<p>
 			<input type="checkbox" class="checkbox"<?php checked( $show_date ); ?> id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>"/>
 			<label for="<?php echo $this->get_field_id( 'show_date' ); ?>"><?php esc_html_e( 'Display edition or post date?', 'econozel' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox"<?php checked( $econozel_archive ); ?> id="<?php echo $this->get_field_id( 'econozel_archive' ); ?>" name="<?php echo $this->get_field_name( 'econozel_archive' ); ?>"/>
+			<label for="<?php echo $this->get_field_id( 'econozel_archive' ); ?>"><?php esc_html_e( 'Display articles from the archive', 'econozel' ); ?></label>
 		</p>
 
 		<?php

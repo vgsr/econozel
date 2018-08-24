@@ -18,9 +18,17 @@ $widget_args = array(
 	'after_title'   => '</h3>',
 );
 
-// Recent Articles
+// Latest Articles
 the_widget( 'Econozel_Articles_Widget', array(
-	'title'            => esc_html__( 'Recent Articles', 'econozel' ),
+	'title'            => esc_html__( 'Latest Articles', 'econozel' ),
+	'econozel_archive' => false,
+	'show_date'        => true,
+), $widget_args );
+
+// Latest Archived
+the_widget( 'Econozel_Articles_Widget', array(
+	'title'            => esc_html__( 'Latest Archived', 'econozel' ),
+	'econozel_archive' => true,
 	'show_date'        => true,
 ), $widget_args );
 
