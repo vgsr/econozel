@@ -167,9 +167,6 @@ class Econozel_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		// Get Econozel
-		$eco = econozel();
-
 		// Define local variable(s)
 		$screen      = get_current_screen();
 		$styles      = array();
@@ -184,14 +181,16 @@ class Econozel_Admin {
 		}
 
 		// Article post.php
-		if ( 'post' == $screen->base && $this->article_post_type == $screen->id ) {
+		} elseif ( 'post' == $screen->base && $this->article_post_type == $screen->id ) {
+			$load_script = true;
 
 			// Define additional styles
-			$styles[] = "#econozel-edition select#taxonomy-{$this->edition_tax_id} { width: 100%; max-width: 100%; }";
-		}
+			$styles[] = "#article-details .article-edition label, #article-details .article-page-number label { display: inline-block; margin: .5em 0px; vertical-align: bottom; font-weight: 600; }";
+			$styles[] = "#article-details select#taxonomy-{$this->edition_tax_id} { width: 100%; max-width: 100%; }";
+			$styles[] = "#article-details p:last-of-type { margin-bottom: 0px; }";
 
 		// Edition edit-tags.php
-		if ( "edit-{$this->edition_tax_id}" == $screen->id ) {
+		} elseif ( "edit-{$this->edition_tax_id}" == $screen->id ) {
 			$load_script = true;
 
 			// Define additional styles
@@ -209,7 +208,7 @@ class Econozel_Admin {
 			$tax_edition = get_taxonomy( $this->edition_tax_id );
 
 			// Enqueue and localize admin script
-			wp_enqueue_script( 'econozel-admin', $eco->assets_url . 'js/admin.js', array( 'jquery' ), econozel_get_version(), true );
+			wp_enqueue_script( 'econozel-admin', econozel()->assets_url . 'js/admin.js', array( 'jquery' ), econozel_get_version(), true );
 			wp_localize_script( 'econozel-admin', 'econozelAdmin', array(
 				'l10n' => array(
 					'articleMenuOrderLabel' => esc_html__( 'Page Number', 'econozel' ),
@@ -403,10 +402,14 @@ class Econozel_Admin {
 			return;
 
 		// Remove default page-attributes metabox
-		remove_meta_box( 'pageparentdiv', get_current_screen(), 'side' );
+		remove_meta_box( 'pageparentdiv', null, 'side' );
 
 		// Article Details metabox
-		add_meta_box( 'article_details', esc_html__( 'Article Details', 'econozel' ), array( $this, 'article_details_meta_box' ), null, 'side', 'high' );
+		add_meta_box( 'article-details', esc_html__( 'Article Details', 'econozel' ), array( $this, 'article_details_meta_box' ), null, 'side', 'high' );
+
+		// Multi-author
+		remove_meta_box( 'authordiv', null, 'normal' );
+		add_meta_box( 'econozel-author', __( 'Author' ), array( $this, 'econozel_author_meta_box' ), null, 'side', 'high' );
 	}
 
 	/**
@@ -417,11 +420,7 @@ class Econozel_Admin {
 	 * @todo List Editions as #s instead of a list of registered terms > distinct Edition # query helper
 	 * @param WP_Post $post Post object
 	 */
-	public function article_details_meta_box( $post ) { ?>
-
-		<div id="econozel-edition" class="categorydiv">
-
-		<?php
+	public function article_details_meta_box( $post ) {
 
 		// Get Edition taxonomy
 		$tax        = get_taxonomy( $this->edition_tax_id );
@@ -431,18 +430,19 @@ class Econozel_Admin {
 		// When the user can assign Editions
 		if ( $can_assign ) : ?>
 
-			<fieldset>
-				<legend><p><strong><?php esc_html_e( 'Volume & Edition', 'econozel' ); ?></strong></p></legend>
-				<p><?php econozel_dropdown_editions( array(
+			<fieldset class="article-edition">
+				<legend><label for="taxonomy-<?php echo $this->edition_tax_id; ?>"><?php esc_html_e( 'Volume & Edition', 'econozel' ); ?></label></legend>
+				<?php econozel_dropdown_editions( array(
 					'name'       => "taxonomy-{$this->edition_tax_id}",
 					'hide_empty' => 0,
 					'selected'   => econozel_get_article_edition( $post )
-				) ); ?></p>
+				) ); ?>
 			</fieldset>
 
-			<p><strong><?php esc_html_e( 'Page Number', 'econozel' ); ?></strong></p>
-
-			<p><label class="screen-reader-text" for="menu_order"><?php esc_html_e( 'Page Number', 'econozel' ); ?></label><input name="menu_order" type="text" size="4" id="menu_order" value="<?php echo esc_attr( $post->menu_order ); ?>" /></p>
+			<p class="article-page-number">
+				<label for="menu_order"><?php esc_html_e( 'Page Number', 'econozel' ); ?></label>
+				<input name="menu_order" type="number" size="4" id="menu_order" class="small-text" value="<?php echo esc_attr( $post->menu_order ); ?>" />
+			</p>
 
 		<?php else : ?>
 
@@ -462,11 +462,7 @@ class Econozel_Admin {
 
 			<?php endif; ?>
 
-		<?php endif; ?>
-
-		</div>
-
-		<?php
+		<?php endif;
 
 		// Metabox nonce
 		wp_nonce_field( 'econozel_edition_metabox_save', 'econozel_edition_metabox' );
