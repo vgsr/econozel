@@ -257,22 +257,22 @@ function econozel_parse_query_vars( $posts_query ) {
  * @global WPDB $wpdb
  *
  * @param array $clauses SQL clauses
- * @param WP_Query $query Post query object
+ * @param WP_Query $posts_query Post query object
  * @return array SQL clauses
  */
-function econozel_posts_clauses( $clauses, $query ) {
+function econozel_posts_clauses( $clauses, $posts_query ) {
 	global $wpdb;
 
 	// Bail when filters are suppressed on this query
-	if ( true === $query->get( 'suppress_filters' ) )
+	if ( true === $posts_query->get( 'suppress_filters' ) )
 		return $clauses;
 
-	// Bail when in admin
-	if ( is_admin() )
+	// Bail when not an Econozel query
+	if ( ! econozel_is_article_query( $posts_query ) )
 		return $clauses;
 
 	// Filter by comment activity
-	if ( $comment_activity = $query->get( 'comment_activity', false ) ) {
+	if ( $comment_activity = $posts_query->get( 'comment_activity', false ) ) {
 
 		// Define local variable(s)
 		$days    = is_numeric( $comment_activity ) ? (int) $comment_activity : 10;
@@ -296,6 +296,17 @@ function econozel_posts_clauses( $clauses, $query ) {
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
 	}
 
+	// For non-Econozel Editors, hide other's draft/pending posts
+	if ( ! current_user_can( 'econozel_editor' ) ) {
+
+		// Collect 'private' post statuses
+		$post_stati = "'" . implode( "','", array( 'draft', 'pending' ) ) . "'";
+
+		// Append to WHERE clause
+		// TODO: Account for multiple authors
+		$clauses['where'] .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_status NOT IN ($post_stati) OR {$wpdb->posts}.post_author = %d )", get_current_user_id() );
+	}
+
 	return $clauses;
 }
 
@@ -305,14 +316,14 @@ function econozel_posts_clauses( $clauses, $query ) {
  * @since 1.0.0
  *
  * @param string $request SQL query
- * @param WP_Query $query Query object
+ * @param WP_Query $posts_query Query object
  * @return string SQL query
  */
-function econozel_filter_wp_query( $request, $query ) {
+function econozel_filter_wp_query( $request, $posts_query ) {
 	global $wpdb;
 
 	// Bail when this is not the main query
-	if ( ! $query->is_main_query() )
+	if ( ! $posts_query->is_main_query() )
 		return $request;
 
 	// When displaying plugin root or custom query results...
@@ -331,13 +342,13 @@ function econozel_filter_wp_query( $request, $query ) {
  * @since 1.0.0
  *
  * @param null $retval Current return value
- * @param WP_Query $query Query object
+ * @param WP_Query $posts_query Query object
  * @return null|array
  */
-function econozel_bypass_wp_query( $retval, $query ) {
+function econozel_bypass_wp_query( $retval, $posts_query ) {
 
 	// Bail when this is not the main query
-	if ( ! $query->is_main_query() )
+	if ( ! $posts_query->is_main_query() )
 		return $retval;
 
 	// When displaying plugin root or custom query results...
@@ -348,36 +359,6 @@ function econozel_bypass_wp_query( $retval, $query ) {
 	}
 
 	return $retval;
-}
-
-/**
- * Modify the WHERE clause for the post query
- *
- * @since 1.0.0
- *
- * @global WPDB $wpdb
- *
- * @param WP_Query $query
- */
-function econozel_posts_where( $where, $query ) {
-	global $wpdb;
-
-	// Bail when not an Econozel query
-	if ( ! econozel_is_article_query( $query ) )
-		return $where;
-
-	// For non-Econozel Editors, hide other's draft/pending posts
-	if ( ! current_user_can( 'econozel_editor' ) ) {
-
-		// Collect 'private' post statuses
-		$post_stati = "'" . implode( "','", array( 'draft', 'pending' ) ) . "'";
-
-		// Append to WHERE clause
-		// TODO: Account for multiple authors
-		$where .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_status NOT IN ($post_stati) OR {$wpdb->posts}.post_author = %d )", get_current_user_id() );
-	}
-
-	return $where;
 }
 
 /**
