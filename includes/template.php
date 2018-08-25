@@ -290,12 +290,12 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 				$compare  = '=' === $matches[1][ $item ] ? 'IN' : $matches[1][ $item ];
 
 				// Reconstruct
-				$by_author = "{$wpdb->posts}.post_author {$compare} ({$user_ids})";
-				$by_meta   = $wpdb->prepare( "{$wpdb->posts}.ID IN (SELECT post_id FROM {$wpdb->postmeta} WHERE {$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value IN ({$user_ids}))", 'post_author' );
-				$operator  = 'NOT IN' === $compare ? 'AND' : 'OR';
+				$author_by_post = "{$wpdb->posts}.post_author {$compare} ({$user_ids})";
+				$author_by_meta = $wpdb->prepare( "{$wpdb->posts}.ID {$compare} (SELECT post_id FROM {$wpdb->postmeta} WHERE {$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value IN ({$user_ids}))", 'post_author' );
+				$operator = 'NOT IN' === $compare ? 'AND' : 'OR';
 
 				// Replace post author clause, only for Econozel Articles
-				$replace   = $wpdb->prepare( " AND ( {$wpdb->posts}.post_type <> %s OR ({$by_author} {$operator} {$by_meta}) )", econozel_get_article_post_type() );
+				$replace = $wpdb->prepare( " AND ( {$wpdb->posts}.post_type <> %s OR ({$author_by_post} {$operator} {$author_by_meta}) )", econozel_get_article_post_type() );
 
 				// Replace match
 				$clauses['where'] = str_replace( $match, $replace, $clauses['where'] );
