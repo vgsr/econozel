@@ -316,7 +316,7 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 
 			// Construct conditions
 			$not_in_edition    = $wpdb->prepare( "{$wpdb->posts}.ID NOT IN (SELECT object_id FROM {$wpdb->term_relationships} INNER JOIN {$wpdb->term_taxonomy} ON {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_id WHERE {$wpdb->term_taxonomy}.taxonomy = %s)", econozel_get_edition_tax_id() );
-			$in_latest_edition = $wpdb->prepare( "{$wpdb->posts}.ID IN (SELECT object_id FROM {$wpdb->term_relationships} INNER JOIN {$wpdb->term_taxonomy} ON {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_id WHERE {$wpdb->term_taxonomy}.taxonomy = %s AND {$wpdb->term_relationships}.term_taxonomy_id = %d)", econozel_get_edition_tax_id(), econozel_get_latest_edition() );
+			$in_latest_edition = $wpdb->prepare( "{$wpdb->posts}.ID IN (SELECT object_id FROM {$wpdb->term_relationships} WHERE {$wpdb->term_relationships}.term_taxonomy_id = %d)", econozel_get_latest_edition() );
 
 			// Append to where clause
 			$clauses['where'] .= " AND ( {$not_in_edition} OR {$in_latest_edition} )";
