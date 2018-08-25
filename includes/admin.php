@@ -501,6 +501,7 @@ class Econozel_Admin {
 			$first    = 0 === $k;
 			$dropdown = wp_dropdown_users(
 				array(
+					'econozel'         => true,
 					'who'              => 'authors',
 					'id'               => 'post_author_override',
 					'name'             => $first ? 'post_author_override' : 'econozel-author[]',
@@ -688,25 +689,14 @@ class Econozel_Admin {
 	 */
 	public function dropdown_users_args( $query_args, $args ) {
 
-		// When an Articles admin page
-		if ( econozel_get_article_post_type() === get_current_screen()->post_type ) {
+		// When querying Econozel users
+		if ( isset( $args['econozel'] ) && $args['econozel'] ) {
 
-			// When listing authors, list Econozel Editors instead
-			if ( 'authors' === $args['who'] ) {
-				$query_args['econozel'] = true;
+			// Remove the 'authors' limitation
+			unset( $query_args['who'] );
 
-				// Enable all vgsr users to be authors
-				if ( function_exists( 'vgsr' ) ) {
-					$query_args['vgsr'] = true;
-
-				// Or list just the Editors
-				} else {
-					$query_args['role'] = econozel_get_editor_role();
-				}
-
-				// Remove the 'authors' limitation
-				unset( $query_args['who'] );
-			}
+			// Query by Editor role
+			$query_args['role'] = econozel_get_editor_role();
 		}
 
 		return $query_args;
