@@ -691,6 +691,7 @@ class Econozel_Admin {
 
 		// When querying Econozel users
 		if ( isset( $args['econozel'] ) && $args['econozel'] ) {
+			$query_args['econozel'] = true;
 
 			// Remove the 'authors' limitation
 			unset( $query_args['who'] );

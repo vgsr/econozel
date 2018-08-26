@@ -133,7 +133,6 @@ final class Econozel {
 		require( $this->includes_dir . 'sub-actions.php'  );
 		require( $this->includes_dir . 'taxonomy.php'     );
 		require( $this->includes_dir . 'update.php'       );
-		require( $this->includes_dir . 'users.php'        );
 		require( $this->includes_dir . 'volumes.php'      );
 
 		// Theme
@@ -155,6 +154,7 @@ final class Econozel {
 
 		// Extensions
 		require( $this->extend_dir . 'buddypress/buddypress.php' );
+		require( $this->extend_dir . 'vgsr.php'                  );
 		require( $this->extend_dir . 'woosidebars.php'           );
 		require( $this->extend_dir . 'wordpress-seo.php'         );
 	}
