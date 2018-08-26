@@ -499,18 +499,23 @@ class Econozel_Admin {
 
 		foreach ( $user_ids as $k => $user_id ) {
 			$first    = 0 === $k;
-			$dropdown = wp_dropdown_users(
-				array(
-					'econozel'         => true,
-					'who'              => 'authors',
-					'id'               => 'post_author_override',
-					'name'             => $first ? 'post_author_override' : 'econozel-author[]',
-					'selected'         => $user_id,
-					'include_selected' => true,
-					'show'             => 'display_name_with_login',
-					'echo'             => false
-				)
+			$args     =  array(
+				'econozel'         => true,
+				'who'              => 'authors',
+				'id'               => 'post_author_override',
+				'name'             => $first ? 'post_author_override' : 'econozel-author[]',
+				'selected'         => $user_id,
+				'include_selected' => true,
+				'show'             => 'display_name_with_login',
+				'echo'             => false
 			);
+			$dropdown = wp_dropdown_users( $args );
+
+			// Bail when the dropdown has no users
+			if ( empty( $dropdown ) ) {
+				echo '<p><em>' . esc_html__( 'There are no users available to be selected as author.', 'econozel' ) . '</em></p>';
+				return;
+			}
 
 			echo '<div class="post-author">' . $dropdown . ( ! $first ? $remove_button : '' ) . '</div>';
 		}
