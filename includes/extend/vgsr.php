@@ -34,9 +34,53 @@ class Econozel_VGSR {
 	 */
 	private function setup_actions() {
 
+		// Access
+		add_filter( 'econozel_check_access',       array( $this, 'check_access'       ), 10, 2 );
+		add_filter( 'econozel_check_admin_access', array( $this, 'check_admin_access' ), 10, 2 );
+
 		// Authors
 		add_filter( 'wp_dropdown_users_args', array( $this, 'dropdown_users_args' ), 20, 2 ); // Since WP 4.4
 		add_filter( 'pre_user_query',         array( $this, 'pre_user_query'      ), 10    );
+	}
+
+	/** Access ********************************************************************/
+
+	/**
+	 * Modify whether the current user has access to Econozel pages
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool $access The user has access
+	 * @param int $user_id User ID
+	 * @return bool The user has access
+	 */
+	public function check_access( $access, $user_id ) {
+
+		// Allow access for vgsr users
+		if ( ! $access ) {
+			$access = is_user_vgsr( $user_id );
+		}
+
+		return $access;
+	}
+
+	/**
+	 * Modify whether the current user has access to Econozel admin
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param bool $access The user has access
+	 * @param int $user_id User ID
+	 * @return bool The user has access
+	 */
+	public function check_admin_access( $access, $user_id ) {
+
+		// Allow admin access for leden
+		if ( ! $access ) {
+			$access = is_user_lid( $user_id );
+		}
+
+		return $access;
 	}
 
 	/** Authors *******************************************************************/

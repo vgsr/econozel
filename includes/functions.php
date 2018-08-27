@@ -79,6 +79,8 @@ function econozel_db_version_raw() {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_check_access'
+ *
  * @param int $user_id User ID. Optional. Defaults to the current user.
  * @return bool Has the user basic access?
  */
@@ -89,13 +91,18 @@ function econozel_check_access( $user_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
-	return econozel_is_user_vgsr( $user_id ) || user_can( $user_id, 'econozel_editor' );
+	// Allow Econozel Editors
+	$retval = user_can( $user_id, 'econozel_editor' );
+
+	return (bool) apply_filters( 'econozel_check_access', $retval, $user_id );
 }
 
 /**
  * Return whether the current user has admin access
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_check_admin_access'
  *
  * @param int $user_id User ID. Optional. Defaults to the current user.
  * @return bool Has the user admin access?
@@ -107,38 +114,15 @@ function econozel_check_admin_access( $user_id = 0 ) {
 		$user_id = get_current_user_id();
 	}
 
-	// Restricted admin access
-	if ( is_admin() && econozel_toggle_admin_access() ) {
-		$user_is_lid = false;
-	} else {
-		$user_is_lid = econozel_is_user_lid( $user_id );
+	// Allow Econozel Editors
+	$retval = user_can( $user_id, 'econozel_editor' );
+
+	// When not restricted, allow filtering
+	if ( ! econozel_toggle_admin_access() ) {
+		$retval = (bool) apply_filters( 'econozel_check_admin_access', $retval, $user_id );
 	}
 
-	return $user_is_lid || user_can( $user_id, 'econozel_editor' );	
-}
-
-/**
- * Context-aware wrapper for `is_user_vgsr()`
- *
- * @since 1.0.0
- *
- * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool The user is VGSR lid
- */
-function econozel_is_user_vgsr( $user_id = 0 ) {
-	return ( function_exists( 'vgsr' ) && is_user_vgsr( $user_id ) );
-}
-
-/**
- * Context-aware wrapper for `is_user_lid()`
- *
- * @since 1.0.0
- *
- * @param int $user_id User ID. Optional. Defaults to the current user.
- * @return bool The user is VGSR lid
- */
-function econozel_is_user_lid( $user_id = 0 ) {
-	return ( function_exists( 'vgsr' ) && is_user_lid( $user_id ) );
+	return $retval;
 }
 
 /** Rewrite *******************************************************************/
