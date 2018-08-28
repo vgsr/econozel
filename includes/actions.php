@@ -47,6 +47,10 @@ add_filter( 'posts_request',               'econozel_filter_wp_query',          
 add_filter( 'posts_pre_query',             'econozel_bypass_wp_query',          10, 2 ); // Since WP 4.6
 add_filter( 'wp_count_posts',              'econozel_filter_count_posts',       10, 3 );
 
+/** Post **********************************************************************/
+
+add_filter( 'get_post_metadata',           'econozel_filter_post_thumbnail',    99, 4 );
+
 /** Template ******************************************************************/
 
 add_action( 'econozel_after_setup_theme',  'econozel_load_theme_functions'        );

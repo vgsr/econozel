@@ -96,6 +96,29 @@ function econozel_add_edition_tax_meta( $meta ) {
 			'mime_type'       => 'application/pdf',
 			'admin_column_cb' => true,
 		),
+
+		// Cover photo
+		'cover_photo' => array(
+			'labels'          => array(
+				'singular'        => esc_html__( 'Cover photo', 'econozel' ),
+				'plural'          => esc_html__( 'Cover photos', 'econozel' ),
+				'description'     => esc_html__( 'The cover photo of the published item.', 'econozel' ),
+
+				// Help tab
+				'help_title'      => esc_html__( 'Cover Photo', 'econozel' ),
+				'help_content'    => esc_html__( "The cover photo is the visual identity of the publication.", 'econozel' ),
+
+				// JS interface
+				'setTermMedia'    => esc_html__( 'Set cover photo', 'econozel' ),
+				'termMediaTitle'  => esc_html__( '%s Cover Photo', 'econozel' ),
+				'removeTermMedia' => esc_html__( 'Remove cover photo', 'econozel' ),
+				'error'           => esc_html__( 'Could not set that as the cover photo. Try a different attachment.', 'econozel' ),
+			),
+			'type'            => 'media',
+			'mime_type'       => 'image',
+			'image_size'      => false,
+			'admin_column_cb' => true,
+		)
 	);
 
 	return $meta;
@@ -1151,4 +1174,98 @@ function econozel_the_edition_document_url( $edition = 0 ) {
 		}
 
 		return apply_filters( 'econozel_get_edition_document_url', $url, $edition );
+	}
+
+/**
+ * Output the Edition's cover photo ID
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+ */
+function econozel_the_edition_cover_photo( $edition = 0 ) {
+	echo econozel_get_edition_cover_photo( $edition );
+}
+
+	/**
+	 * Return the Edition's cover photo ID
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_cover_photo'
+	 *
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+	 * @return string Edition cover photo ID
+	 */
+	function econozel_get_edition_cover_photo( $edition = 0 ) {
+
+		// Define return value
+		$cover_photo = false;
+
+		// Get Edition identifiers
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$meta = get_term_meta( $edition->term_id, 'cover_photo', true );
+
+			// Check if attachment exists
+			if ( $meta && $post = get_post( $meta ) ) {
+				$cover_photo = (int) $post->ID;
+			}
+		}
+
+		return apply_filters( 'econozel_get_edition_cover_photo', $cover_photo, $edition );
+	}
+
+/**
+ * Return whether the Edition has a cover photo
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+ * @return bool Does the Edition have a cover photo?
+ */
+function econozel_has_edition_cover_photo( $edition = 0 ) {
+	return (bool) econozel_get_edition_cover_photo( $edition );
+}
+
+/**
+ * Output the Edition's cover photo image
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+ * @param array|string $size Optional. Image size name or dimensions. Defaults to 'thumbnail'.
+ * @param array|string $attr Optional. Attributes for the image markup.
+ */
+function econozel_the_edition_cover_photo_img( $edition = 0, $size = 'thumbnail', $attr = array() ) {
+	echo econozel_get_edition_cover_photo_img( $edition, $size );
+}
+
+	/**
+	 * Return the Edition's cover photo image
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_edition_cover_photo_img'
+	 *
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+	 * @param array|string $size Optional. Image size name or dimensions. Defaults to 'thumbnail'.
+	 * @param array $attr Optional. Attributes for the image markup.
+	 * @return string Edition cover photo image
+	 */
+	function econozel_get_edition_cover_photo_img( $edition = 0, $size = 'thumbnail', $attr = array() ) {
+
+		// Define return value
+		$img = '';
+
+		// Get Edition identifiers
+		if ( $edition = econozel_get_edition( $edition ) ) {
+			$cover_photo = econozel_get_edition_cover_photo( $edition );
+
+			// Check if attachment exists
+			if ( $cover_photo ) {
+				$img = wp_get_attachment_image( $cover_photo, $size, false, $attr );
+			}
+		}
+
+		return apply_filters( 'econozel_get_edition_cover_photo_img', $cover_photo, $edition, $size, $attr );
 	}

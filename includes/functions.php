@@ -427,6 +427,41 @@ function econozel_is_article_query( $posts_query, $exclusive = false ) {
 	return $retval;
 }
 
+/**
+ * Modify the post's thumbnail ID
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value Meta value
+ * @param int $object_id Post ID
+ * @param string $meta_key Meta key
+ * @param bool $single Whether to return a single value
+ * @return mixed Meta value
+ */
+function econozel_filter_post_thumbnail( $value, $object_id, $meta_key, $single ) {
+
+	// Getting thumbnail ids, unfiltered, for Articles
+	if ( '_thumbnail_id' === $meta_key && null === $value && $article = econozel_get_article( $object_id ) ) {
+
+		// Check cache first for any existing value
+		$meta_cache = wp_cache_get( $object_id, 'post_meta' );
+		$meta_value = isset( $meta_cache[ $meta_key ] )
+			? ( $single ? $meta_cache[ $meta_key ][0] : $meta_cache[ $meta_key ] )
+			: false;
+
+		// Article has no featured image of its own and is published in an Edition
+		if ( ! $meta_value && $edition = econozel_get_article_edition( $article ) ) {
+
+			// Use the Edition's cover photo
+			if ( econozel_has_edition_cover_photo( $edition ) ) {
+				$value = econozel_get_edition_cover_photo( $edition );
+			}
+		}
+	}
+
+	return $value;
+}
+
 /** Menus *********************************************************************/
 
 /**
