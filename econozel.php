@@ -133,6 +133,7 @@ final class Econozel {
 		require( $this->includes_dir . 'sub-actions.php'  );
 		require( $this->includes_dir . 'taxonomy.php'     );
 		require( $this->includes_dir . 'update.php'       );
+		require( $this->includes_dir . 'users.php'        );
 		require( $this->includes_dir . 'volumes.php'      );
 
 		// Theme
