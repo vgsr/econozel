@@ -620,9 +620,11 @@ function econozel_get_adjacent_edition( $previous = false ) {
  * Output the current Edition's term ID
  *
  * @since 1.0.0
+ *
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
  */
-function econozel_the_edition_id() {
-	echo econozel_get_edition_id();
+function econozel_the_edition_id( $edition = 0 ) {
+	echo econozel_get_edition_id( $edition );
 }
 
 	/**
@@ -630,10 +632,11 @@ function econozel_the_edition_id() {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
 	 * @return int|bool Edition ID or False when not found.
 	 */
-	function econozel_get_edition_id() {
-		if ( $edition = econozel_get_edition() ) {
+	function econozel_get_edition_id( $edition = 0 ) {
+		if ( $edition = econozel_get_edition( $edition ) ) {
 			return $edition->term_id;
 		}
 
