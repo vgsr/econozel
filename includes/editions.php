@@ -32,7 +32,7 @@ function econozel_get_edition_tax_id() {
  * @return array Edition taxonomy labels
  */
 function econozel_get_edition_tax_labels() {
-	return apply_filters( 'econozel_get_edition_tax_labels', array(
+	return (array) apply_filters( 'econozel_get_edition_tax_labels', array(
 		'name'          => __( 'Econozel Editions',  'econozel' ),
 		'menu_name'     => __( 'Editions',           'econozel' ),
 		'singular_name' => __( 'Econozel Edition',   'econozel' ),
@@ -330,7 +330,7 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
  *
  * @since 1.0.0
  *
- * @param int $edition_id Optional. Edition ID. Defaults to the crurent Edition.
+ * @param int $edition_id Optional. Edition ID. Defaults to the current edition.
  * @return WP_Term|bool Edition term object when found, else False.
  */
 function econozel_get_current_edition( $edition_id = 0 ) {
@@ -441,14 +441,14 @@ function econozel_get_edition_volume( $edition = 0, $object = false ) {
 }
 
 /**
- * Return the Edition's issue number
+ * Return the Edition's issue
  *
  * @since 1.0.0
  *
  * @uses apply_filters() Calls 'econozel_get_edition_issue'
  *
  * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
- * @return int|bool Edition issue or False when empty.
+ * @return string Edition issue or False when empty.
  */
 function econozel_get_edition_issue( $edition = 0 ) {
 
@@ -472,8 +472,8 @@ function econozel_get_edition_issue( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param mixed $issue Issue to whitelist
- * @return mixed|false Whitelisted issue or False when invalid.
+ * @param string $issue Issue to whitelist
+ * @return string|bool Whitelisted issue or False when invalid.
  */
 function econozel_edition_whitelist_issue( $issue = '' ) {
 
@@ -481,7 +481,7 @@ function econozel_edition_whitelist_issue( $issue = '' ) {
 	$whitelist = econozel_get_edition_issue_whitelist( false );
 
 	// Invalidate non-whitelisted issue
-	if ( empty( $issue ) || ! isset( $whitelist[ $issue ] ) ) {
+	if ( empty( $issue ) || ! in_array( $issue, array_keys( $whitelist ), true ) ) {
 		$issue = false;
 	}
 
@@ -645,7 +645,7 @@ function econozel_the_edition_id() {
  *
  * @since 1.0.0
  *
- * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
  */
 function econozel_the_edition_title( $edition = 0 ) {
 	echo econozel_get_edition_title( $edition );
@@ -656,7 +656,7 @@ function econozel_the_edition_title( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
 	 * @return string Edition title.
 	 */
 	function econozel_get_edition_title( $edition = 0 ) {
@@ -677,7 +677,7 @@ function econozel_the_edition_title( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
  */
 function econozel_the_edition_issue_title( $edition = 0 ) {
 	echo econozel_get_edition_issue_title( $edition );
@@ -692,7 +692,7 @@ function econozel_the_edition_issue_title( $edition = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_edition_issue_title'
 	 *
-	 * @param WP_Term|WP_Post|int $edition Optional. Defaults to the current edition.
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current edition.
 	 * @return string Edition issue title
 	 */
 	function econozel_get_edition_issue_title( $edition = 0 ) {
@@ -717,7 +717,7 @@ function econozel_the_edition_issue_title( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $edition Optional. Defaults to the current Edition.
+ * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
  */
 function econozel_the_edition_label( $edition = 0 ) {
 	echo econozel_get_edition_label( $edition );
@@ -730,7 +730,7 @@ function econozel_the_edition_label( $edition = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_edition_label'
 	 *
-	 * @param WP_Post|int $edition Optional. Defaults to the current Edition.
+	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
 	 * @return string Edition label
 	 */
 	function econozel_get_edition_label( $edition = 0 ) {
@@ -932,7 +932,7 @@ function econozel_the_edition_article_count( $edition = 0 ) {
 			$count = $edition->count;
 		}
 
-		return apply_filters( 'econozel_get_edition_article_count', $count, $edition );
+		return (int) apply_filters( 'econozel_get_edition_article_count', $count, $edition );
 	}
 
 /**
@@ -1195,12 +1195,12 @@ function econozel_the_edition_cover_photo( $edition = 0 ) {
 	 * @uses apply_filters() Calls 'econozel_get_edition_cover_photo'
 	 *
 	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
-	 * @return string Edition cover photo ID
+	 * @return int Edition cover photo ID
 	 */
 	function econozel_get_edition_cover_photo( $edition = 0 ) {
 
 		// Define return value
-		$cover_photo = false;
+		$cover_photo = 0;
 
 		// Get Edition identifiers
 		if ( $edition = econozel_get_edition( $edition ) ) {
@@ -1212,7 +1212,7 @@ function econozel_the_edition_cover_photo( $edition = 0 ) {
 			}
 		}
 
-		return apply_filters( 'econozel_get_edition_cover_photo', $cover_photo, $edition );
+		return (int) apply_filters( 'econozel_get_edition_cover_photo', $cover_photo, $edition );
 	}
 
 /**
