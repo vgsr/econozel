@@ -412,37 +412,60 @@ function econozel_the_article_content( $article = 0 ) {
 	}
 
 /**
- * Return the Article's author(s)
- *
- * Considers to return multiple authors by way of an array.
+ * Output the Article's author(s)
  *
  * @since 1.0.0
  *
- * @uses apply_filters() Calls 'econozel_get_article_author'
- *
  * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
- * @return array Article author user ID(s)
+ * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
+ *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
  */
-function econozel_get_article_author( $article = 0 ) {
+function econozel_the_article_author( $article = 0, $concat = true ) {
+	echo econozel_get_article_author( $article, $concat );
+}
 
-	// Define return value
-	$author = array();
+	/**
+	 * Return the Article's author(s)
+	 *
+	 * Considers to return multiple authors by way of an array.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_author'
+	 *
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+	 * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
+	 *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
+	 * @return string|array Article author user ID(s), or display names when concatted.
+	 */
+	function econozel_get_article_author( $article = 0, $concat = false ) {
 
-	// Get author from post object
-	if ( $article = econozel_get_article( $article ) ) {
-		$author[] = $article->post_author;
+		// Define return value
+		$author = array();
 
-		// Get multi-author data from post meta
-		foreach ( get_post_meta( $article->ID, 'post_author', false ) as $post_author ) {
-			$author[] = (int) $post_author;
+		// Get author from post object
+		if ( $article = econozel_get_article( $article ) ) {
+			$author[] = $article->post_author;
+
+			// Get multi-author data from post meta
+			foreach ( get_post_meta( $article->ID, 'post_author', false ) as $post_author ) {
+				$author[] = (int) $post_author;
+			}
+
+			// Only unique values
+			$author = array_unique( $author );
 		}
 
-		// Only unique values
-		$author = array_unique( $author );
-	}
+		$author = (array) apply_filters( 'econozel_get_article_author', $author, $article );
 
-	return (array) apply_filters( 'econozel_get_article_author', $author, $article );
-}
+		// Stringify authors
+		if ( false !== $concat ) {
+			$author = array_map( 'econozel_get_user_displayname', $author );
+			$author = true === $concat ? wp_sprintf_l( '%l', $author ) : implode( $concat, $author );
+		}
+
+		return $author;
+	}
 
 /**
  * Return whether the Article has multiple authors
