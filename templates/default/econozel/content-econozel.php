@@ -22,6 +22,7 @@ $widget_args = array(
 the_widget( 'Econozel_Articles_Widget', array(
 	'title'            => esc_html__( 'Latest Articles', 'econozel' ),
 	'econozel_archive' => false,
+	'show_author'      => true,
 	'show_date'        => true,
 ), $widget_args );
 
@@ -29,6 +30,7 @@ the_widget( 'Econozel_Articles_Widget', array(
 the_widget( 'Econozel_Articles_Widget', array(
 	'title'            => esc_html__( 'Latest Archived', 'econozel' ),
 	'econozel_archive' => true,
+	'show_author'      => true,
 	'show_date'        => true,
 ), $widget_args );
 
@@ -37,6 +39,7 @@ the_widget( 'Econozel_Articles_Widget', array(
 	'title'            => esc_html__( 'Active Articles', 'econozel' ),
 	'none_found'       => esc_html__( 'It seems there are no articles having been commented on lately.', 'econozel' ),
 	'comment_activity' => 30,
+	'show_author'      => true,
 	'show_date'        => true,
 ), $widget_args );
 

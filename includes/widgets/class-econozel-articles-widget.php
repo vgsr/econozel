@@ -28,7 +28,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct( false, esc_html__( 'Econozel Articles', 'econozel' ), array(
 			'description' => esc_html__( 'A list of (recent) articles.', 'econozel' ),
-			'classname'   => 'widget_recent_entries',
+			'classname'   => 'widget_recent_entries econozel-articles',
 			'customize_selective_refresh' => true
 		) );
 	}
@@ -65,10 +65,13 @@ class Econozel_Articles_Widget extends WP_Widget {
 			// Widget details
 			'title'            => econozel_post_type_title( econozel_get_article_post_type() ),
 			'description'      => false,
-			'show_date'        => false,
 			'none_found'       => esc_html__( 'There were no articles found.', 'econozel' ),
 			'walker'           => new Econozel_Walker_Article,
 			'item_spacing'     => 'preserve',
+
+			// Display
+			'show_author'      => false,
+			'show_date'        => false,
 
 			// Query args
 			'econozel_edition' => false,
@@ -136,6 +139,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$instance = $old_instance;
 		$instance['title'] = sanitize_text_field( $new_instance['title'] );
 		$instance['posts_per_page'] = (int) $new_instance['posts_per_page'];
+		$instance['show_author'] = (bool) $new_instance['show_author'];
 		$instance['show_date'] = (bool) $new_instance['show_date'];
 
 		/**
@@ -168,6 +172,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$title            = isset( $instance['title'] ) ? $instance['title'] : '';
 		$posts_per_page   = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
 		$econozel_edition = isset( $instance['econozel_edition'] ) ? (bool) $instance['econozel_edition'] : false;
+		$show_author      = isset( $instance['show_author'] ) ? (bool) $instance['show_author'] : false;
 		$show_date        = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
 		$econozel_archive = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
 
@@ -192,6 +197,10 @@ class Econozel_Articles_Widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'posts_per_page' ); ?>"><?php esc_html_e( 'Number of articles to show:', 'econozel' ); ?></label>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'posts_per_page' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_page' ); ?>" value="<?php echo esc_attr( $posts_per_page ); ?>"/>
 			<span class="description"><?php esc_html_e( 'For an edition, all articles are shown.', 'econozel' ); ?></span>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox"<?php checked( $show_author ); ?> id="<?php echo $this->get_field_id( 'show_author' ); ?>" name="<?php echo $this->get_field_name( 'show_author' ); ?>"/>
+			<label for="<?php echo $this->get_field_id( 'show_author' ); ?>"><?php esc_html_e( 'Display article author(s)?', 'econozel' ); ?></label>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox"<?php checked( $show_date ); ?> id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>"/>
