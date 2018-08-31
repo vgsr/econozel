@@ -481,7 +481,7 @@ function econozel_edition_whitelist_issue( $issue = '' ) {
 	$whitelist = econozel_get_edition_issue_whitelist( false );
 
 	// Invalidate non-whitelisted issue
-	if ( empty( $issue ) || ! in_array( $issue, array_keys( $whitelist ), true ) ) {
+	if ( empty( $issue ) || ! isset( $whitelist[ $issue ] ) ) {
 		$issue = false;
 	}
 
