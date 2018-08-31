@@ -582,6 +582,50 @@ function econozel_the_article_author_url( $article = 0, $concat = true ) {
 	}
 
 /**
+ * Output the Article's date
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+ */
+function econozel_the_article_date( $article = 0 ) {
+	echo econozel_get_article_date( $article );
+}
+
+	/**
+	 * Return the Article's date
+	 *
+	 * Note: this returns the original publish date of the Article, not the post's date per se.
+	 * For Articles published in an Edition, this means the Edition title is returned instead
+	 * of a date string.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+	 * @return string|array Article date
+	 */
+	function econozel_get_article_date( $article = 0 ) {
+
+		// Define return value
+		$date = array();
+
+		// Get the Article
+		if ( $article = econozel_get_article( $article ) ) {
+
+			// Get Edition title
+			if ( econozel_has_article_edition( $article ) ) {
+				$date = econozel_get_edition_title( $article );
+
+			// Get post date
+			} else {
+				$date = mysql2date( get_option( 'date_format' ), $article->post_date );
+			}
+		}
+
+		return apply_filters( 'econozel_get_article_date', $date, $article );
+	}
+
+/**
  * Output the current Article's page number in a read-friendly format
  *
  * @since 1.0.0
