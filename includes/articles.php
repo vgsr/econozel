@@ -582,38 +582,6 @@ function econozel_the_article_author_url( $article = 0, $concat = true ) {
 	}
 
 /**
- * Output the user's display name
- *
- * @since 1.0.0
- *
- * @param int $user_id User ID
- */
-function econozel_the_user_displayname( $user_id ) {
-	echo econozel_get_user_displayname( $user_id );
-}
-
-	/**
-	 * Return the user's display name
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param int $user_id User ID
-	 * @return string User display name
-	 */
-	function econozel_get_user_displayname( $user_id ) {
-
-		// Define return value
-		$name = '';
-
-		// Get the user
-		if ( $user = get_userdata( $user_id ) ) {
-			$name = $user->display_name;
-		}
-
-		return apply_filters( 'econozel_get_user_displayname', $name, $user_id );
-	}
-
-/**
  * Output the current Article's page number in a read-friendly format
  *
  * @since 1.0.0
