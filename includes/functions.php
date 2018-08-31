@@ -368,17 +368,16 @@ function econozel_prepend_volume_title() {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_get_edition_issue_whitelist'
  * @return array Whitelist of Edition issues
  */
-function econozel_get_edition_issue_whitelist( $flat = true ) {
+function econozel_get_edition_issue_whitelist() {
 
 	// Get the available issues
 	$issues = (array) apply_filters( 'econozel_get_edition_issue_whitelist', explode( ',', get_option( '_econozel_edition_issue_whitelist', '1,2,3,4,5,6,7,8,9,10,11,12' ) ) );
 
 	// Setup array with sanitized keys
-	if ( ! $flat ) {
-		$issues = array_combine( array_map( 'sanitize_title', $issues ), $issues );
-	}
+	$issues = array_combine( array_map( 'sanitize_title', $issues ), $issues );
 
 	return $issues;
 }

@@ -69,7 +69,7 @@ function econozel_add_edition_tax_meta( $meta ) {
 				'description'     => esc_html__( "The Edition's issue type within the Volume.", 'econozel' ),
 			),
 			'type'            => 'select',
-			'options'         => econozel_get_edition_issue_whitelist( false ),
+			'options'         => econozel_get_edition_issue_whitelist(),
 			'sanitize_cb'     => 'econozel_edition_whitelist_issue',
 			'admin_column_cb' => true,
 			'inline_edit'     => true
@@ -478,7 +478,7 @@ function econozel_get_edition_issue( $edition = 0 ) {
 function econozel_edition_whitelist_issue( $issue = '' ) {
 
 	// Get the Edition issue whitelist
-	$whitelist = econozel_get_edition_issue_whitelist( false );
+	$whitelist = econozel_get_edition_issue_whitelist();
 
 	// Invalidate non-whitelisted issue
 	if ( empty( $issue ) || ! isset( $whitelist[ $issue ] ) ) {
