@@ -35,7 +35,8 @@ body:not(.econozel-volume) #econozel-editions .econozel-term:first-child .editio
 
 .econozel .volume-editions .edition-title ~ span,
 .econozel .edition-articles .article-title ~ span,
-.econozel .article-meta span {
+.econozel .article-meta span,
+.econozel .entry-content .widget_recent_entries.econozel-articles .page_item > a ~ span {
 	opacity: .7;
 }
 
@@ -46,12 +47,14 @@ body:not(.econozel-volume) #econozel-editions .econozel-term:first-child .editio
 	margin: 0 5px;
 }
 
-.econozel .entry-content .widgettitle ~ ul {
-	list-style-type: none;
+.econozel .entry-content .widget_recent_entries.econozel-articles .page_item > a + span:before {
+	content: '';
+	display: block;
 }
 
-.econozel .entry-content .widget_recent_entries .post-date {
-	opacity: .7;
+.econozel .entry-content .widget_recent_entries.econozel-articles .page_item > a + span ~ span:before {
+	content: '\2022';
+	margin-right: 4px;
 }
 
 .econozel .widget_recent_entries .post-date a:not(:hover) {
