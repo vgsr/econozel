@@ -137,6 +137,14 @@ function econozel_admin_get_settings_fields() {
 				'sanitize_callback' => 'econozel_sanitize_slug',
 				'args'              => array()
 			),
+
+			// Random Article slug setting
+			'_econozel_random_article_slug' => array(
+				'title'             => esc_html__( 'Random Article', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_random_article_slug',
+				'sanitize_callback' => 'econozel_sanitize_slug',
+				'args'              => array()
+			),
 		),
 	) );
 }
@@ -316,6 +324,18 @@ function econozel_admin_setting_callback_edition_slug() { ?>
 function econozel_admin_setting_callback_article_slug() { ?>
 
 	<input name="_econozel_article_slug" id="_econozel_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_article_slug', 'articles', true ); ?>">
+
+	<?php
+}
+
+/**
+ * Display the content of the Random Article Slug settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_setting_callback_random_article_slug() { ?>
+
+	<input name="_econozel_random_article_slug" id="_econozel_random_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_random_article_slug', 'random', true ); ?>">
 
 	<?php
 }

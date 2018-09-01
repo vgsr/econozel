@@ -323,6 +323,7 @@ final class Econozel {
 		add_rewrite_tag( '%' . econozel_get_edition_archive_rewrite_id() . '%', '([1]{1,})' ); // Edition Archive tag
 		add_rewrite_tag( '%' . econozel_get_volume_rewrite_id()          . '%', '([^/]+)'   ); // Volume Page tag
 		add_rewrite_tag( '%' . econozel_get_edition_issue_rewrite_id()   . '%', '([^/]+)'   ); // Edition Page tag
+		add_rewrite_tag( '%' . econozel_get_random_article_rewrite_id()  . '%', '([1]{1,})' ); // Random Article tag
 	}
 
 	/**
@@ -336,6 +337,7 @@ final class Econozel {
 	 * - /{root}/{volumes}/{volume}/{issue}/
 	 * - /{root}/{editions}/
 	 * - /{root}/{editions}/page/{#}/
+	 * - /{root}/{random}/
 	 *
 	 * @since 1.0.0
 	 */
@@ -349,13 +351,15 @@ final class Econozel {
 		$volume_slug     = econozel_get_volume_slug();
 		$edition_slug    = econozel_get_edition_slug();
 		$paged_slug      = econozel_get_paged_slug();
+		$random_slug     = econozel_get_random_article_slug();
 
-		// Unique rewrite ID's
+		// Unique rewrite IDs
 		$root_id         = econozel_get_root_rewrite_id();
 		$volume_root_id  = econozel_get_volume_archive_rewrite_id();
 		$volume_id       = econozel_get_volume_rewrite_id();
 		$edition_root_id = econozel_get_edition_archive_rewrite_id();
 		$issue_id        = econozel_get_edition_issue_rewrite_id();
+		$random_id       = econozel_get_random_article_rewrite_id();
 		$paged_id        = 'paged';
 
 		// Generic rules
@@ -380,6 +384,9 @@ final class Econozel {
 		add_rewrite_rule( $edition_slug . $paged_rule,  'index.php?' . $edition_root_id . '=1&'           . $paged_id . '=$matches[1]', $priority );
 		add_rewrite_rule( $edition_slug . $root_rule,   'index.php?' . $edition_root_id . '=1',                                         $priority );
 		add_rewrite_rule( $edition_rule . $root_rule,   'index.php?' . $volume_id       . '=$matches[1]&' . $issue_id . '=$matches[2]', $priority );
+
+		// Random rules
+		add_rewrite_rule( $random_slug  . $root_rule,   'index.php?' . $random_id . '=1', $priority );
 	}
 }
 

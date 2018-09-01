@@ -193,6 +193,33 @@ function econozel_get_article( $article = 0 ) {
 }
 
 /**
+ * Return a random Article
+ *
+ * @since 1.0.0
+ *
+ * @param array $args Optional. Query arguments, see {@see WP_Query}.
+ * @return WP_Post|bool Post object when found, else False.
+ */
+function econozel_get_random_article( $args = array() ) {
+
+	// Define return variable
+	$article = false;
+
+	// Run query
+	$query = new WP_Query( wp_parse_args( $args, array(
+		'post_type'      => econozel_get_article_post_type(),
+		'orderby'        => 'rand',
+		'posts_per_page' => 1,
+	) ) );
+
+	if ( $query->posts ) {
+		$article = $query->posts[0];
+	}
+
+	return $article;
+}
+
+/**
  * Return the Article's Volume
  *
  * @since 1.0.0

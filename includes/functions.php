@@ -187,6 +187,29 @@ function econozel_get_edition_slug() {
 }
 
 /**
+ * Return the random Article rewrite slug
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_random_article_slug'
+ * @return string Random article rewrite slug
+ */
+function econozel_get_random_article_slug() {
+	return apply_filters( 'econozel_get_random_article_slug', trailingslashit( econozel_get_root_slug() ) . get_option( '_econozel_random_article_slug', 'random' ) );
+}
+
+/**
+ * Return the random Article url
+ *
+ * @since 1.0.0
+ *
+ * @return string Random Article url
+ */
+function econozel_get_random_article_url() {
+	return home_url( user_trailingslashit( econozel_get_random_article_slug() ) );
+}
+
+/**
  * Return the paged slug
  *
  * @since 1.0.0
@@ -257,6 +280,18 @@ function econozel_get_edition_archive_rewrite_id() {
  */
 function econozel_get_edition_issue_rewrite_id() {
 	return apply_filters( 'econozel_get_edition_issue_rewrite_id', econozel_get_edition_tax_id() . '_issue' );
+}
+
+/**
+ * Return the random Article rewrite ID
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_random_article_rewrite_id'
+ * @return string Random Article rewrite ID
+ */
+function econozel_get_random_article_rewrite_id() {
+	return apply_filters( 'econozel_get_random_article_rewrite_id', econozel_get_article_post_type() . '_random' );
 }
 
 /**
@@ -501,6 +536,12 @@ function econozel_get_nav_menu_items() {
 				'url'         => econozel_get_edition_archive_url(),
 				'is_current'  => econozel_is_edition_archive(),
 				'is_parent'   => econozel_is_edition(),
+			),
+
+			// Random Article
+			'random-article' => array(
+				'title'       => esc_html__( 'Random Article', 'econozel' ),
+				'url'         => econozel_get_random_article_url(),
 			),
 		) );
 

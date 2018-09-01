@@ -10,6 +10,31 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
+/** Request *******************************************************************/
+
+/**
+ * Add checks for plugin conditions to parse_request action
+ *
+ * @since 1.0.0
+ *
+ * @param WP $wp The main WordPress environment instance
+ */
+function econozel_parse_request( $wp ) {
+
+	// Get query variables
+	$random_id = econozel_get_random_article_rewrite_id();
+
+	// Random Article
+	if ( isset( $wp->query_vars[ $random_id ] ) && $wp->query_vars[ $random_id ] ) {
+
+		// Redirect to a random article
+		if ( $article = econozel_get_random_article() ) {
+			wp_safe_redirect( get_permalink( $article ) );
+			exit;
+		}
+	}
+}
+
 /** Query *********************************************************************/
 
 /**
