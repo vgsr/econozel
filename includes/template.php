@@ -1222,6 +1222,9 @@ function econozel_get_the_archive_description( $description = '' ) {
 	if ( econozel_is_root() ) {
 		$description = sprintf( __( 'This page lists recent Econozel activity on this site. You can browse the <a title="%1$s" href="%2$s">volume archives</a>, <a title="%5$s" href="%6$s">edition archives</a> or <a title="%3$s" href="%4$s">article archives</a> to find all articles that have been archived or published on this site.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the article archives', 'econozel' ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ), esc_attr__( 'Permalink to the edition archives', 'econozel' ), esc_url( econozel_get_edition_archive_url() ) );
 
+		// Suggest visiting a random Article
+		$description .= sprintf( ' ' . __( 'Or surprise yourself by visiting a <a href="%s">randomly selected article</a>.', 'econozel' ), esc_url( econozel_get_random_article_url() ) );
+
 	// Volume archives
 	} elseif ( econozel_is_volume_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel volumes with their respective editions. You can browse here to find articles that have been archived or published on this site. To view all published articles, go to the <a title="%1$s" href="%2$s">article archives</a>.', 'econozel' ), esc_attr__( 'Permalink to the article archives', 'econozel' ), esc_url( get_post_type_archive_link( econozel_get_article_post_type() ) ) );
@@ -1246,6 +1249,9 @@ function econozel_get_the_archive_description( $description = '' ) {
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
 		$description = sprintf( __( 'This page lists all Econozel articles archived on this site. You can browse them here or through the registered <a title="%1$s" href="%2$s">volumes</a> and <a title="%3$s" href="%4$s">editions</a> through which they have been published.', 'econozel' ), esc_attr__( 'Permalink to the volume archives', 'econozel' ), esc_url( econozel_get_volume_archive_url() ), esc_attr__( 'Permalink to the edition archives', 'econozel' ), esc_url( econozel_get_edition_archive_url() ) );
+
+		// Suggest visiting a random Article
+		$description .= sprintf( ' ' . __( 'Or surprise yourself by visiting a <a href="%s">randomly selected article</a>.', 'econozel' ), esc_url( econozel_get_random_article_url() ) );
 	}
 
 	return $description;
