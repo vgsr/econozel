@@ -22,10 +22,10 @@ defined( 'ABSPATH' ) || exit;
 function econozel_parse_request( $wp ) {
 
 	// Get query variables
-	$random_id = econozel_get_random_article_rewrite_id();
+	$is_random = ! empty( $wp->query_vars[ econozel_get_random_article_rewrite_id() ] );
 
 	// Random Article
-	if ( isset( $wp->query_vars[ $random_id ] ) && $wp->query_vars[ $random_id ] ) {
+	if ( $is_random && econozel_check_access() ) {
 
 		// Redirect to a random article
 		if ( $article = econozel_get_random_article() ) {
@@ -67,6 +67,7 @@ function econozel_parse_query( $posts_query ) {
 	$is_volume_archive  = $posts_query->get( econozel_get_volume_archive_rewrite_id()  );
 	$is_edition_archive = $posts_query->get( econozel_get_edition_archive_rewrite_id() );
 	$is_edition         = $posts_query->get( econozel_get_edition_issue_rewrite_id()   );
+	$is_random          = $posts_query->get( econozel_get_random_article_rewrite_id()  );
 
 	/**
 	 * Find out whether this is still an Article request, even though the post type
@@ -75,12 +76,12 @@ function econozel_parse_query( $posts_query ) {
 	 */
 	$post_type_object  = get_post_type_object( econozel_get_article_post_type() );
 	$wp_query_vars     = wp_parse_args( $GLOBALS['wp']->matched_query, array( 'post_type' => false, $post_type_object->query_var => false ) );
-	$is_article        = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] );
+	$is_article        = $post_type_object->name === $wp_query_vars['post_type'] || ! empty( $wp_query_vars[ $post_type_object->query_var ] ) || $is_random;
 
 	/**
 	 * 404 and bail when the user has no plugin access.
 	 */
-	if ( ( ! empty( $is_root ) || ! empty( $is_volume ) || ! empty( $is_volume_archive ) || ! empty( $is_edition_archive ) || ! empty( $is_edition ) || $is_article ) && ! econozel_check_access() ) {
+	if ( ( $is_root || $is_volume || $is_volume_archive || $is_edition_archive || $is_edition || $is_article ) && ! econozel_check_access() ) {
 		econozel_do_404();
 		return;
 	}
