@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string Taxonomy id
  */
 function econozel_get_volume_tax_id() {
-	return 'econozel_volume';
+	return econozel()->volume_tax_id;
 }
 
 /**

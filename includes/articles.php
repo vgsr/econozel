@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string Post type name
  */
 function econozel_get_article_post_type() {
-	return 'econozel';
+	return econozel()->article_post_type;
 }
 
 /**

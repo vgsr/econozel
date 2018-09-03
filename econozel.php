@@ -101,6 +101,15 @@ final class Econozel {
 		// Languages
 		$this->lang_dir     = trailingslashit( $this->plugin_dir . 'languages' );
 
+		/** Identifiers *************************************************/
+
+		// Post type
+		$this->article_post_type  = apply_filters( 'econozel_article_post_type', 'econozel' );
+
+		// Taxonomy
+		$this->volume_tax_id      = apply_filters( 'econozel_volume_tax',  'econozel_volume'  );
+		$this->edition_tax_id     = apply_filters( 'econozel_edition_tax', 'econozel_edition' );
+
 		/** Queries ***********************************************************/
 
 		// Use `WP_Term_Query` since WP 4.6
