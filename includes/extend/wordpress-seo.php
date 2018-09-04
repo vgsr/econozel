@@ -154,6 +154,10 @@ class Econozel_WPSEO {
 					$sepleft ? $separator . $parts['parent'] . $separator . $site_title :  $site_title . $separator . $parts['parent'] . $separator,
 					$title
 				);
+
+			// Construct for any other page
+			} else {
+				$title = $sepleft ? $parts['title'] . $separator . $parts['parent'] . $separator . $site_title : $site_title  . $separator . $parts['parent'] . $separator .$parts['title'];
 			}
 		}
 
@@ -214,7 +218,7 @@ class Econozel_WPSEO {
 			// Volume archives
 			if ( econozel_is_volume_archive() ) {
 
-				// Append Volume crumb, 'cause there is none
+				// Append Volume archives crumb, 'cause there is none
 				$crumbs[] = $_crumbs['volumes'];
 
 			// Single Volume
@@ -232,13 +236,13 @@ class Econozel_WPSEO {
 			// Edition archives
 			} elseif ( econozel_is_edition_archive() ) {
 
-				// Append Edition crumb, 'cause there is none
+				// Append Edition archives crumb, 'cause there is none
 				$crumbs[] = $_crumbs['editions'];
 
 			// Single Edition
 			} elseif ( econozel_is_edition() && $volume = econozel_get_edition_volume() ) {
 
-				// Append Volume
+				// Append Volume archives
 				$crumbs[] = array(
 					'text'       => econozel_get_volume_title( $volume ),
 					'url'        => econozel_get_volume_url( $volume ),
