@@ -129,7 +129,6 @@ function econozel_query_articles( $args = array() ) {
 		'econozel_edition' => econozel_get_edition_id(),
 		'post_type'        => econozel_get_article_post_type(),
 		'posts_per_page'   => -1,
-		'paged'            => econozel_get_paged(),
 		'fields'           => 'all'
 	) );
 
