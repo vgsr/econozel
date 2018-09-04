@@ -90,6 +90,19 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 
 			break;
 
+		case 'feature_econozel_articles' :
+
+			// Only allow Econozel Editors
+			if ( user_can( $user_id, 'econozel_editor' ) ) {
+				$caps = array( 'econozel_editor' );
+
+			// Prevent featuring
+			} else {
+				$caps = array( 'do_not_allow' );
+			}
+
+			break;
+
 		/** Deleting **********************************************************/
 
 		case 'delete_econozel_articles' :

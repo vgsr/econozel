@@ -71,16 +71,19 @@ class Econozel_Admin {
 		add_filter( 'econozel_map_meta_caps', array( $this, 'map_settings_meta_caps' ), 10, 4 );
 
 		// Article
-		add_filter( "manage_{$post_type}_posts_columns",       array( $this, 'article_columns'        )        );
-		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'article_column_content' ), 10, 2 );
-		add_action( 'quick_edit_custom_box',                   array( $this, 'article_inline_edit'    ), 10, 2 );
-		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'    ), 10, 2 );
-		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'     ), 99    );
-		add_action( 'econozel_save_article',                   array( $this, 'article_save_meta_box'  )        );
-		add_action( 'econozel_save_article',                   array( $this, 'article_save_author'    )        );
-		add_action( 'econozel_save_article',                   array( $this, 'article_save_bulk_edit' )        );
-		add_filter( 'wp_dropdown_users_args',                  array( $this, 'dropdown_users_args'    ), 10, 2 ); // Since WP 4.4
-		add_filter( 'post_updated_messages',                   array( $this, 'post_updated_messages'  )        );
+		add_filter( "manage_{$post_type}_posts_columns",       array( $this, 'article_columns'            )        );
+		add_action( "manage_{$post_type}_posts_custom_column", array( $this, 'article_column_content'     ), 10, 2 );
+		add_action( 'quick_edit_custom_box',                   array( $this, 'article_inline_edit'        ), 10, 2 );
+		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'        ), 10, 2 );
+		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'         ), 99    );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_meta_box'      )        );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_author'        )        );
+		add_action( 'econozel_save_article',                   array( $this, 'article_save_bulk_edit'     )        );
+		add_filter( 'wp_dropdown_users_args',                  array( $this, 'dropdown_users_args'        ), 10, 2 ); // Since WP 4.4
+		add_filter( 'post_updated_messages',                   array( $this, 'post_updated_messages'      )        );
+		add_filter( 'bulk_post_updated_messages',              array( $this, 'bulk_post_updated_messages' ), 10, 2 );
+		add_filter( 'display_post_states',                     array( $this, 'display_post_states'        ), 10, 2 );
+		add_action( 'admin_action_econozel-toggle-featured',   array( $this, 'article_toggle_featured'    )        );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
@@ -177,9 +180,11 @@ class Econozel_Admin {
 		// Article edit.php
 		if ( "edit-{$this->article_post_type}" == $screen->id ) {
 			$load_script = true;
+			$load_style  = true;
 
 			// Define additional styles
 			$styles[] = ".fixed .column-econozel-author, .fixed .column-taxonomy-{$this->edition_tax_id} { width: 10%; }";
+			$styles[] = ".fixed .column-econozel-featured { width: 1.8em; }";
 
 		// Article post.php
 		} elseif ( 'post' == $screen->base && $this->article_post_type == $screen->id ) {
@@ -224,6 +229,13 @@ class Econozel_Admin {
 
 					// Capabilities
 					'userCanAssignEditions' => current_user_can( $tax_edition->cap->assign_terms ),
+
+					// Featured post status
+					'featuredStatusId' => econozel_get_featured_status_id(),
+					'featuredLabel'    => esc_html__( 'Featured', 'econozel' ),
+					'publishStatusId'  => 'publish',
+					'publishLabel'     => esc_html__( 'Published' ),
+					'isFeatured'       => econozel_is_article_featured(),
 				)
 			) );
 		}
@@ -333,6 +345,13 @@ class Econozel_Admin {
 		$pos     = array_search( 'author', array_keys( $columns ) ) + 1;
 		$columns = array_slice( $columns, 0, $pos, true ) + $edition + array_slice( $columns, $pos, count( $columns ) - 1, true );
 
+		// Insert Featured column before 'title' column
+		if ( current_user_can( 'feature_econozel_articles' ) ) {
+			$edition = array( 'econozel-featured' => '<i class="dashicons-before dashicons-star-filled" title="' . esc_attr__( 'Featured', 'econozel' ) . '"></i><span class="screen-reader-text">' . esc_html__( 'Featured', 'econozel' ) . '</span>' );
+			$pos     = array_search( 'title', array_keys( $columns ) );
+			$columns = array_slice( $columns, 0, $pos, true ) + $edition + array_slice( $columns, $pos, count( $columns ) - 1, true );
+		}
+
 		// Reuse author column with custom content
 		$column_keys = array_keys( $columns );
 		$column_keys[ array_search( 'author', $column_keys ) ] = 'econozel-author';
@@ -352,6 +371,8 @@ class Econozel_Admin {
 	public function article_column_content( $column, $post_id ) {
 
 		switch ( $column ) {
+
+			// Post author
 			case 'econozel-author' :
 
 				// Provide admin posts url
@@ -365,6 +386,7 @@ class Econozel_Admin {
 
 				break;
 
+			// Edition
 			case "taxonomy-{$this->edition_tax_id}" :
 
 				// Get Article Edition label
@@ -374,6 +396,25 @@ class Econozel_Admin {
 					echo $edition;
 				} else {
 					echo '<span aria-hidden="true">&#8212;</span><span class="screen-reader-text">' . get_taxonomy( $this->edition_tax_id )->labels->no_terms . '</span>';
+				}
+
+				break;
+
+			// Featured
+			case 'econozel-featured' :
+
+				// Get featured status
+				$featured   = econozel_is_article_featured( $post_id );
+
+				// Define whether the user can change the status
+				$actionable = current_user_can( 'feature_econozel_articles' ) && in_array( get_post_status( $post_id ), array( 'publish', econozel_get_featured_status_id() ) );
+
+				if ( $actionable ) {
+					printf( '<a class="dashicons-before %1$s" href="%2$s" title="%3$s"><span class="screen-reader-text">%3$s</span></a>',
+						$featured ? 'dashicons-star-filled' : 'dashicons-star-empty',
+						esc_url( wp_nonce_url( admin_url( add_query_arg( array( 'post_type' => $this->article_post_type, 'post' => $post_id, 'action' => 'econozel-toggle-featured' ), 'admin.php' ) ), 'econozel_toggle_featured_article' ) ),
+						$featured ? esc_attr__( 'Make this article not featured', 'econozel' ) : esc_attr__( 'Make this article featured', 'econozel' )
+					);
 				}
 
 				break;
@@ -733,6 +774,84 @@ class Econozel_Admin {
 		);
 
 		return $messages;
+	}
+
+	/**
+	 * Add post-type specific messages for post bulk updates
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $messages Messages
+	 * @param array $bulk_counts Changed post counts
+	 * @return array Messages
+	 */
+	public function bulk_post_updated_messages( $messages, $bulk_counts ) {
+
+		$messages[ $this->article_post_type ] = array(
+			'updated'   => _n( '%s article updated.', '%s articles updated.', $bulk_counts['updated'], 'econozel' ),
+			'locked'    => ( 1 == $bulk_counts['locked'] ) ? __( '1 article not updated, somebody is editing it.', 'econozel' ) :
+							_n( '%s article not updated, somebody is editing it.', '%s articles not updated, somebody is editing them.', $bulk_counts['locked'], 'econozel' ),
+			'deleted'   => _n( '%s article permanently deleted.', '%s articles permanently deleted.', $bulk_counts['deleted'], 'econozel' ),
+			'trashed'   => _n( '%s article moved to the Trash.', '%s articles moved to the Trash.', $bulk_counts['trashed'], 'econozel' ),
+			'untrashed' => _n( '%s article restored from the Trash.', '%s articles restored from the Trash.', $bulk_counts['untrashed'], 'econozel' ),
+		);
+
+		return $messages;
+	}
+
+	/**
+	 * Modify the post states
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $states Post states
+	 * @param WP_Post $post Post object
+	 * @return array Post states
+	 */
+	public function display_post_states( $states, $post ) {
+
+		// Get Article
+		if ( $article = econozel_get_article( $post ) ) {
+
+			// Article is featured, only when not showing the featured list
+			if ( ! ( isset( $_GET['post_status'] ) && econozel_get_featured_status_id() === $_GET['post_status'] ) && econozel_get_featured_status_id() === $article->post_status ) {
+				$states['econozel-featured'] = '<span class="econozel-featured-status">' . esc_html__( 'Featured', 'econozel' ) . '</span>';
+			}
+		}
+
+		return $states;
+	}
+
+	/**
+	 * Toggle the 'featured' post status of an Article
+	 *
+	 * @since 1.0.0
+	 */
+	public function article_toggle_featured() {
+
+		// Check user's intent
+		check_admin_referer( 'econozel_toggle_featured_article' );
+
+		if ( ! $location = wp_get_referer() ) {
+			$location = admin_url( add_query_arg( array( 'post_type' => $this->article_post_type ), 'edit.php' ) );
+		}
+
+		// When able
+		if ( current_user_can( 'feature_econozel_articles' ) ) {
+
+			// Update article
+			if ( isset( $_REQUEST['post'] ) && $article = econozel_get_article( $_REQUEST['post'] ) ) {
+				$article->post_status = econozel_is_article_featured( $article ) ? 'publish' : econozel_get_featured_status_id();
+				
+				if ( wp_update_post( $article ) ) {
+					$location = add_query_arg( 'updated', 1, $location );
+				}
+			}
+		}
+
+		// Send back
+		wp_safe_redirect( $location );
+		exit;
 	}
 
 	/** Edition ***************************************************************/

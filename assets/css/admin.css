@@ -79,6 +79,9 @@
 
 /* Admin: small screens */
 @media screen and (max-width: 782px) {
+
+	/* Single Post */
+
 	#econozel-author .remove-extra-author,
 	#econozel-author .post-author:hover .remove-extra-author,
 	#econozel-author .post-author .remove-extra-author:hover,
@@ -98,5 +101,13 @@
 
 	#econozel-author .post-author select {
 		width: calc( 100% - 4px - 36px - 4px );
+	}
+
+	/* Post List */
+
+	.wp-list-table.widefat th.column-econozel-featured,
+	.wp-list-table.widefat td.column-econozel-featured {
+		display: none !important;
+		padding: 0;
 	}
 }

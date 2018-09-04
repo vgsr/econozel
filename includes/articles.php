@@ -91,6 +91,17 @@ function econozel_get_article_post_type_supports() {
 	) );
 }
 
+/**
+ * Return the econozel Featured post status id
+ *
+ * @since 1.0.0
+ *
+ * @return string Post status id
+ */
+function econozel_get_featured_status_id() {
+	return econozel()->featured_status_id;
+}
+
 /** Query *********************************************************************/
 
 /**
@@ -719,3 +730,52 @@ function econozel_the_article_page_number( $article = 0 ) {
 
 		return apply_filters( 'econozel_get_article_page_number', $page_number, $article );
 	}
+
+/**
+ * Return the list of featured Articles
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_featured_articles'
+ *
+ * @param array $args Optional. Query arguments, see {@see WP_Query}.
+ * @return array Featured Articles
+ */
+function econozel_get_featured_articles( $args = array() ) {
+
+	// Parse arguments
+	$r = wp_parse_args( $args, array(
+		'post_type'      => econozel_get_article_post_type(),
+		'post_status'    => econozel_get_featured_status_id(),
+		'posts_per_page' => -1,
+	) );
+
+	// Get the Articles
+	$query = new WP_Query( $r );
+	$posts = $query->posts;
+
+	return apply_filters( 'econozel_get_featured_articles', $posts, $r );
+}
+
+/**
+ * Return whether the Article is featured
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_is_article_featured'
+ *
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+ * @return bool Is Article featured?
+ */
+function econozel_is_article_featured( $article = 0 ) {
+
+	// Define return variable
+	$retval = false;
+
+	// Get the Article
+	if ( $article = econozel_get_article( $article ) ) {
+		$retval = econozel_get_featured_status_id() === $article->post_status;
+	}
+
+	return apply_filters( 'econozel_is_article_featured', $retval, $article );
+}

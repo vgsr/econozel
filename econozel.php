@@ -110,6 +110,9 @@ final class Econozel {
 		$this->volume_tax_id      = apply_filters( 'econozel_volume_tax',  'econozel_volume'  );
 		$this->edition_tax_id     = apply_filters( 'econozel_edition_tax', 'econozel_edition' );
 
+		// Status
+		$this->featured_status_id = apply_filters( 'econozel_featured_post_status', 'econozel_featured' );
+
 		/** Queries ***********************************************************/
 
 		// Use `WP_Term_Query` since WP 4.6
@@ -188,8 +191,9 @@ final class Econozel {
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 20 );
 
 		// Register assets
-		add_action( 'econozel_init', array( $this, 'register_post_types' ) );
-		add_action( 'econozel_init', array( $this, 'register_taxonomies' ) );
+		add_action( 'econozel_init', array( $this, 'register_post_types'    ) );
+		add_action( 'econozel_init', array( $this, 'register_taxonomies'    ) );
+		add_action( 'econozel_init', array( $this, 'register_post_statuses' ) );
 
 		// Permalinks
 		add_action( 'econozel_init', array( $this, 'add_rewrite_tags'  ), 20 );
@@ -318,6 +322,27 @@ final class Econozel {
 				'show_ui'               => current_user_can( 'econozel_volume_admin' ),
 				'meta_box_cb'           => false // We have our own metabox
 			)
+		);
+	}
+
+	/**
+	 * Register post statuses
+	 *
+	 * @since 1.0.0
+	 */
+	public function register_post_statuses() {
+
+		// Featured
+		register_post_status(
+			econozel_get_featured_status_id(),
+			apply_filters( 'econozel_register_featured_post_status', array(
+				'label'                     => _x( 'Featured', 'Post status', 'econozel' ),
+				'label_count'               => _nx_noop( 'Featured <span class="count">(%s)</span>', 'Featured <span class="count">(%s)</span>', 'Post status', 'econozel' ),
+				'protected'                 => false,
+				'public'                    => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true
+			) )
 		);
 	}
 

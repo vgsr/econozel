@@ -76,7 +76,7 @@ class Econozel_Comments_Widget extends WP_Widget_Recent_Comments {
 		$comments = get_comments( apply_filters( 'widget_comments_args', array(
 			'number'      => 1,
 			'status'      => 'approve',
-			'post_status' => 'publish'
+			'post_status' => array( 'publish', econozel_get_featured_status_id() )
 		) ) );
 
 		// Only output parent widget content with comments

@@ -108,6 +108,17 @@
 				// Remove Page Number input
 				$order.remove();
 			}
+
+			// When post is featured
+			if ( rowData.is( '.status-' + settings.featuredStatusId ) ) {
+
+				// Prepend 'featured' post status dropdown option
+				$( '<option />', {
+					value:    settings.featuredStatusId,
+					selected: ( settings.featuredStatusId == rowData.find( '#inline_' + id ).find( '._status' ).text() ),
+					text:     settings.featuredLabel
+				}).prependTo( editRow.find( ':input[name="_status"]' ) );
+			}
 		};
 
 		/**
@@ -163,5 +174,25 @@
 		.on( 'click', '.remove-extra-author', function() {
 			$(this).parent().remove();
 		});
+
+	// When post is featured
+	if ( settings.isFeatured ) {
+
+		// Prepend 'featured' post status dropdown option
+		$( '<option />', {
+			value:    settings.featuredStatusId,
+			selected: settings.isFeatured,
+			text:     settings.featuredLabel
+		}).prependTo( '#post_status' );
+
+		// Correct displayed status
+		$( '#post-status-display' ).text( settings.featuredLabel );
+
+		// Restore 'Published' dropdown option
+		$( '<option />', {
+			value:    settings.publishStatusId,
+			text:     settings.publishLabel
+		}).insertAfter( '#post_status option:first' );
+	}
 
 })( jQuery );
