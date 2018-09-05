@@ -157,7 +157,8 @@ class Econozel_WPSEO {
 
 			// Construct for any other page
 			} else {
-				$title = $sepleft ? $parts['title'] . $separator . $parts['parent'] . $separator . $site_title : $site_title  . $separator . $parts['parent'] . $separator .$parts['title'];
+				$parent = isset( $parts['parent'] ) ? $parts['parent'] . $separator : '';
+				$title  = $sepleft ? $parts['title'] . $separator . $parent . $site_title : $site_title . $separator . $parent . $parts['title'];
 			}
 		}
 
