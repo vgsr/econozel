@@ -76,6 +76,7 @@ class Econozel_Admin {
 		add_action( 'quick_edit_custom_box',                   array( $this, 'article_inline_edit'        ), 10, 2 );
 		add_action( 'bulk_edit_custom_box',                    array( $this, 'article_inline_edit'        ), 10, 2 );
 		add_action( "add_meta_boxes_{$post_type}",             array( $this, 'article_meta_boxes'         ), 99    );
+		add_action( 'wp_insert_post_data',                     array( $this, 'wp_insert_post_data'        ), 10, 2 );
 		add_action( 'econozel_save_article',                   array( $this, 'article_save_meta_box'      )        );
 		add_action( 'econozel_save_article',                   array( $this, 'article_save_author'        )        );
 		add_action( 'econozel_save_article',                   array( $this, 'article_save_bulk_edit'     )        );
@@ -194,6 +195,11 @@ class Econozel_Admin {
 			// Define additional styles
 			$styles[] = "#article-details .article-edition label, #article-details .article-page-number label { display: inline-block; margin: .5em 0px; vertical-align: bottom; font-weight: 600; }";
 			$styles[] = "#article-details select#taxonomy-{$this->edition_tax_id} { width: 100%; max-width: 100%; }";
+
+			// Hide 'Save Draft' button when featured
+			if ( econozel_is_article_featured() ) {
+				$styles[] = "#save-post { display: none; }";
+			}
 
 		// Edition edit-tags.php
 		} elseif ( "edit-{$this->edition_tax_id}" == $screen->id ) {
@@ -621,6 +627,33 @@ class Econozel_Admin {
 			<?php
 				break;
 		}
+	}
+
+	/**
+	 * Modify the data of a post to be saved
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $data Post data
+	 * @param array $postarr Initial post data
+	 * @return array Post data
+	 */
+	public function wp_insert_post_data( $data, $postarr ) {
+
+		// Get featured status
+		$featured = econozel_get_featured_status_id();
+
+		/**
+		 * Article was featured and should remain so. This is however interpreted by
+		 * WP in a different way. See {@see _wp_translate_postdata()}, where the post
+		 * status is reset to 'publish' when the 'Publish' button was used, even when
+		 * a different/custom post status was provided.
+		 */
+		if ( isset( $_REQUEST['publish'] ) && $featured === $postarr['original_post_status'] && $featured === $_REQUEST['post_status'] ) {
+			$data['post_status'] = $featured;
+		}
+
+		return $data;
 	}
 
 	/**

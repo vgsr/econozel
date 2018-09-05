@@ -178,21 +178,21 @@
 	// When post is featured
 	if ( settings.isFeatured ) {
 
-		// Prepend 'featured' post status dropdown option
-		$( '<option />', {
-			value:    settings.featuredStatusId,
-			selected: settings.isFeatured,
-			text:     settings.featuredLabel
-		}).prependTo( '#post_status' );
+		$( '#post_status' )
+			// Restore 'Published' dropdown option which is missing
+			.prepend( $( '<option />', {
+				value:    settings.publishStatusId,
+				text:     settings.publishLabel
+			}) )
+			// Prepend 'featured' post status dropdown option
+			.prepend( $( '<option />', {
+				value:    settings.featuredStatusId,
+				text:     settings.featuredLabel,
+				selected: settings.isFeatured
+			}) );
 
 		// Correct displayed status
 		$( '#post-status-display' ).text( settings.featuredLabel );
-
-		// Restore 'Published' dropdown option
-		$( '<option />', {
-			value:    settings.publishStatusId,
-			text:     settings.publishLabel
-		}).insertAfter( '#post_status option:first' );
 	}
 
 })( jQuery );
