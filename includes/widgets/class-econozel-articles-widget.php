@@ -112,7 +112,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 				echo '<p>' . is_string( $r['description'] ) ? $r['description'] : $this->widget_options['description'] . '</p>';
 			}
 
-			printf( '<ul>%s</ul>', walk_page_tree( econozel()->article_query->posts, 0, econozel_get_article_id(), $r ) );
+			printf( '<ul>%s</ul>', walk_page_tree( econozel()->article_query->posts, 0, econozel_is_article( true ) ? get_queried_object_id() : 0, $r ) );
 
 		// Nothing found
 		else :
