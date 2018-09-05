@@ -92,6 +92,7 @@ add_filter( 'econozel_map_meta_caps', 'econozel_map_volume_meta_caps',   10, 4 )
 add_filter( 'econozel_map_meta_caps', 'econozel_map_post_tag_meta_caps', 10, 4 );
 add_action( 'delete_user',            'econozel_delete_user',            10, 2 );
 add_action( 'deleted_user',           'econozel_deleted_user',           10, 2 );
+add_action( 'add_admin_bar_menus',    'econozel_add_admin_bar_menus'           );
 
 // Dynamic roles
 add_filter( 'plugins_loaded',         'econozel_filter_user_roles_option'      );

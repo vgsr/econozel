@@ -101,3 +101,35 @@ function econozel_deleted_user( $user_id, $reassign ) {
 		$wpdb->update( $wpdb->postmeta, array( 'meta_key' => 'post_author', 'meta_value' => $user_id ), array( 'meta_value' => $reassign ) );
 	}
 }
+
+/** Admin Bar *****************************************************************/
+
+/**
+ * Register hooks for modifying the admin bar menus
+ *
+ * @since 1.0.0
+ */
+function econozel_add_admin_bar_menus() {
+	add_action( 'admin_bar_menu', 'econozel_admin_bar_menu_for_editors', 90 );
+}
+
+/**
+ * Modify the admin bar menus
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Admin_Bar $wp_admin_bar
+ */
+function econozel_admin_bar_menu_for_editors( $wp_admin_bar ) {
+
+	// For Econozel Editors on plugin pages
+	if ( ! is_admin() && is_econozel() && current_user_can( 'edit_others_econozel_articles' ) ) {
+
+		// Add Manage Articles item
+		$wp_admin_bar->add_node( array(
+			'id'    => 'econozel-articles',
+			'title' => esc_html__( 'Manage Articles', 'econozel' ),
+			'href'  => admin_url( add_query_arg( 'post_type', econozel_get_article_post_type(), 'edit.php' ) )
+		) );
+	}
+}
