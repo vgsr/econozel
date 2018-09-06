@@ -380,11 +380,11 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 		$clauses['orderby'] = $orderby . $clauses['orderby'];
 	}
 
-	// For non-Econozel Editors, hide other's draft/pending posts
+	// For non-Econozel Editors, hide other's draft/pending/trashed posts
 	if ( ! current_user_can( 'econozel_editor' ) ) {
 
 		// Collect 'private' post statuses
-		$post_stati = "'" . implode( "','", array( 'draft', 'pending' ) ) . "'";
+		$post_stati = "'" . implode( "','", array( 'draft', 'pending', 'trash' ) ) . "'";
 
 		// Append to WHERE clause
 		// TODO: Account for multiple authors
@@ -476,10 +476,12 @@ function econozel_filter_count_posts( $counts, $type, $perm ) {
 		// Do specific count queries
 		$draft   = new WP_Query( array_merge( array( 'post_status' => 'draft'   ), $query_args ) );
 		$pending = new WP_Query( array_merge( array( 'post_status' => 'pending' ), $query_args ) );
+		$trash   = new WP_Query( array_merge( array( 'post_status' => 'trash'   ), $query_args ) );
 
 		// Only display the current user's posts
 		$counts->draft   = $draft->post_count;
 		$counts->pending = $pending->post_count;
+		$counts->trash   = $trash->post_count;
 	}
 
 	return $counts;
