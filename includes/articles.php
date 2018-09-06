@@ -520,6 +520,39 @@ function econozel_is_article_multi_author( $article = 0 ) {
 }
 
 /**
+ * Return whether the user is author of the Article
+ *
+ * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_is_user_article_author'
+ *
+ * @param WP_User|int $user Optional. User object or ID. Defaults to the current user.
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+ * @return bool Is user Article author?
+ */
+function econozel_is_user_article_author( $user = 0, $article = 0 ) {
+
+	// Define return variable
+	$retval = false;
+
+	// Get user ID
+	if ( empty( $user ) ) {
+		$user = get_current_user_id();
+	} elseif ( is_a( $user, 'WP_User' ) ) {
+		$user = $user->ID;
+	} else {
+		$user = (int) $user;
+	}
+
+	// Is user in list of Article authors?
+	if ( $user ) {
+		$retval = in_array( $user, econozel_get_article_author( $article ) );
+	}
+
+	return (bool) apply_filters( 'econozel_is_user_article_author', $retval, $user, $article );
+}
+
+/**
  * Output the Article's author link
  *
  * @since 1.0.0
