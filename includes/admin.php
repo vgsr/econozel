@@ -85,6 +85,7 @@ class Econozel_Admin {
 		add_filter( 'bulk_post_updated_messages',              array( $this, 'bulk_post_updated_messages' ), 10, 2 );
 		add_filter( 'display_post_states',                     array( $this, 'display_post_states'        ), 10, 2 );
 		add_action( 'admin_action_econozel-toggle-featured',   array( $this, 'article_toggle_featured'    )        );
+		add_filter( 'query',                                   array( $this, 'query_user_posts_count'     )        );
 
 		// Edition
 		add_filter( "manage_edit-{$taxonomy}_columns",  array( $this, 'edition_columns'        ), 20    );
@@ -885,6 +886,91 @@ class Econozel_Admin {
 		// Send back
 		wp_safe_redirect( $location );
 		exit;
+	}
+
+	/**
+	 * Modfiy the query when querying for the user posts count
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses WPDB $wpdb
+	 *
+	 * @param string $query WPDB query
+	 * @return string WPDB query
+	 */
+	public function query_user_posts_count( $query ) {
+		global $wpdb;
+
+		// Bail when not in the admin or the user is fully capable
+		if ( ! is_admin() ) {
+			remove_action( 'query', array( $this, 'query_user_posts_count' ) );
+			return $query;
+		}
+
+		// When we're able to determine where we are
+		if ( get_current_screen() && null !== get_current_screen()->id ) {
+
+			// Bail when not on the Articles list table page
+			if ( 'edit-' . econozel_get_article_post_type() !== get_current_screen()->id ) {
+				remove_action( 'query', array( $this, 'query_user_posts_count' ) );
+				return $query;
+			}
+
+			// Define modifier flag
+			static $modified = null;
+
+			if ( null === $modified ) {
+
+				// Define query to match once
+				static $query_to_match = null;
+
+				/**
+				 * Reconstruct the query we're trying to match. See {@see WP_Posts_List_Table::__construct()}.
+				 * NOTE: Keep the layout like this, because the whitespace between lines matters when comparing
+				 * strings!
+				 */
+				if ( null === $query_to_match ) {
+					$exclude_states         = get_post_stati(
+						array(
+							'show_in_admin_all_list' => false,
+						)
+					);
+					$query_to_match = $wpdb->prepare( "
+			SELECT COUNT( 1 )
+			FROM $wpdb->posts
+			WHERE post_type = %s
+			AND post_status NOT IN ( '" . implode( "','", $exclude_states ) . "' )
+			AND post_author = %d
+					", get_current_screen()->post_type, get_current_user_id()
+					);
+				}
+
+				// This is the query we're looking for
+				if ( trim( $query ) === trim( $query_to_match ) ) {
+
+					// Construct replacement query to find the user's posts
+					$query = new WP_Query( array(
+						'post_type'      => econozel_get_article_post_type(),
+						'author'         => get_current_user_id(),
+						'posts_per_page' => -1,
+						'fields'         => 'ids'
+					) );
+
+					// Query just the wanted value
+					$query = "SELECT {$query->post_count}";
+
+					// Signal that we're done here
+					$modified = true;
+				}
+			}
+
+			// Remove action when run
+			if ( null !== $modified ) {
+				remove_action( 'query', array( $this, 'query_user_posts_count' ) );
+			}
+		}
+
+		return $query;
 	}
 
 	/** Edition ***************************************************************/
