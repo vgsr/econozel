@@ -305,15 +305,22 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 		 */
 
 		// Find author clauses
-		if ( preg_match_all( "/ AND {$wpdb->posts}.post_author (=|IN|NOT IN) \(?([0-9]+,?\s*)+\)?/", $clauses['where'], $matches ) ) {
+		if ( preg_match_all( "/ (AND|OR) {$wpdb->posts}.post_author (=|IN|NOT IN) (\(([0-9]+,?\s*)+\)|[0-9]+)/", $clauses['where'], $matches ) ) {
 
-			// Matched items
+			/**
+			 * Walk the matched items, whereby matches contains:
+			 * - 0: the full match
+			 * - 1: AND|OR match
+			 * - 2: =|IN|NOT IN match
+			 * - 3: values, optionally enclosed in parentheses
+			 * - 4: NOT USED
+			 */
 			foreach ( $matches[0] as $item => $match ) {
 
 				// Get match parts
-				$user_ids = trim( str_replace( " AND {$wpdb->posts}.post_author {$matches[1][ $item ]} ", '', $match ), '()' );
+				$user_ids = trim( str_replace( " {$matches[1][ $item ]} {$wpdb->posts}.post_author {$matches[2][ $item ]} ", '', $match ), '()' );
 				$user_ids = implode( ',', array_map( 'absint', array_map( 'trim', explode( ',', $user_ids ) ) ) );
-				$compare  = '=' === $matches[1][ $item ] ? 'IN' : $matches[1][ $item ];
+				$compare  = '=' === $matches[2][ $item ] ? 'IN' : $matches[2][ $item ];
 
 				// Reconstruct
 				$author_by_post = "{$wpdb->posts}.post_author {$compare} ({$user_ids})";
@@ -321,7 +328,7 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 				$operator = 'NOT IN' === $compare ? 'AND' : 'OR';
 
 				// Replace post author clause, only for Econozel Articles
-				$replace = $wpdb->prepare( " AND ( {$wpdb->posts}.post_type <> %s OR ({$author_by_post} {$operator} {$author_by_meta}) )", econozel_get_article_post_type() );
+				$replace = $wpdb->prepare( " {$matches[1][ $item ]} ( {$wpdb->posts}.post_type <> %s OR ({$author_by_post} {$operator} {$author_by_meta}) )", econozel_get_article_post_type() );
 
 				// Replace match
 				$clauses['where'] = str_replace( $match, $replace, $clauses['where'] );
