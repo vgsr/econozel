@@ -73,9 +73,8 @@ function econozel_map_article_meta_caps( $caps = array(), $cap = '', $user_id = 
 				$caps      = array();
 
 				// User is author so allow editing
-				// TODO: Account for multiple authors
 				// TODO: Consider applying a time window to limit editing
-				if ( $article->post_author && $user_id === (int) $article->post_author && user_can( $user_id, $post_type->cap->edit_posts ) ) {
+				if ( econozel_is_user_article_author( $user_id, $article ) && user_can( $user_id, $post_type->cap->edit_posts ) ) {
 					$caps[] = 'read';
 
 				// Defer to edit_others_posts
