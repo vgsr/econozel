@@ -297,45 +297,6 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 	if ( ! econozel_is_article_query( $posts_query ) )
 		return $clauses;
 
-	// Querying by author
-	if ( $posts_query->is_author ) {
-
-		/**
-		 * Query posts that have multiple authors. Multi-author data is saved in post meta.
-		 */
-
-		// Find author clauses
-		if ( preg_match_all( "/ (AND|OR) {$wpdb->posts}.post_author (=|IN|NOT IN) (\(([0-9]+,?\s*)+\)|[0-9]+)/", $clauses['where'], $matches ) ) {
-
-			/**
-			 * Walk the matched items, whereby matches contains:
-			 * - 0: the full match
-			 * - 1: AND|OR match
-			 * - 2: =|IN|NOT IN match
-			 * - 3: values, optionally enclosed in parentheses
-			 * - 4: NOT USED
-			 */
-			foreach ( $matches[0] as $item => $match ) {
-
-				// Get match parts
-				$user_ids = trim( str_replace( " {$matches[1][ $item ]} {$wpdb->posts}.post_author {$matches[2][ $item ]} ", '', $match ), '()' );
-				$user_ids = implode( ',', array_map( 'absint', array_map( 'trim', explode( ',', $user_ids ) ) ) );
-				$compare  = '=' === $matches[2][ $item ] ? 'IN' : $matches[2][ $item ];
-
-				// Reconstruct
-				$author_by_post = "{$wpdb->posts}.post_author {$compare} ({$user_ids})";
-				$author_by_meta = $wpdb->prepare( "{$wpdb->posts}.ID {$compare} (SELECT post_id FROM {$wpdb->postmeta} WHERE {$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value IN ({$user_ids}))", 'post_author' );
-				$operator = 'NOT IN' === $compare ? 'AND' : 'OR';
-
-				// Replace post author clause, only for Econozel Articles
-				$replace = $wpdb->prepare( " {$matches[1][ $item ]} ( {$wpdb->posts}.post_type <> %s OR ({$author_by_post} {$operator} {$author_by_meta}) )", econozel_get_article_post_type() );
-
-				// Replace match
-				$clauses['where'] = str_replace( $match, $replace, $clauses['where'] );
-			}
-		}
-	}
-
 	// Querying for recent or archived posts
 	if ( null !== $posts_query->get( 'econozel_archive', null ) && ! $posts_query->get( 'econozel_edition' ) ) {
 
@@ -394,8 +355,71 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 		$post_stati = "'" . implode( "','", array( 'draft', 'pending', 'trash' ) ) . "'";
 
 		// Append to WHERE clause
-		// TODO: Account for multiple authors
 		$clauses['where'] .= $wpdb->prepare( " AND ( {$wpdb->posts}.post_status NOT IN ($post_stati) OR {$wpdb->posts}.post_author = %d )", get_current_user_id() );
+	}
+
+	return $clauses;
+}
+
+/**
+ * Modify the posts query for multi-author posts
+ *
+ * @since 1.0.0
+ *
+ * @global WPDB $wpdb
+ *
+ * @param array $clauses SQL clauses
+ * @param WP_Query $posts_query Post query object
+ * @return array SQL clauses
+ */
+function econozel_do_multi_author_query( $clauses, $posts_query ) {
+	global $wpdb;
+
+	// Bail when filters are suppressed on this query
+	if ( true === $posts_query->get( 'suppress_filters' ) )
+		return $clauses;
+
+	// Bail when not an Econozel query
+	if ( ! econozel_is_article_query( $posts_query ) )
+		return $clauses;
+
+	/**
+	 * Query posts that have multiple authors. Multi-author data is saved in post meta.
+	 */
+
+	// Find author clauses
+	if ( preg_match_all( "/ (AND|OR) {$wpdb->posts}.post_author (=|IN|NOT IN) (\(([0-9]+,?\s*)+\)|[0-9]+)/", $clauses['where'], $matches ) ) {
+
+		/**
+		 * Walk the matched items, whereby matches contains:
+		 * - 0: the full match
+		 * - 1: 'AND' or 'OR'
+		 * - 2: '=' or 'IN' or 'NOT IN'
+		 * - 3: values, optionally enclosed in parentheses
+		 * - 4: [NOT USED]
+		 */
+		foreach ( $matches[0] as $item => $match ) {
+
+			// Get matched parts
+			$and_or   = $matches[1][ $item ];
+			$compare  = $matches[2][ $item ];
+
+			// Get author user IDs
+			$user_ids = trim( str_replace( " {$and_or} {$wpdb->posts}.post_author {$compare} ", '', $match ), '()' );
+			$user_ids = implode( ',', array_map( 'absint', array_map( 'trim', explode( ',', $user_ids ) ) ) );
+
+			// Reconstruct query parts
+			$new_compare    = '=' === $compare ? 'IN' : $compare;
+			$author_by_post = "{$wpdb->posts}.post_author {$new_compare} ({$user_ids})";
+			$author_by_meta = $wpdb->prepare( "{$wpdb->posts}.ID {$new_compare} (SELECT post_id FROM {$wpdb->postmeta} WHERE {$wpdb->postmeta}.meta_key = %s AND {$wpdb->postmeta}.meta_value IN ({$user_ids}))", 'post_author' );
+			$operator = 'NOT IN' === $new_compare ? 'AND' : 'OR';
+
+			// Replace post author clause, only for Econozel Articles
+			$replace = $wpdb->prepare( " {$and_or} ( {$wpdb->posts}.post_type <> %s OR ({$author_by_post} {$operator} {$author_by_meta}) )", econozel_get_article_post_type() );
+
+			// Replace match
+			$clauses['where'] = str_replace( $match, $replace, $clauses['where'] );
+		}
 	}
 
 	return $clauses;
