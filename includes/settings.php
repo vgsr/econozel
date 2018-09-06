@@ -58,10 +58,10 @@ function econozel_admin_get_settings_fields() {
 		// General settings
 		'econozel_settings_general' => array(
 
-			// Admin access
-			'_econozel_toggle_admin_access' => array(
-				'title'             => esc_html__( 'Admin Access', 'econozel' ),
-				'callback'          => 'econozel_admin_setting_callback_toggle_admin_access',
+			// Limit admin access
+			'_econozel_limited_admin_access' => array(
+				'title'             => esc_html__( 'Limit Admin Access', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_limit_admin_access',
 				'sanitize_callback' => 'intval',
 				'args'              => array()
 			),
@@ -184,14 +184,14 @@ function econozel_admin_setting_callback_general_section() { ?>
 }
 
 /**
- * Display the content of the Toggle Access settings field
+ * Display the content of the Limited Access settings field
  *
  * @since 1.0.0
  */
-function econozel_admin_setting_callback_toggle_admin_access() { ?>
+function econozel_admin_setting_callback_limit_admin_access() { ?>
 
-	<input name="_econozel_toggle_admin_access" id="_econozel_toggle_admin_access" type="checkbox" value="1" <?php checked( econozel_toggle_admin_access() ); ?>>
-	<label for="_econozel_toggle_admin_access"><?php esc_html_e( 'Restrict Econozel admin access to Econozel Editors only', 'econozel' ); ?></label>
+	<input name="_econozel_limited_admin_access" id="_econozel_limited_admin_access" type="checkbox" value="1" <?php checked( econozel_limited_admin_access() ); ?>>
+	<label for="_econozel_limited_admin_access"><?php esc_html_e( 'Limit Econozel admin access to Econozel Editors only', 'econozel' ); ?></label>
 
 	<?php
 }

@@ -118,7 +118,7 @@ function econozel_check_admin_access( $user_id = 0 ) {
 	$retval = user_can( $user_id, 'econozel_editor' );
 
 	// When not restricted, allow filtering
-	if ( ! econozel_toggle_admin_access() ) {
+	if ( ! econozel_limited_admin_access() ) {
 		$retval = (bool) apply_filters( 'econozel_check_admin_access', $retval, $user_id );
 	}
 
@@ -367,11 +367,11 @@ function econozel_get_volumes_per_page( $default = 5 ) {
  *
  * @since 1.0.0
  *
- * @uses apply_filters() Calls 'econozel_toggle_admin_access'
+ * @uses apply_filters() Calls 'econozel_limited_admin_access'
  * @return bool Restricted admin access
  */
-function econozel_toggle_admin_access() {
-	return (bool) apply_filters( 'econozel_toggle_admin_access', get_option( '_econozel_toggle_admin_access', false ) );
+function econozel_limited_admin_access() {
+	return (bool) apply_filters( 'econozel_limited_admin_access', get_option( '_econozel_limited_admin_access', false ) );
 }
 
 /**
