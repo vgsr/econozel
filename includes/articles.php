@@ -505,6 +505,19 @@ function econozel_the_article_author( $article = 0, $concat = true ) {
 	}
 
 /**
+ * Return the Article authors count
+ *
+ * @since 1.0.0
+ *
+ * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
+ * @return int Article author count.
+ */
+function econozel_get_article_author_count( $article = 0 ) {
+	$author = econozel_get_article_author( $article );
+	return count( $author );
+}
+
+/**
  * Return whether the Article has multiple authors
  *
  * @since 1.0.0
@@ -513,8 +526,8 @@ function econozel_the_article_author( $article = 0, $concat = true ) {
  * @return bool Has Article multiple authors?
  */
 function econozel_is_article_multi_author( $article = 0 ) {
-	$author = econozel_get_article_author( $article );
-	$retval = count( $author ) > 1;
+	$author_count = econozel_get_article_author_count( $article );
+	$retval = $author_count > 1;
 
 	return $retval;
 }
