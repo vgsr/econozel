@@ -41,6 +41,7 @@ add_filter( 'updated_term_meta',           'econozel_updated_term_meta',        
 /** Query *********************************************************************/
 
 add_action( 'parse_request',               'econozel_parse_request',            10    );
+add_action( 'pre_handle_404',              'econozel_pre_handle_404',           10, 2 );
 add_action( 'parse_query',                 'econozel_parse_query',               2    ); // Early for overrides
 add_action( 'parse_query',                 'econozel_parse_query_vars',         10    );
 add_filter( 'posts_clauses',               'econozel_posts_clauses',            10, 2 );

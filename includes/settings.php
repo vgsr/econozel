@@ -145,6 +145,14 @@ function econozel_admin_get_settings_fields() {
 				'sanitize_callback' => 'econozel_sanitize_slug',
 				'args'              => array()
 			),
+
+			// Featured slug setting
+			'_econozel_featured_archive_slug' => array(
+				'title'             => esc_html__( 'Featured', 'econozel' ),
+				'callback'          => 'econozel_admin_setting_callback_featured_archive_slug',
+				'sanitize_callback' => 'econozel_sanitize_slug',
+				'args'              => array()
+			),
 		),
 	) );
 }
@@ -336,6 +344,18 @@ function econozel_admin_setting_callback_article_slug() { ?>
 function econozel_admin_setting_callback_random_article_slug() { ?>
 
 	<input name="_econozel_random_article_slug" id="_econozel_random_article_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_random_article_slug', 'random', true ); ?>">
+
+	<?php
+}
+
+/**
+ * Display the content of the Featured Slug settings field
+ *
+ * @since 1.0.0
+ */
+function econozel_admin_setting_callback_featured_archive_slug() { ?>
+
+	<input name="_econozel_featured_archive_slug" id="_econozel_featured_archive_slug" type="text" class="regular-text code" value="<?php econozel_form_option( '_econozel_featured_archive_slug', 'featured', true ); ?>">
 
 	<?php
 }

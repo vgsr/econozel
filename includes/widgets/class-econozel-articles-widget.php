@@ -63,20 +63,21 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$r = wp_parse_args( $instance, array(
 
 			// Widget details
-			'title'            => econozel_post_type_title( econozel_get_article_post_type() ),
-			'description'      => false,
-			'none_found'       => esc_html__( 'There were no articles found.', 'econozel' ),
-			'walker'           => new Econozel_Walker_Article,
-			'item_spacing'     => 'preserve',
+			'title'             => econozel_post_type_title( econozel_get_article_post_type() ),
+			'description'       => false,
+			'none_found'        => esc_html__( 'There were no articles found.', 'econozel' ),
+			'walker'            => new Econozel_Walker_Article,
+			'item_spacing'      => 'preserve',
 
 			// Display
-			'show_author'      => false,
-			'show_date'        => false,
+			'show_author'       => false,
+			'show_date'         => false,
 
 			// Query args
-			'econozel_edition' => false,
-			'econozel_archive' => false,
-			'posts_per_page'   => 5,
+			'econozel_edition'  => false,
+			'econozel_archive'  => false,
+			'econozel_featured' => false,
+			'posts_per_page'    => 5,
 		) );
 
 		// Detect whether to query by the current Edition
@@ -95,6 +96,14 @@ class Econozel_Articles_Widget extends WP_Widget {
 			}
 		}
 
+		// Query featured articles
+		if ( $r['econozel_featured'] ) {
+			$r['post_status'] = econozel_get_featured_status_id();
+
+			// Do not limit to archived or recent articles
+			unset( $r['econozel_archive'] );
+		}
+
 		// Open widget 
 		echo $args['before_widget'];
 		if ( $r['title'] ) {
@@ -102,7 +111,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		}
 
 		// Remove unwanted query vars
-		unset( $r['title'] );
+		unset( $r['title'], $r['econozel_featured'] );
 
 		// Query Articles
 		if ( econozel_query_articles( $r ) ) :
@@ -155,6 +164,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		}
 
 		$instance['econozel_archive'] = (bool) $new_instance['econozel_archive'];
+		$instance['econozel_featured'] = (bool) $new_instance['econozel_featured'];
 
 		return $instance;
 	}
@@ -169,12 +179,13 @@ class Econozel_Articles_Widget extends WP_Widget {
 	public function form( $instance ) {
 
 		// Define local variable(s)
-		$title            = isset( $instance['title'] ) ? $instance['title'] : '';
-		$posts_per_page   = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
-		$econozel_edition = isset( $instance['econozel_edition'] ) ? (bool) $instance['econozel_edition'] : false;
-		$show_author      = isset( $instance['show_author'] ) ? (bool) $instance['show_author'] : false;
-		$show_date        = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
-		$econozel_archive = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
+		$title             = isset( $instance['title'] ) ? $instance['title'] : '';
+		$posts_per_page    = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
+		$econozel_edition  = isset( $instance['econozel_edition'] ) ? (bool) $instance['econozel_edition'] : false;
+		$show_author       = isset( $instance['show_author'] ) ? (bool) $instance['show_author'] : false;
+		$show_date         = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
+		$econozel_archive  = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
+		$econozel_featured = isset( $instance['econozel_featured'] ) ? (bool) $instance['econozel_featured'] : false;
 
 		?>
 
@@ -209,6 +220,10 @@ class Econozel_Articles_Widget extends WP_Widget {
 		<p>
 			<input type="checkbox" class="checkbox"<?php checked( $econozel_archive ); ?> id="<?php echo $this->get_field_id( 'econozel_archive' ); ?>" name="<?php echo $this->get_field_name( 'econozel_archive' ); ?>"/>
 			<label for="<?php echo $this->get_field_id( 'econozel_archive' ); ?>"><?php esc_html_e( 'Display articles from the archive', 'econozel' ); ?></label>
+		</p>
+		<p>
+			<input type="checkbox" class="checkbox"<?php checked( $econozel_featured ); ?> id="<?php echo $this->get_field_id( 'econozel_featured' ); ?>" name="<?php echo $this->get_field_name( 'econozel_featured' ); ?>"/>
+			<label for="<?php echo $this->get_field_id( 'econozel_featured' ); ?>"><?php esc_html_e( 'Display featured articles?', 'econozel' ); ?></label>
 		</p>
 
 		<?php

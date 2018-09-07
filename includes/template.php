@@ -35,6 +35,26 @@ function econozel_parse_request( $wp ) {
 	}
 }
 
+/**
+ * Modify whether to short-circuit the default status handling
+ *
+ * @since 1.0.0
+ *
+ * @param bool $retval Whether to short-circuit
+ * @param WP_Query $posts_query Query object
+ * @return bool Whether to short-circuit
+ */
+function econozel_pre_handle_404( $retval, $posts_query ) {
+
+	// When the Featured archives have no posts, redirect back to the root page
+	if ( econozel_is_featured_archive() && empty( $posts_query->posts ) ) {
+		wp_safe_redirect( econozel_get_root_url() );
+		exit;
+	}
+
+	return $retval;
+}
+
 /** Query *********************************************************************/
 
 /**
@@ -62,12 +82,13 @@ function econozel_parse_query( $posts_query ) {
 	$plugin = econozel();
 
 	// Get query variables
-	$is_root            = $posts_query->get( econozel_get_root_rewrite_id()            );
-	$is_volume          = $posts_query->get( econozel_get_volume_rewrite_id()          );
-	$is_volume_archive  = $posts_query->get( econozel_get_volume_archive_rewrite_id()  );
-	$is_edition_archive = $posts_query->get( econozel_get_edition_archive_rewrite_id() );
-	$is_edition         = $posts_query->get( econozel_get_edition_issue_rewrite_id()   );
-	$is_random          = $posts_query->get( econozel_get_random_article_rewrite_id()  );
+	$is_root            = $posts_query->get( econozel_get_root_rewrite_id()             );
+	$is_volume          = $posts_query->get( econozel_get_volume_rewrite_id()           );
+	$is_volume_archive  = $posts_query->get( econozel_get_volume_archive_rewrite_id()   );
+	$is_edition_archive = $posts_query->get( econozel_get_edition_archive_rewrite_id()  );
+	$is_edition         = $posts_query->get( econozel_get_edition_issue_rewrite_id()    );
+	$is_random          = $posts_query->get( econozel_get_random_article_rewrite_id()   );
+	$is_featured        = $posts_query->get( econozel_get_featured_archive_rewrite_id() );
 
 	/**
 	 * Find out whether this is still an Article request, even though the post type
@@ -81,7 +102,7 @@ function econozel_parse_query( $posts_query ) {
 	/**
 	 * 404 and bail when the user has no plugin access.
 	 */
-	if ( ( $is_root || $is_volume || $is_volume_archive || $is_edition_archive || $is_edition || $is_article ) && ! econozel_check_access() ) {
+	if ( ( $is_root || $is_volume || $is_volume_archive || $is_edition_archive || $is_edition || $is_article || $is_featured ) && ! econozel_check_access() ) {
 		econozel_do_404();
 		return;
 	}
@@ -222,6 +243,23 @@ function econozel_parse_query( $posts_query ) {
 		// Define query result
 		$posts_query->found_posts   = $plugin->edition_query->found_terms;
 		$posts_query->max_num_pages = $plugin->edition_query->max_num_pages;
+
+	// Featured archives
+	} elseif ( ! empty( $is_featured ) ) {
+
+		// Set query arguments
+		$posts_query->set( 'post_type',   econozel_get_article_post_type()  );
+		$posts_query->set( 'post_status', econozel_get_featured_status_id() );
+
+		// Looking at the featured archive
+		$posts_query->econozel_is_featured_archive = true;
+		$posts_query->is_archive                   = true;
+
+		// Make sure 404 is not set
+		$posts_query->is_404 = false;
+
+		// Correct is_home variable
+		$posts_query->is_home = false;
 	}
 
 	// This is a Post Tag or Author query
@@ -679,6 +717,28 @@ function econozel_is_tax_archive() {
 }
 
 /**
+ * Check if current page is the Featured archive
+ *
+ * @since 1.0.0
+ *
+ * @global WP_Query $wp_query To check if WP_Query::econozel_is_featured_archive is true
+ * @return bool Is it the Featured archive?
+ */
+function econozel_is_featured_archive() {
+	global $wp_query;
+
+	// Assume false
+	$retval = false;
+
+	// Check query
+	if ( ! empty( $wp_query->econozel_is_featured_archive ) && ( true === $wp_query->econozel_is_featured_archive ) ) {
+		$retval = true;
+	}
+
+	return (bool) $retval;
+}
+
+/**
  * Check if current page is the Article archive
  *
  * @since 1.0.0
@@ -752,6 +812,10 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
 	} elseif ( econozel_is_edition() ) {
 		$econozel_classes[] = 'econozel-edition';
 
+	} elseif ( econozel_is_featured_archive() ) {
+		$econozel_classes[] = 'econozel-featured-archive';
+		$econozel_classes[] = 'econozel-article-archive';
+
 	} elseif ( econozel_is_article_archive() ) {
 		$econozel_classes[] = 'econozel-article-archive';
 
@@ -807,6 +871,9 @@ function is_econozel() {
 		$retval = true;
 
 	} elseif ( econozel_is_edition() ) {
+		$retval = true;
+
+	} elseif ( econozel_is_featured_archive() ) {
 		$retval = true;
 
 	} elseif ( econozel_is_article_archive() ) {
@@ -1033,7 +1100,7 @@ function econozel_get_theme_compat_template() {
 	);
 
 	// Use archive.php for archive pages
-	if ( econozel_is_volume_archive() || econozel_is_edition_archive() || econozel_is_article_archive() ) {
+	if ( econozel_is_volume_archive() || econozel_is_edition_archive() || econozel_is_featured_archive() || econozel_is_article_archive() ) {
 		$templates[] = 'archive.php';
 	}
 
@@ -1184,6 +1251,10 @@ function econozel_document_title_parts( $title = array() ) {
 	} elseif ( econozel_is_edition() ) {
 		$_title = econozel_get_edition_title();
 
+	// Featured archives
+	} elseif ( econozel_is_featured_archive() ) {
+		$_title = esc_html_x( 'Featured Articles', 'Page title', 'econozel' );
+
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
 		$_title = econozel_post_type_title( econozel_get_article_post_type() );
@@ -1234,6 +1305,10 @@ function econozel_get_the_archive_title( $title = '' ) {
 			$title = sprintf( _x( 'Econozel %s', 'Numeric issue edition title', 'econozel' ), $title );
 		}
 
+	// Featured archives
+	} elseif ( econozel_is_featured_archive() ) {
+		$title = esc_html_x( 'Featured Articles', 'Page title', 'econozel' );
+
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
 		$title = econozel_post_type_title( econozel_get_article_post_type() );
@@ -1279,6 +1354,10 @@ function econozel_get_the_archive_description( $description = '' ) {
 		if ( econozel_has_edition_document() ) {
 			$description .= sprintf( ' <a href="%s" target="_blank" rel="nofollow">%s</a>', esc_url( econozel_get_edition_document_url() ), esc_html__( "Download the Edition's document file", 'econozel' ) );
 		}
+
+	// Featured archives
+	} elseif ( econozel_is_featured_archive() ) {
+		$description = esc_html__( 'This page lists all featured Econozel articles archived on this site. The following articles are hand-picked and recommended by the editors, just for you.', 'econozel' );
 
 	// Article archives
 	} elseif ( econozel_is_article_archive() ) {
@@ -1519,7 +1598,7 @@ function econozel_the_posts_navigation( $args = array() ) {
 			);
 
 		// Article archives
-		} elseif ( econozel_is_article_archive() ) {
+		} elseif ( econozel_is_featured_archive() || econozel_is_article_archive() ) {
 			$args = array(
 				'prev_text'          => esc_html__( 'Older articles',      'econozel' ),
 				'next_text'          => esc_html__( 'Newer articles',      'econozel' ),

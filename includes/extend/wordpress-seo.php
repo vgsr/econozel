@@ -256,6 +256,16 @@ class Econozel_WPSEO {
 					'allow_html' => false
 				);
 
+			// Featured archives
+			} elseif ( econozel_is_featured_archive() ) {
+
+				// Append Featured archives crumb, 'cause there is none
+				$crumbs[] = array(
+					'text'       => esc_html_x( 'Featured Articles', 'article archives breadcrumb title', 'econozel' ),
+					'url'        => econozel_get_featured_archive_url(),
+					'allow_html' => false,
+				);
+
 			// Article archives
 			} elseif ( econozel_is_article_archive() ) {
 

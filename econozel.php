@@ -352,12 +352,13 @@ final class Econozel {
 	 * @since 1.0.0
 	 */
 	public function add_rewrite_tags() {
-		add_rewrite_tag( '%' . econozel_get_root_rewrite_id()            . '%', '([1]{1,})' ); // Root Page tag
-		add_rewrite_tag( '%' . econozel_get_volume_archive_rewrite_id()  . '%', '([1]{1,})' ); // Volume Archive tag
-		add_rewrite_tag( '%' . econozel_get_edition_archive_rewrite_id() . '%', '([1]{1,})' ); // Edition Archive tag
-		add_rewrite_tag( '%' . econozel_get_volume_rewrite_id()          . '%', '([^/]+)'   ); // Volume Page tag
-		add_rewrite_tag( '%' . econozel_get_edition_issue_rewrite_id()   . '%', '([^/]+)'   ); // Edition Page tag
-		add_rewrite_tag( '%' . econozel_get_random_article_rewrite_id()  . '%', '([1]{1,})' ); // Random Article tag
+		add_rewrite_tag( '%' . econozel_get_root_rewrite_id()             . '%', '([1]{1,})' ); // Root Page tag
+		add_rewrite_tag( '%' . econozel_get_volume_archive_rewrite_id()   . '%', '([1]{1,})' ); // Volume archives tag
+		add_rewrite_tag( '%' . econozel_get_edition_archive_rewrite_id()  . '%', '([1]{1,})' ); // Edition archives tag
+		add_rewrite_tag( '%' . econozel_get_volume_rewrite_id()           . '%', '([^/]+)'   ); // Single Volume tag
+		add_rewrite_tag( '%' . econozel_get_edition_issue_rewrite_id()    . '%', '([^/]+)'   ); // Single Edition tag
+		add_rewrite_tag( '%' . econozel_get_random_article_rewrite_id()   . '%', '([1]{1,})' ); // Random Article tag
+		add_rewrite_tag( '%' . econozel_get_featured_archive_rewrite_id() . '%', '([1]{1,})' ); // Featured archives tag
 	}
 
 	/**
@@ -372,6 +373,7 @@ final class Econozel {
 	 * - /{root}/{editions}/
 	 * - /{root}/{editions}/page/{#}/
 	 * - /{root}/{random}/
+	 * - /{root}/{featured}/
 	 *
 	 * @since 1.0.0
 	 */
@@ -386,6 +388,7 @@ final class Econozel {
 		$edition_slug    = econozel_get_edition_slug();
 		$paged_slug      = econozel_get_paged_slug();
 		$random_slug     = econozel_get_random_article_slug();
+		$featured_slug   = econozel_get_featured_archive_slug();
 
 		// Unique rewrite IDs
 		$root_id         = econozel_get_root_rewrite_id();
@@ -394,6 +397,7 @@ final class Econozel {
 		$edition_root_id = econozel_get_edition_archive_rewrite_id();
 		$issue_id        = econozel_get_edition_issue_rewrite_id();
 		$random_id       = econozel_get_random_article_rewrite_id();
+		$featured_id     = econozel_get_featured_archive_rewrite_id();
 		$paged_id        = 'paged';
 
 		// Generic rules
@@ -407,20 +411,24 @@ final class Econozel {
 		$edition_rule    = $volume_rule . '/([^/]+)';
 
 		// Root rules
-		add_rewrite_rule( $root_slug    . $root_rule,   'index.php?' . $root_id . '=1', $priority );
+		add_rewrite_rule( $root_slug     . $root_rule,  'index.php?' . $root_id . '=1', $priority );
 
 		// Volume rules
-		add_rewrite_rule( $volume_slug  . $paged_rule,  'index.php?' . $volume_root_id . '=1&' . $paged_id . '=$matches[1]', $priority );
-		add_rewrite_rule( $volume_slug  . $root_rule,   'index.php?' . $volume_root_id . '=1',                               $priority );
-		add_rewrite_rule( $volume_rule  . $root_rule,   'index.php?' . $volume_id      . '=$matches[1]',                     $priority );
+		add_rewrite_rule( $volume_slug   . $paged_rule, 'index.php?' . $volume_root_id . '=1&' . $paged_id . '=$matches[1]', $priority );
+		add_rewrite_rule( $volume_slug   . $root_rule,  'index.php?' . $volume_root_id . '=1',                               $priority );
+		add_rewrite_rule( $volume_rule   . $root_rule,  'index.php?' . $volume_id      . '=$matches[1]',                     $priority );
 
 		// Edition rules
-		add_rewrite_rule( $edition_slug . $paged_rule,  'index.php?' . $edition_root_id . '=1&'           . $paged_id . '=$matches[1]', $priority );
-		add_rewrite_rule( $edition_slug . $root_rule,   'index.php?' . $edition_root_id . '=1',                                         $priority );
-		add_rewrite_rule( $edition_rule . $root_rule,   'index.php?' . $volume_id       . '=$matches[1]&' . $issue_id . '=$matches[2]', $priority );
+		add_rewrite_rule( $edition_slug  . $paged_rule, 'index.php?' . $edition_root_id . '=1&'           . $paged_id . '=$matches[1]', $priority );
+		add_rewrite_rule( $edition_slug  . $root_rule,  'index.php?' . $edition_root_id . '=1',                                         $priority );
+		add_rewrite_rule( $edition_rule  . $root_rule,  'index.php?' . $volume_id       . '=$matches[1]&' . $issue_id . '=$matches[2]', $priority );
 
 		// Random rules
-		add_rewrite_rule( $random_slug  . $root_rule,   'index.php?' . $random_id . '=1', $priority );
+		add_rewrite_rule( $random_slug   . $root_rule,  'index.php?' . $random_id . '=1', $priority );
+
+		// Featured rules
+		add_rewrite_rule( $featured_slug . $paged_rule, 'index.php?' . $featured_id . '=1&' . $paged_id . '=$matches[1]', $priority );
+		add_rewrite_rule( $featured_slug . $root_rule,  'index.php?' . $featured_id . '=1', $priority );
 	}
 }
 
