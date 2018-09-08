@@ -269,7 +269,7 @@ function econozel_get_article_edition( $article = 0, $object = false ) {
 	if ( ! $article = econozel_get_article( $article ) )
 		return false;
 
-	// Define return var
+	// Define return variable
 	$edition = false;
 
 	// Get the Article's Edition terms
@@ -418,7 +418,7 @@ function econozel_the_article_content( $article = 0 ) {
 	 */
 	function econozel_get_article_content( $article = 0 ) {
 
-		// Define return var
+		// Define return variable
 		$content = '';
 
 		if ( $article = econozel_get_article( $article ) ) {
@@ -724,7 +724,7 @@ function econozel_article_page_number( $article = 0, $echo = true ) {
 	// Get page number
 	$page_number = econozel_get_article_page_number( $article );
 
-	// Define return var
+	// Define return variable
 	$retval = '';
 
 	// Pages are only valid beyond 0
@@ -765,7 +765,7 @@ function econozel_the_article_page_number( $article = 0 ) {
 	 */
 	function econozel_get_article_page_number( $article = 0 ) {
 
-		// Define return var
+		// Define return variable
 		$page_number = 0;
 
 		// Get the Article

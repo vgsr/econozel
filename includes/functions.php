@@ -187,19 +187,19 @@ function econozel_get_edition_slug() {
 }
 
 /**
- * Return the random Article rewrite slug
+ * Return the Random Article rewrite slug
  *
  * @since 1.0.0
  *
  * @uses apply_filters() Calls 'econozel_get_random_article_slug'
- * @return string Random article rewrite slug
+ * @return string Random Article rewrite slug
  */
 function econozel_get_random_article_slug() {
 	return apply_filters( 'econozel_get_random_article_slug', trailingslashit( econozel_get_root_slug() ) . get_option( '_econozel_random_article_slug', 'random' ) );
 }
 
 /**
- * Return the random Article url
+ * Return the Random Article url
  *
  * @since 1.0.0
  *
