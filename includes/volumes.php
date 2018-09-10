@@ -444,10 +444,10 @@ function econozel_the_volume_title( $volume = 0, $prepended = true ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
+ * @param array $args See {@see econozel_get_volume_link()}.
  */
-function econozel_the_volume_link( $volume = 0 ) {
-	echo econozel_get_volume_link( $volume );
+function econozel_the_volume_link( $args = array() ) {
+	echo econozel_get_volume_link( $args );
 }
 
 	/**
@@ -457,25 +457,40 @@ function econozel_the_volume_link( $volume = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_volume_link'
 	 *
-	 * @param WP_Term|int $volume Optional. Volume object or ID. Defaults to the current post's Volume.
+	 * @param array $args Function arguments, supports these args:
+	 *  - volume: Volume object or ID. Defaults to the current post's Volume.
+	 *  - link_before: Markup to put before the link. Defaults to an empty string.
+	 *  - link_after: Markup to put after the link. Defaults to an empty string.
 	 * @return string Volume permalink
 	 */
-	function econozel_get_volume_link( $volume = 0 ) {
+	function econozel_get_volume_link( $args = array() ) {
+
+		// Accept single argument as the Volume
+		if ( ! is_array( $args ) ) {
+			$args = array( 'volume' => $args );
+		}
+
+		$r = wp_parse_args( $args, array(
+			'volume'      => 0,
+			'link_before' => '',
+			'link_after'  => '',
+		) );
 
 		// Define return var
 		$link = '';
 
-		if ( $volume = econozel_get_volume( $volume ) ) {
+		if ( $volume = econozel_get_volume( $r['volume'] ) ) {
 			$url  = econozel_get_volume_url( $volume );
-			$link = sprintf(
-				$url ? '<a href="%1$s" title="%2$s" rel="collection">%3$s</a>' : '%3$s',
+			$link = sprintf( $url ? '%s<a href="%s" title="%s" rel="collection">%s</a>%s' : '%1$s%4$s%5$s',
+				$r['link_before'],
 				esc_url( $url ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_volume_title( $volume ) ) ),
-				econozel_get_volume_title( $volume )
+				econozel_get_volume_title( $volume ),
+				$r['link_after']
 			);
 		}
 
-		return apply_filters( 'econozel_get_volume_link', $link, $volume );
+		return apply_filters( 'econozel_get_volume_link', $link, $volume, $r );
 	}
 
 /**
