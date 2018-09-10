@@ -771,10 +771,10 @@ function econozel_the_edition_label( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+ * @param array $args See {@see econozel_get_edition_link()}.
  */
-function econozel_the_edition_link( $edition = 0 ) {
-	echo econozel_get_edition_link( $edition );
+function econozel_the_edition_link( $args = array() ) {
+	echo econozel_get_edition_link( $args );
 }
 
 	/**
@@ -784,26 +784,42 @@ function econozel_the_edition_link( $edition = 0 ) {
 	 *
 	 * @uses apply_filters() Calls 'econozel_get_edition_link'
 	 *
-	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
-	 * @param bool $issue_title Optional. Whether to use the issue title. Defaults to false.
+	 * @param array $args Function arguments, supports these args:
+	 *  - edition: Edition object or ID. Defaults to the current Edition.
+	 *  - issue_title: Whether to use the issue title. Defaults to False.
+	 *  - link_before: Markup to put before the link. Defaults to an empty string.
+	 *  - link_after: Markup to put after the link. Defaults to an empty string.
 	 * @return string Edition permalink
 	 */
-	function econozel_get_edition_link( $edition = 0, $issue_title = false ) {
+	function econozel_get_edition_link( $args = array() ) {
+
+		// Accept single argument as the Edition
+		if ( ! is_array( $args ) ) {
+			$args = array( 'edition' => $args );
+		}
+
+		$r = wp_parse_args( $args, array(
+			'edition'     => 0,
+			'issue_title' => false,
+			'link_before' => '',
+			'link_after'  => '',
+		) );
 
 		// Define return value
 		$link = '';
 
-		if ( $edition = econozel_get_edition( $edition ) ) {
+		if ( $edition = econozel_get_edition( $r['edition'] ) ) {
 			$url  = econozel_get_edition_url( $edition );
-			$link = sprintf(
-				$url ? '<a href="%1$s" title="%2$s" rel="collection">%3$s</a>' : '%3$s',
+			$link = sprintf( $url ? '%s<a href="%s" title="%s" rel="collection">%s</a>%s' : '%1$s%4$s%5$s',
+				$r['link_before'],
 				esc_url( $url ),
 				esc_attr( sprintf( esc_html__( 'View articles in %s', 'econozel' ), econozel_get_edition_label( $edition ) ) ),
-				$issue_title ? econozel_get_edition_issue_title( $edition ) : econozel_get_edition_title( $edition )
+				$r['issue_title'] ? econozel_get_edition_issue_title( $edition ) : econozel_get_edition_title( $edition ),
+				$r['link_after']
 			);
 		}
 
-		return apply_filters( 'econozel_get_edition_link', $link, $edition, $issue_title );
+		return apply_filters( 'econozel_get_edition_link', $link, $edition, $r );
 	}
 
 /**
@@ -811,10 +827,10 @@ function econozel_the_edition_link( $edition = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+ * @param array $args See {@see econozel_get_edition_link()}.
  */
-function econozel_the_edition_issue_link( $edition = 0 ) {
-	echo econozel_get_edition_issue_link( $edition );
+function econozel_the_edition_issue_link( $args = array() ) {
+	echo econozel_get_edition_issue_link( $args );
 }
 
 	/**
@@ -822,11 +838,19 @@ function econozel_the_edition_issue_link( $edition = 0 ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Term|int $edition Optional. Edition object or ID. Defaults to the current Edition.
+	 * @param array $args See {@see econozel_get_edition_link()}.
 	 * @return string Edition permalink
 	 */
-	function econozel_get_edition_issue_link( $edition = 0 ) {
-		return econozel_get_edition_link( $edition, true );
+	function econozel_get_edition_issue_link( $args = array() ) {
+
+		// Accept single argument as the Edition
+		if ( ! is_array( $args ) ) {
+			$args = array( 'edition' => $args );
+		}
+
+		return econozel_get_edition_link( wp_parse_args( $args, array(
+			'issue_title' => true
+		) ) );
 	}
 
 /**
