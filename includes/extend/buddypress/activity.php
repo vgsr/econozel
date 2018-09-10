@@ -213,3 +213,59 @@ function econozel_bp_activity_new_comment_action( $action, $activity ) {
 
 	return $action;
 }
+
+/**
+ * Get the registered Article activity ids
+ *
+ * @since 1.0.0
+ *
+ * @uses WPDB $wpdb
+ *
+ * @param string $type Activity type. Either 'post' or 'comment'.
+ * @return array Article activity ids
+ */
+function econozel_bp_activity_get_article_activities( $type = '' ) {
+	global $wpdb;
+
+	/**
+	 * Cache activity ids per type, activity post or comment in static var
+	 * so we only have to fetch those once per activity type.
+	 */
+	static $activity_ids = null;
+
+	if ( null === $activity_ids ) {
+
+		// Setup local variable
+		$activity_ids = array( 'post' => array(), 'comment' => array() );
+
+		// Get BuddyPress
+		$bp = buddypress();
+
+		// Activity post args
+		$activity_post_object = bp_activity_get_post_type_tracking_args( econozel_get_article_post_type() );
+
+		// Load both post and comment activities
+		foreach ( array( 'post', 'comment' ) as $activity_type ) {
+
+			// Get the action id for the Article activity type
+			$action_id = $activity_type === 'comment'
+				? $activity_post_object->comments_tracking->action_id
+				: $activity_post_object->action_id;
+
+			// Get activity ids of tye type by a custom SQL query
+			$result = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->activity->table_name} WHERE type = %s", $action_id ) );
+
+			// Sanitize activity ids and store in static array
+			$activity_ids[ $activity_type ] = array_values( array_unique( array_map( 'intval', $result ) ) );
+		}
+	}
+
+	// Get activity ids by type
+	if ( ! in_array( $type, array( 'post', 'comment' ) ) ) {
+		$retval = array();
+	} else {
+		$retval = $activity_ids[ $type ];
+	}
+
+	return $retval;
+}

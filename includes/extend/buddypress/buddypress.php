@@ -137,25 +137,46 @@ class Econozel_BuddyPress {
 	public function activity_filter_where_conditions( $where, $args ) {
 		global $wpdb;
 
-		// Define comment query condition part
-		$_part = "a.type IN ( 'new_blog_comment'";
+		// Get BuddyPress
+		$bp        = buddypress();
+		$post_type = econozel_get_article_post_type();
 
-		// This is an activity comment query
-		if ( isset( $where['filter_sql'] ) && false !== ( $pos = strpos( $where['filter_sql'], $_part ) ) ) {
+		// User has no access
+		if ( ! econozel_check_access() ) {
 
-			// Query also comment
-			$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$post_type}_comment" ), $pos + strlen( $_part ), 0 );
+			// Collect plugin activity ids
+			$apost_ids    = econozel_bp_activity_get_article_activities( 'post'    );
+			$acomment_ids = econozel_bp_activity_get_article_activities( 'comment' );
+			$activity_ids = implode( ',', $apost_ids + $acomment_ids );
 
-			// Get synced Article comment activities
-			$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$post_type}_comment_id" ) );
+			// Exclude Econozel activity items
+			$where[] = "a.id NOT IN ( {$activity_ids} )";
 
-			// OR query for specific comment activities
-			if ( ! empty( $activity_ids ) ) {
-				$activity_ids = implode( ',', $activity_ids );
-				$where['filter_sql'] = '(' . $where['filter_sql'] . " OR a.id IN ( {$activity_ids} ) )";
+			// Exclude activity comments for Econozel items
+			$where[] = $wpdb->prepare( "( a.type <> %s OR a.secondary_item_id NOT IN ( {$activity_ids} ) )", 'activity_comment' );
+
+		// User has access
+		} else {
+
+			// Define comment query condition part
+			$_part = "a.type IN ( 'new_blog_comment'";
+
+			// This is an activity comment query
+			if ( isset( $where['filter_sql'] ) && false !== ( $pos = strpos( $where['filter_sql'], $_part ) ) ) {
+
+				// Query also comment
+				$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$post_type}_comment" ), $pos + strlen( $_part ), 0 );
+
+				// Get synced Article comment activities
+				$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$post_type}_comment_id" ) );
+
+				// OR query for specific comment activities
+				if ( ! empty( $activity_ids ) ) {
+					$activity_ids = implode( ',', $activity_ids );
+					$where['filter_sql'] = '(' . $where['filter_sql'] . " OR a.id IN ( {$activity_ids} ) )";
+				}
 			}
 		}
-	}
 
 		return $where;
 	}
