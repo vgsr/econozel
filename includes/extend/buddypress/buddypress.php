@@ -96,8 +96,9 @@ class Econozel_BuddyPress {
 		add_action( 'econozel_init', 'econozel_bp_activity_setup_post_type_tracking', 15 );
 
 		// Modify queried activities
-		add_filter( 'bp_activity_get',                  array( $this, 'bp_activity_get'                    ), 10, 2 );
-		add_filter( 'bp_activity_get_where_conditions', array( $this, 'activity_filter_where_conditions'   ), 10, 2 );
+		add_filter( 'bp_activity_get',                    array( $this, 'bp_activity_get'                  ), 10, 2 );
+		add_filter( 'bp_activity_get_where_conditions',   array( $this, 'activity_filter_where_conditions' ), 10, 2 );
+		add_filter( 'bp_activity_set_just-me_scope_args', array( $this, 'activity_multi_author_scope_args' ), 50, 2 );
 
 		// Generate post summary
 		add_filter( 'econozel_get_article_description', array( $this, 'get_post_summary' ), 10, 2 );
@@ -197,6 +198,82 @@ class Econozel_BuddyPress {
 		}
 
 		return $where;
+	}
+
+	/**
+	 * Modify the query arguments for the Just Me scope
+	 *
+	 * This applies query logic which lists other user's acitivity items that
+	 * reference published Articles of which the current user (just-me) is a
+	 * co-author.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $query_args Scope query arguments
+	 * @param array $args       Activity arguments
+	 * @return array Scope query arguments
+	 */
+	public function activity_multi_author_scope_args( $query_args, $args ) {
+
+		// Define article action type
+		$type = 'new_' . econozel_get_article_post_type();
+
+		// When listing all activity items or just article ones
+		if ( empty( $args['action'] ) || $type === $args['action'] ) {
+
+			// Create OR-construction
+			if ( 'AND' === $query_args['relation'] ) {
+				$override = $query_args['override'];
+				unset( $query_args['override'] );
+				$query_args = array(
+					'relation' => 'OR',
+					'override' => $override,
+					$query_args
+				);
+			}
+
+			// Determine the user_id.
+			if ( ! empty( $args['user_id'] ) ) {
+				$user_id = $args['user_id'];
+			} else {
+				$user_id = bp_displayed_user_id()
+					? bp_displayed_user_id()
+					: bp_loggedin_user_id();
+			}
+
+			// Query for articles of which the user is not the primary author
+			if ( $user_id ) {
+				$query = new WP_Query( array(
+					'post_type'      => econozel_get_article_post_type(),
+					'fields'         => 'ids',
+					'posts_per_page' => -1,
+					'meta_query'     => array(
+						array(
+							'key'   => 'post_author',
+							'value' => $user_id
+						)
+					)
+				) );
+
+				// Include activity items that reference the queried articles
+				if ( $query->posts ) {
+					$query_args[] = array(
+						'relation' => 'AND',
+						array(
+							'column' => 'type',
+							'value'  => $type
+						),
+						array(
+							'column'  => 'secondary_item_id',
+							'value'   => $query->posts,
+							'compare' => 'IN'
+						)
+					);
+				}
+			}
+		}
+
+		return $query_args;
 	}
 
 	/**
