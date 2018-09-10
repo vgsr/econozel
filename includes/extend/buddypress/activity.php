@@ -39,14 +39,14 @@ function econozel_bp_activity_setup_post_type_tracking() {
 		'position'                          => 10,
 
 		// Post labels
-		'bp_activity_admin_filter'          => esc_html__( 'New Econozel Article',                                           'econozel' ),
-		'bp_activity_front_filter'          => esc_html__( 'Econozel Articles',                                              'econozel' ),
-		'bp_activity_new_post'              =>         __( '%1$s posted the <a href="%2$s">article</a>',                     'econozel' ),
-		'bp_activity_new_post_ms'           =>         __( '%1$s posted the <a href="%2$s">article</a>, on the site %3$s',   'econozel' ),
-		'new_article_action'                => esc_html__( '%1$s posted the article %2$s',                                   'econozel' ),
-		'new_article_action_ms'             => esc_html__( '%1$s posted the article %2$s, on the site %3$s',                 'econozel' ),
-		'new_article_in_edition_action'     => esc_html__( '%1$s posted the article %2$s in edition %3$s',                   'econozel' ),
-		'new_article_in_edition_action_ms'  => esc_html__( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
+		'bp_activity_admin_filter'          => esc_html__( 'New Econozel Article',                                         'econozel' ),
+		'bp_activity_front_filter'          => esc_html__( 'Econozel Articles',                                            'econozel' ),
+		'bp_activity_new_post'              =>         __( '%1$s posted the <a href="%2$s">article</a>',                   'econozel' ),
+		'bp_activity_new_post_ms'           =>         __( '%1$s posted the <a href="%2$s">article</a>, on the site %3$s', 'econozel' ),
+		'new_article_action'                =>    _n_noop( '%1$s posted the article %2$s', '%1$s posted the article %2$s', 'econozel' ),
+		'new_article_action_ms'             =>    _n_noop( '%1$s posted the article %2$s, on the site %4$s', '%1$s posted the article %2$s, on the site %4$s', 'econozel' ),
+		'new_article_in_edition_action'     =>    _n_noop( '%1$s posted the article %2$s in edition %3$s', '%1$s posted the article %2$s in edition %3$s', 'econozel' ),
+		'new_article_in_edition_action_ms'  =>    _n_noop( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
 
 		// Enable comment tracking. Should this be separate from normal comments?
 		'comment_action_id'                 => "new_{$post_type}_comment",
@@ -121,10 +121,21 @@ function econozel_bp_activity_new_post_action( $action, $activity ) {
 		// Get tracking arguments for the post type which is stored by the action/type
 		$track = $bp->activity->track[ $activity->type ];
 
-		// Setup action elements. @todo Handle multiple authors
-		$user_link = bp_core_get_userlink( $activity->user_id );
-		$post_link = '<a href="' . esc_url( get_permalink( $article ) ) . '">' . get_the_title( $article ) . '</a>';
-		$blog_link = '<a href="' . esc_url( get_home_url( $activity->item_id ) ) . '">' . get_blog_option( $activity->item_id, 'blogname' ) . '</a>';
+		// Setup action elements.
+		$user_link    = econozel_get_article_author_link( array(
+			'article'    => $article,
+			'concat'     => true,
+			'link_attrs' => array(
+				'class' => 'article-author'
+			)
+		) );
+		$post_link    = '<a class="article-title" href="' . esc_url( get_permalink( $article ) ) . '">' . get_the_title( $article ) . '</a>';
+		$blog_link    = '<a class="article-site" href="' . esc_url( get_home_url( $activity->item_id ) ) . '">' . get_blog_option( $activity->item_id, 'blogname' ) . '</a>';
+		$edition_link = econozel_get_edition_link( $article );
+
+		// Define custom action
+		$article_action = '';
+		$author_count   = econozel_get_article_author_count( $article );
 
 		/*
 		 * VGSR: do not use the ms action string when displaying the activity
@@ -133,20 +144,22 @@ function econozel_bp_activity_new_post_action( $action, $activity ) {
 		$multisite = function_exists( 'vgsr' ) && is_multisite() && get_current_blog_id() !== (int) $activity->item_id;
 
 		// Posted in an Edition
-		if ( $edition = econozel_get_article_edition( $article ) ) {
-			$edition_link = econozel_get_edition_link( $edition );
-
+		if ( $edition_link ) {
 			if ( $multisite && ! empty( $track->new_article_in_edition_action_ms ) ) {
-				$action = sprintf( $track->new_article_in_edition_action_ms, $user_link, $post_link, $edition_link, $blog_link );
+				$article_action = translate_nooped_plural( $track->new_article_in_edition_action_ms, $author_count, 'econozel' );
 			} elseif ( ! empty( $track->new_article_in_edition_action ) ) {
-				$action = sprintf( $track->new_article_in_edition_action, $user_link, $post_link, $edition_link );
+				$article_action = translate_nooped_plural( $track->new_article_in_edition_action, $author_count, 'econozel' );
 			}
 		} else {
 			if ( $multisite && ! empty( $track->new_article_action_ms ) ) {
-				$action = sprintf( $track->new_article_action_ms, $user_link, $post_link, $blog_link );
+				$article_action = translate_nooped_plural( $track->new_article_action_ms, $author_count, 'econozel' );
 			} elseif ( ! empty( $track->new_article_action ) ) {
-				$action = sprintf( $track->new_article_action, $user_link, $post_link );
+				$article_action = translate_nooped_plural( $track->new_article_action, $author_count, 'econozel' );
 			}
+		}
+
+		if ( $article_action ) {
+			$action = sprintf( $article_action, $user_link, $post_link, $edition_link, $blog_link );
 		}
 
 	// Default to the generic formatter
@@ -189,7 +202,7 @@ function econozel_bp_activity_new_comment_action( $action, $activity ) {
 		// Get tracking arguments for the post type which is stored by the action/type
 		$track = $bp->activity->track[ $activity->type ];
 
-		// Setup action elements. @todo Handle multiple authors
+		// Setup action elements
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		$post_link = '<a href="' . esc_url( get_permalink( $article ) ) . '">' . get_the_title( $article ) . '</a>';
 		$blog_link = '<a href="' . esc_url( get_home_url( $activity->item_id ) ) . '">' . get_blog_option( $activity->item_id, 'blogname' ) . '</a>';
