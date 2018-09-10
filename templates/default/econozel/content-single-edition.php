@@ -22,7 +22,7 @@
 			<h2 class="article-title"><?php the_title( sprintf( '<a href="%s">', esc_url( get_permalink() ) ), '</a>' ); ?></h2>
 
 			<p class="article-meta">
-				<span class="article-author"><?php printf( esc_html__( 'Written by %s', 'econozel' ), econozel_get_article_author_link( 0, true ) ); ?></span>
+				<span class="article-author"><?php printf( esc_html__( 'Written by %s', 'econozel' ), econozel_get_article_author_link( array( 'concat' => true ) ) ); ?></span>
 			</p>
 
 			<?php econozel_the_article_description(); ?>

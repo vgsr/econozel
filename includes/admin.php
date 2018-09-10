@@ -386,7 +386,10 @@ class Econozel_Admin {
 				add_filter( 'econozel_get_article_author_url', array( $this, 'admin_posts_author_url' ), 99, 3 );
 
 				// Display author link(s)
-				econozel_the_article_author_link( $post_id, ', ' );
+				econozel_the_article_author_link( array(
+					'article' => $post_id,
+					'concat'  => ', '
+				) );
 
 				// Unhook admin posts url
 				remove_filter( 'econozel_get_article_author_url', array( $this, 'admin_posts_author_url' ), 99, 3 );

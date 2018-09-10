@@ -570,12 +570,18 @@ function econozel_is_user_article_author( $user = 0, $article = 0 ) {
  *
  * @since 1.0.0
  *
- * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
- * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
- *                            it will be used as the item separator. Defaults to true, using {@see wp_sprintf_l()}.
+ * @param array $args See {@see econozel_get_article_author_link()}. Defaults 'concat' to True.
  */
-function econozel_the_article_author_link( $article = 0, $concat = true ) {
-	echo econozel_get_article_author_link( $article, $concat );
+function econozel_the_article_author_link( $args = array() ) {
+
+	// Accept single argument as the Article
+	if ( ! is_array( $args ) ) {
+		$args = array( 'article' => $args );
+	}
+
+	echo econozel_get_article_author_link( wp_parse_args( $args, array(
+		'concat' => true
+	) ) );
 }
 
 	/**
@@ -583,35 +589,70 @@ function econozel_the_article_author_link( $article = 0, $concat = true ) {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param WP_Post|int $article Optional. Article object or ID. Defaults to the current Article.
-	 * @param bool|string $concat Optional. Whether to concatenate the links into a single string. When provided a string value,
-	 *                            it will be used as the item separator. Defaults to false.
+	 * @param array $args Function arguments, supports these args:
+	 *  - article: Article object or ID. Defaults to the current Article.
+	 *  - concat: Whether to concatenate the links into a single string. When provided a string value, it will be used as
+	 *            the item separator. When provided True, will use just {@see wp_sprintf_l()}. Defaults to False.
+	 *  - link_before: Markup to put before the link. Defaults to an empty string.
+	 *  - link_after: Markup to put after the link. Defaults to an empty string.
+	 *  - link_attrs: Link attributes. Key-value list or a callable function which returns one. Defaults to empty string.
 	 * @return string|array Article author link(s)
 	 */
-	function econozel_get_article_author_link( $article = 0, $concat = false ) {
+	function econozel_get_article_author_link( $args = array() ) {
+
+		// Accept single argument as the Article
+		if ( ! is_array( $args ) ) {
+			$args = array( 'article' => $args );
+		}
+
+		$r = wp_parse_args( $args, array(
+			'article'     => 0,
+			'concat'      => false,
+			'link_before' => '',
+			'link_after'  => '',
+			'link_attrs'  => '',
+		) );
 
 		// Define return value
-		$link = array();
+		$links = array();
 
-		// Get the Article author url
-		$url = econozel_get_article_author_url( $article );
+		if ( $article = econozel_get_article( $r['article'] ) ) {
 
-		// Loop Article author url(s)
-		foreach ( $url as $user_id => $user_url ) {
+			// Loop Article author url(s)
+			foreach ( econozel_get_article_author_url( $article ) as $user_id => $url ) {
 
-			// Setup user link
-			$_link = sprintf( ! empty( $user_url ) ? '<a href="%1$s">%2$s</a>' : '%2$s', esc_url( $user_url ), econozel_get_user_displayname( $user_id ) );
+				// Setup user link
+				$link = sprintf( ! empty( $url ) ? '%s<a href="%s">%s</a>%s' : '%1$s%3$s%4$s',
+					$r['link_before'],
+					esc_url( $url ),
+					econozel_get_user_displayname( $user_id ),
+					$r['link_after']
+				);
 
-			// Enable plugin filtering
-			$link[ $user_id ] = apply_filters( 'econozel_get_article_author_link', $_link, $user_id, $user_url, $article );
+				// Inject link attributes
+				if ( $url && $r['link_attrs'] ) {
+
+					// Get link attributes from callable or plain list
+					$attrs = is_callable( $r['link_attrs'] )
+						? (array) call_user_func_array( $r['link_attrs'], array( $user_id, $article ) )
+						: (array) $r['link_attrs'];
+
+					foreach ( $attrs as $attr => $value ) {
+						$link = str_replace( '<a', sprintf( "<a %s=%s", sanitize_key( $attr ), esc_attr( $value ) ), $link );
+					}
+				}
+
+				// Enable plugin filtering
+				$links[ $user_id ] = apply_filters( 'econozel_get_article_author_link', $link, $user_id, $url, $article, $r );
+			}
 		}
 
 		// Stringify links
-		if ( false !== $concat ) {
-			$link = true === $concat ? wp_sprintf_l( '%l', $link ) : implode( $concat, $link );
+		if ( false !== $r['concat'] ) {
+			$links = true === $r['concat'] ? wp_sprintf_l( '%l', $links ) : implode( $r['concat'], $links );
 		}
 
-		return $link;
+		return $links;
 	}
 
 /**
