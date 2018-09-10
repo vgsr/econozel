@@ -55,7 +55,6 @@ class Econozel_BuddyPress {
 	public function includes() {
 		require( $this->includes_dir . 'activity.php'  );
 		require( $this->includes_dir . 'functions.php' );
-		require( $this->includes_dir . 'settings.php'  );
 	}
 
 	/**
@@ -64,9 +63,6 @@ class Econozel_BuddyPress {
 	 * @since 1.0.0
 	 */
 	public function setup_actions() {
-
-		// Add activity settings
-		add_filter( 'econozel_admin_get_settings_fields', 'econozel_bp_admin_add_settings_fields' );
 
 		// Activity component
 		if ( bp_is_active( 'activity' ) ) {

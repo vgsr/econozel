@@ -17,9 +17,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0.0
  *
- * @param bool $default Optional. Defaults to False.
  * @return bool Are BP summaries enabled?
  */
-function econozel_bp_enable_summary( $default = false ) {
-	return (bool) apply_filters( 'econozel_bp_enable_summary', get_option( '_econozel_bp_enable_summary', $default ) );
+function econozel_bp_enable_summary() {
+	return (bool) apply_filters( 'econozel_bp_enable_summary', true );
 }
