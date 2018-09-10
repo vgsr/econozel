@@ -38,13 +38,8 @@ class Econozel_BuddyPress {
 
 		/** Paths *************************************************************/
 
-		$this->includes_dir      = trailingslashit( econozel()->extend_dir . 'buddypress' );
-		$this->includes_url      = trailingslashit( econozel()->extend_url . 'buddypress' );
-
-		/** Identifiers *******************************************************/
-
-		$this->article_post_type = econozel_get_article_post_type();
-		$this->edition_tax_id    = econozel_get_edition_tax_id();
+		$this->includes_dir = trailingslashit( econozel()->extend_dir . 'buddypress' );
+		$this->includes_url = trailingslashit( econozel()->extend_url . 'buddypress' );
 	}
 
 	/**
@@ -105,7 +100,7 @@ class Econozel_BuddyPress {
 		foreach ( $activity['activities'] as $k => $_activity ) {
 
 			// This is a New Article activity item
-			if ( "new_{$this->article_post_type}" == $_activity->type ) {
+			if ( 'new_' . econozel_get_article_post_type() === $_activity->type ) {
 
 				// Skip when Article does not exist
 				if ( ! $article = econozel_get_article( (int) $_activity->secondary_item_id ) )
@@ -149,16 +144,18 @@ class Econozel_BuddyPress {
 		if ( isset( $where['filter_sql'] ) && false !== ( $pos = strpos( $where['filter_sql'], $_part ) ) ) {
 
 			// Query also comment
-			$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$this->article_post_type}_comment" ), $pos + strlen( $_part ), 0 );
+			$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$post_type}_comment" ), $pos + strlen( $_part ), 0 );
 
 			// Get synced Article comment activities
-			$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$this->article_post_type}_comment_id" ) );
+			$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$post_type}_comment_id" ) );
 
 			// OR query for specific comment activities
 			if ( ! empty( $activity_ids ) ) {
-				$where['filter_sql'] = '(' . $where['filter_sql'] . ' OR a.id IN ( ' . implode( ',', $activity_ids ) . ' ) )';
+				$activity_ids = implode( ',', $activity_ids );
+				$where['filter_sql'] = '(' . $where['filter_sql'] . " OR a.id IN ( {$activity_ids} ) )";
 			}
 		}
+	}
 
 		return $where;
 	}
@@ -187,7 +184,7 @@ class Econozel_BuddyPress {
 
 		// Define activity item identifiers
 		$activity          = false;
-		$type              = 'new_' . $this->article_post_type;
+		$type              = 'new_' . econozel_get_article_post_type();
 		$item_id           = get_current_blog_id();
 		$secondary_item_id = $article->ID;
 
