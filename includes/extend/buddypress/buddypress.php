@@ -59,10 +59,28 @@ class Econozel_BuddyPress {
 	 */
 	public function setup_actions() {
 
+		add_filter( 'econozel_get_article_author_url', array( $this, 'get_article_author_url' ), 10, 3 );
+
 		// Activity component
 		if ( bp_is_active( 'activity' ) ) {
 			add_action( 'bp_loaded', array( $this, 'setup_activity_actions' ), 20 );
 		}
+	}
+
+	/** General ***************************************************************/
+
+	/**
+	 * Modify the Article author url
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $url Article author url
+	 * @param int $user_id User ID
+	 * @param WP_Post|bool $article Article object or False when not found
+	 * @return string Article author url
+	 */
+	public function get_article_author_url( $url, $user_id, $article ) {
+		return bp_core_get_user_domain( $user_id );
 	}
 
 	/** Activity **************************************************************/
