@@ -20,5 +20,5 @@ defined( 'ABSPATH' ) || exit;
  * @return bool Are BP summaries enabled?
  */
 function econozel_bp_enable_summary() {
-	return (bool) apply_filters( 'econozel_bp_enable_summary', true );
+	return (bool) apply_filters( 'econozel_bp_enable_summary', false );
 }
