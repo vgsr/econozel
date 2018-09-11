@@ -289,7 +289,7 @@ final class Econozel {
 			array(
 				'labels'                => econozel_get_edition_tax_labels(),
 				'capabilities'          => econozel_get_edition_tax_caps(),
-				'update_count_callback' => '_update_post_term_count',
+				'update_count_callback' => '_econozel_update_article_edition_count',
 				'hierarchical'          => false,
 				'public'                => $access,
 				'rewrite'               => false, // We have our own rewrite rules

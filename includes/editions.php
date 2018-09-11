@@ -124,6 +124,51 @@ function econozel_add_edition_tax_meta( $meta ) {
 	return $meta;
 }
 
+/**
+ * Will update the post count for Editions
+ *
+ * Considers the 'featured' custom post status.
+ *
+ * @see _update_post_term_count()
+ *
+ * @since 1.0.0
+ *
+ * @param array $terms List of term ids
+ * @param WP_Taxonomy $taxonomy Taxonomy object
+ */
+function _econozel_update_article_edition_count( $terms, $taxonomy ) {
+	global $wpdb;
+
+	$object_types = (array) $taxonomy->object_type;
+
+	foreach ( $object_types as &$object_type ) {
+		list( $object_type ) = explode( ':', $object_type );
+	}
+
+	$object_types = array_unique( $object_types );
+
+	if ( $object_types ) {
+		$object_types = esc_sql( array_filter( $object_types, 'post_type_exists' ) );
+	}
+
+	$post_statuses = array( 'publish', econozel_get_featured_status_id() );
+
+	foreach ( (array) $terms as $term ) {
+		$count = 0;
+
+		if ( $object_types ) {
+			$count += (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status IN ('" . implode( "', '", $post_statuses ) . "') AND post_type IN ('" . implode( "', '", $object_types ) . "') AND term_taxonomy_id = %d", $term ) );
+		}
+
+		/** This action is documented in wp-includes/taxonomy.php */
+		do_action( 'edit_term_taxonomy', $term, $taxonomy->name );
+		$wpdb->update( $wpdb->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term ) );
+
+		/** This action is documented in wp-includes/taxonomy.php */
+		do_action( 'edited_term_taxonomy', $term, $taxonomy->name );
+	}
+}
+
 /** Query *********************************************************************/
 
 /**
