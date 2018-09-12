@@ -847,6 +847,7 @@ function econozel_body_class( $wp_classes, $custom_classes = false ) {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'is_econozel'
  * @return bool On a plugin page
  */
 function is_econozel() {
@@ -883,7 +884,7 @@ function is_econozel() {
 		$retval = true;
 	}
 
-	return $retval;
+	return apply_filters( 'is_econozel', $retval );
 }
 
 /** Theme *********************************************************************/
@@ -1122,6 +1123,7 @@ function econozel_get_theme_compat_template() {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_has_custom_query'
  * @return bool Whether the current archive page has query results
  */
 function econozel_has_custom_query() {
@@ -1146,7 +1148,7 @@ function econozel_has_custom_query() {
 		$retval = true;
 	}
 
-	return $retval;
+	return apply_filters( 'econozel_has_custom_query', $retval );
 }
 
 /**
@@ -1154,6 +1156,7 @@ function econozel_has_custom_query() {
  *
  * @since 1.0.0
  *
+ * @uses apply_filters() Calls 'econozel_in_the_loop'
  * @return bool Are we in a custom query loop?
  */
 function econozel_in_the_loop() {
@@ -1178,7 +1181,7 @@ function econozel_in_the_loop() {
 		$retval = true;
 	}
 
-	return $retval;
+	return apply_filters( 'econozel_in_the_loop', $retval );
 }
 
 /**
@@ -1212,6 +1215,8 @@ function econozel_get_paged() {
  * Modify the document title parts for plugin pages
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_document_title_parts'
  *
  * @param array $title Title parts
  * @return array Title parts
@@ -1265,13 +1270,15 @@ function econozel_document_title_parts( $title = array() ) {
 		$title['title'] = $_title;
 	}
 
-	return $title;
+	return apply_filters( 'econozel_document_title_parts', $title );
 }
 
 /**
  * Return the Econozel archive title
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_the_archive_title'
  *
  * @param string $title Archive title
  * @return string Archive title
@@ -1314,13 +1321,15 @@ function econozel_get_the_archive_title( $title = '' ) {
 		$title = econozel_post_type_title( econozel_get_article_post_type() );
 	}
 
-	return $title;
+	return apply_filters( 'econozel_get_the_archive_title', $title );
 }
 
 /**
  * Return the Econozel archive description
  *
  * @since 1.0.0
+ *
+ * @uses apply_filters() Calls 'econozel_get_the_archive_description'
  *
  * @param string $description Archive description
  * @return string Archive description
@@ -1367,7 +1376,7 @@ function econozel_get_the_archive_description( $description = '' ) {
 		$description .= sprintf( ' ' . __( 'Or surprise yourself by visiting a <a href="%s">randomly selected article</a>.', 'econozel' ), esc_url( econozel_get_random_article_url() ) );
 	}
 
-	return $description;
+	return apply_filters( 'econozel_get_the_archive_description', $description );
 }
 
 /**
@@ -1396,7 +1405,7 @@ function econozel_filter_item_class( $classes ) {
 }
 
 /**
- * Return url for the adjacent Volume/Edition
+ * Modify the url for the adjacent Volume/Edition
  *
  * Manipulating the native adjacent query logic will not work for
  * terms, so when linking to the next/previous Volume or Edition,
@@ -1576,6 +1585,8 @@ function econozel_the_posts_navigation( $args = array() ) {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @uses apply_filters() Calls 'econozel_get_the_posts_navigation'
+	 *
 	 * @param array $args Arguments for {@see get_the_posts_navigation()}
 	 * @return string Navigation markup
 	 */
@@ -1606,5 +1617,5 @@ function econozel_the_posts_navigation( $args = array() ) {
 			);
 		}
 
-		return get_the_posts_navigation( $args );
+		return apply_filters( 'econozel_get_the_posts_navigation', get_the_posts_navigation( $args ), $args );
 	}
