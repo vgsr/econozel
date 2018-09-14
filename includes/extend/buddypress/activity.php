@@ -24,7 +24,20 @@ class Econozel_BP_Activity {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+		$this->setup_globals();
 		$this->setup_actions();
+	}
+
+	/**
+	 * Define class globals
+	 *
+	 * @since 1.0.0
+	 */
+	private function setup_globals() {
+
+		// Activity types
+		$this->article_create  = 'new_' . econozel_get_article_post_type();
+		$this->article_comment = 'new_' . econozel_get_article_post_type() . '_comment';
 	}
 
 	/**
@@ -54,14 +67,12 @@ class Econozel_BP_Activity {
 	 * @since 1.0.0
 	 */
 	public function setup_post_type_tracking() {
-		$post_type = econozel_get_article_post_type();
 
 		// Register post type activity support
-		add_post_type_support( $post_type, 'buddypress-activity' );
+		add_post_type_support( econozel_get_article_post_type(), 'buddypress-activity' );
 
 		// Register Article tracking args
-		bp_activity_set_post_type_tracking_args( $post_type, array(
-
+		bp_activity_set_post_type_tracking_args( econozel_get_article_post_type(), array(
 			/**
 			 * Register as part of the Blogs component. This is done because
 			 * it lists the activity filter with the other Blogs actions in
@@ -71,7 +82,7 @@ class Econozel_BP_Activity {
 			 */
 			'component_id'                      => bp_is_active( 'blogs' ) ? buddypress()->blogs->id : 'blogs',
 
-			// Our own format logic
+			// Custom format logic
 			'format_callback'                   => array( $this, 'new_post_action' ),
 			'contexts'                          => array( 'activity', 'member' ),
 			'position'                          => 10,
@@ -86,8 +97,9 @@ class Econozel_BP_Activity {
 			'new_article_in_edition_action'     =>    _n_noop( '%1$s posted the article %2$s in edition %3$s', '%1$s posted the article %2$s in edition %3$s', 'econozel' ),
 			'new_article_in_edition_action_ms'  =>    _n_noop( '%1$s posted the article %2$s in edition %3$s, on the site %4$s', '%1$s posted the article %2$s in edition %3$s, on the site %4$s', 'econozel' ),
 
-			// Enable comment tracking. Should this be separate from normal comments?
-			'comment_action_id'                 => "new_{$post_type}_comment",
+			// Enable comment tracking
+			// Should this be separate from normal comments?
+			'comment_action_id'                 => $this->article_comment,
 			'comment_format_callback'           => array( $this, 'new_comment_action' ),
 
 			// Comment labels
@@ -280,7 +292,7 @@ class Econozel_BP_Activity {
 		foreach ( $activity['activities'] as $k => $_activity ) {
 
 			// This is a New Article activity item
-			if ( 'new_' . econozel_get_article_post_type() === $_activity->type ) {
+			if ( $this->article_create === $_activity->type ) {
 
 				// Skip when Article does not exist
 				if ( ! $article = econozel_get_article( (int) $_activity->secondary_item_id ) )
@@ -345,7 +357,7 @@ class Econozel_BP_Activity {
 			if ( isset( $where['filter_sql'] ) && false !== ( $pos = strpos( $where['filter_sql'], $_part ) ) ) {
 
 				// Query also comment
-				$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', "new_{$post_type}_comment" ), $pos + strlen( $_part ), 0 );
+				$where['filter_sql'] = substr_replace( $where['filter_sql'], $wpdb->prepare( ', %s', $this->article_comment ), $pos + strlen( $_part ), 0 );
 
 				// Get synced Article comment activities
 				$activity_ids = $wpdb->get_col( $wpdb->prepare( "SELECT activity_id FROM {$bp->activity->table_name_meta} WHERE meta_key = %s", "bp_blogs_{$post_type}_comment_id" ) );
@@ -376,11 +388,8 @@ class Econozel_BP_Activity {
 	 */
 	public function multi_author_scope_args( $query_args, $args ) {
 
-		// Define article action type
-		$type = 'new_' . econozel_get_article_post_type();
-
 		// When listing all activity items or just article ones
-		if ( empty( $args['action'] ) || $type === $args['action'] ) {
+		if ( empty( $args['action'] ) || $this->article_create === $args['action'] ) {
 
 			// Create OR-construction
 			if ( 'AND' === $query_args['relation'] ) {
@@ -422,7 +431,7 @@ class Econozel_BP_Activity {
 						'relation' => 'AND',
 						array(
 							'column' => 'type',
-							'value'  => $type
+							'value'  => $this->article_create
 						),
 						array(
 							'column'  => 'secondary_item_id',
@@ -461,12 +470,11 @@ class Econozel_BP_Activity {
 
 		// Define activity item identifiers
 		$activity          = false;
-		$type              = 'new_' . econozel_get_article_post_type();
 		$item_id           = get_current_blog_id();
 		$secondary_item_id = $article->ID;
 
 		// Check whether there was an activity item registered
-		$activity_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bp->activity->table_name} WHERE type = %s AND item_id = %d AND secondary_item_id = %d", $type, $item_id, $secondary_item_id ) );
+		$activity_id = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$bp->activity->table_name} WHERE type = %s AND item_id = %d AND secondary_item_id = %d", $this->article_create, $item_id, $secondary_item_id ) );
 
 		// Get the original activity object
 		if ( $activity_id ) {
@@ -480,7 +488,7 @@ class Econozel_BP_Activity {
 				'id'                => 0,
 				'user_id'           => $article->post_author,
 				'component'         => bp_is_active( 'blogs' ) ? $bp->blogs->id : 'blogs',
-				'type'              => $type,
+				'type'              => $this->article_create,
 				'content'           => $content,
 				'primary_link'      => get_home_url( null, '?p=' . $article->ID ),
 				'item_id'           => $item_id,
