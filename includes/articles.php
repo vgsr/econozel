@@ -109,10 +109,13 @@ function econozel_get_featured_status_id() {
  *
  * @since 1.0.0
  *
+ * @uses WP_Rewrite $wp_rewrite
+ *
  * @param array $args Query arguments.
  * @return bool Has the query returned any results?
  */
 function econozel_query_articles( $args = array() ) {
+	global $wp_rewrite;
 
 	// Get query object
 	$query = econozel()->article_query;
@@ -125,7 +128,7 @@ function econozel_query_articles( $args = array() ) {
 	$query->posts        = array();
 
 	// Define query args
-	$query_args = wp_parse_args( $args, array(
+	$r = wp_parse_args( $args, array(
 		'econozel_edition' => econozel_get_edition_id(),
 		'post_type'        => econozel_get_article_post_type(),
 		'posts_per_page'   => -1,
@@ -133,7 +136,26 @@ function econozel_query_articles( $args = array() ) {
 	) );
 
 	// Run query to get the posts
-	$query->query( $query_args );
+	$query->query( $r );
+
+	// Only add pagination when query returned results
+	if ( $query->post_count || $query->found_posts ) {
+
+		// Pagination settings with filter
+		$pagination_args = apply_filters( 'econozel_article_pagination', array(
+			'total'     => $query->get( 'posts_per_page' ) === $query->found_posts ? 1 : ceil( (int) $query->found_posts / (int) $query->get( 'posts_per_page' ) ),
+			'current'   => (int) $query->get( 'paged' ),
+			'prev_text' => is_rtl() ? '&rarr;' : '&larr;',
+			'next_text' => is_rtl() ? '&larr;' : '&rarr;',
+			'mid_size'  => 1
+		), $query, $r );
+
+		// Add pagination to query object
+		$query->pagination_links = paginate_links( $pagination_args );
+
+		// Remove first page from pagination
+		$query->pagination_links = str_replace( $wp_rewrite->pagination_base . "/1/'", "'", $query->pagination_links );
+	}
 
 	// Return whether the query has returned results
 	return $query->have_posts();
@@ -906,4 +928,32 @@ function econozel_the_article_pagination_count() {
 		}
 
 		return apply_filters( 'econozel_get_article_pagination_count', esc_html( $retstr ) );
+	}
+
+/**
+ * Output Article query pagination links
+ *
+ * @since 1.0.0
+ */
+function econozel_the_article_pagination_links() {
+	echo econozel_get_article_pagination_links();
+}
+
+	/**
+	 * Return Article query pagination links
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_pagination_links'
+	 * @return string Article pagination links
+	 */
+	function econozel_get_article_pagination_links() {
+
+		// Get query object
+		$query = econozel()->article_query;
+
+		if ( empty( $query ) )
+			return false;
+
+		return apply_filters( 'econozel_get_article_pagination_links', $query->pagination_links );
 	}
