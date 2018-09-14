@@ -660,7 +660,7 @@ function econozel_the_article_author_link( $args = array() ) {
 						: (array) $r['link_attrs'];
 
 					foreach ( $attrs as $attr => $value ) {
-						$link = str_replace( '<a', sprintf( "<a %s=%s", sanitize_key( $attr ), esc_attr( $value ) ), $link );
+						$link = str_replace( '<a', sprintf( '<a %s="%s"', sanitize_key( $attr ), esc_attr( $value ) ), $link );
 					}
 				}
 
