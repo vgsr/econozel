@@ -914,17 +914,18 @@ function econozel_the_article_pagination_count() {
 			return false;
 
 		// Set pagination values
-		$start_num = intval( ( $query->get( 'paged' ) - 1 ) * $query->get( 'posts_per_page' ) ) + 1;
-		$to_num    = ( $start_num + ( $query->get( 'posts_per_page' ) - 1 ) > $query->found_posts ) ? $query->found_posts : $start_num + ( $query->get( 'posts_per_page' ) - 1 );
-		$total     = (int) ! empty( $query->found_posts ) ? $query->found_posts : $query->post_count;
+		$per_page  = $query->get( 'posts_per_page' );
+		$start_num = intval( ( $query->get( 'paged' ) - 1 ) * $per_page ) + 1;
+		$to_num    = ( $start_num + ( $per_page - 1 ) > $query->found_posts ) ? $query->found_posts : $start_num + ( $per_page - 1 );
+		$total     = (int) ( ! empty( $query->found_posts ) ? $query->found_posts : $query->post_count );
 
-		// Several articles in a single page
-		if ( empty( $to_num ) ) {
+		// A single or several articles in a single page
+		if ( 1 === $total || empty( $to_num ) ) {
 			$retstr = sprintf( _n( 'Viewing %1$s article', 'Viewing %1$s articles', $total, 'econozel' ), $total );
 
 		// Several articles in several pages
 		} else {
-			$retstr = sprintf( _n( 'Viewing article %2$s (of %4$s total)', 'Viewing %1$s articles - %2$s through %3$s (of %4$s total)', $total, 'econozel' ), $query->post_count, $start_num, $to_num, $total );
+			$retstr = sprintf( _n( 'Viewing article %2$s of %4$s articles', 'Viewing %2$s - %3$s of %4$s articles', $per_page, 'econozel' ), $query->post_count, $start_num, $to_num, $total );
 		}
 
 		return apply_filters( 'econozel_get_article_pagination_count', esc_html( $retstr ) );
