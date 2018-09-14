@@ -865,3 +865,45 @@ function econozel_is_article_featured( $article = 0 ) {
 
 	return apply_filters( 'econozel_is_article_featured', $retval, $article );
 }
+
+/**
+ * Output the Article query pagination count
+ *
+ * @since 1.0.0
+ */
+function econozel_the_article_pagination_count() {
+	echo econozel_get_article_pagination_count();
+}
+
+	/**
+	 * Return the Article query pagination count
+	 *
+	 * @since 1.0.0
+	 *
+	 * @uses apply_filters() Calls 'econozel_get_article_pagination_count'
+	 * @return string Article pagination count
+	 */
+	function econozel_get_article_pagination_count() {
+
+		// Get query object
+		$query = econozel()->article_query;
+
+		if ( empty( $query ) )
+			return false;
+
+		// Set pagination values
+		$start_num = intval( ( $query->get( 'paged' ) - 1 ) * $query->get( 'posts_per_page' ) ) + 1;
+		$to_num    = ( $start_num + ( $query->get( 'posts_per_page' ) - 1 ) > $query->found_posts ) ? $query->found_posts : $start_num + ( $query->get( 'posts_per_page' ) - 1 );
+		$total     = (int) ! empty( $query->found_posts ) ? $query->found_posts : $query->post_count;
+
+		// Several articles in a single page
+		if ( empty( $to_num ) ) {
+			$retstr = sprintf( _n( 'Viewing %1$s article', 'Viewing %1$s articles', $total, 'econozel' ), $total );
+
+		// Several articles in several pages
+		} else {
+			$retstr = sprintf( _n( 'Viewing article %2$s (of %4$s total)', 'Viewing %1$s articles - %2$s through %3$s (of %4$s total)', $total, 'econozel' ), $query->post_count, $start_num, $to_num, $total );
+		}
+
+		return apply_filters( 'econozel_get_article_pagination_count', esc_html( $retstr ) );
+	}
