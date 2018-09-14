@@ -55,6 +55,9 @@ class Econozel_BP_Activity {
 		add_filter( 'bp_activity_get_where_conditions',   array( $this, 'where_conditions'        ), 10, 2 );
 		add_filter( 'bp_activity_set_just-me_scope_args', array( $this, 'multi_author_scope_args' ), 50, 2 );
 
+		// Link directly to the article or comment
+		add_filter( 'bp_activity_get_permalink', array( $this, 'activity_get_permalink' ), 10, 2 );
+
 		// Generate post summary
 		add_filter( 'econozel_get_article_description', array( $this, 'get_post_summary' ), 10, 2 );
 	}
@@ -444,6 +447,25 @@ class Econozel_BP_Activity {
 		}
 
 		return $query_args;
+	}
+
+	/**
+	 * Maybe link directly to topics and replies in activity stream entries
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $link Link to the activity stream item
+	 * @param mixed $activity_object Activity object
+	 * @return string Link to the activity stream item
+	 */
+	public function activity_get_permalink( $link, $activity_object ) {
+
+		// Link new Article items to their own page
+		if ( $this->article_create === $activity_object->type ) {
+			$link = get_permalink( $activity_object->secondary_item_id );
+		}
+
+		return $link;
 	}
 
 	/**
