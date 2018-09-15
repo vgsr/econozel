@@ -784,7 +784,7 @@ function econozel_list_cats( $label, $term = null ) {
  * @param array $args Dropdown arguments
  * @return string Dropdown HTML
  */
-function econozel_dropdown_cats( $dd, $args ) {
+function econozel_dropdown_cats( $dropdown, $args ) {
 
 	// Edition
 	if ( econozel_get_edition_tax_id() === $args['taxonomy'] ) {
@@ -794,10 +794,11 @@ function econozel_dropdown_cats( $dd, $args ) {
 
 			// Define option for the current Edition
 			$selected = selected( 'current', $args['selected'], false );
+			/* translators: the edition that is related to the page context (article or edition) */
 			$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
 
 			// Insert new option before the first term item
-			$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+			$dropdown = substr_replace( $dropdown, $option, strpos( $dropdown, "\t<option class=\"level-" ), 0 );
 		}
 
 		// Add option for the latest Edition
@@ -805,14 +806,15 @@ function econozel_dropdown_cats( $dd, $args ) {
 
 			// Define option for the latest Edition
 			$selected = selected( 'latest', $args['selected'], false );
+			/* translators: the most recently published edition */
 			$option   = "\t<option value='latest'$selected>" . esc_html__( 'Latest Edition', 'econozel' ) . "</option>\n";
 
 			// Insert new option before the first term item
-			$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+			$dropdown = substr_replace( $dropdown, $option, strpos( $dropdown, "\t<option class=\"level-" ), 0 );
 		}
 	}
 
-	return $dd;
+	return $dropdown;
 }
 
 /**
