@@ -6,13 +6,15 @@ Present d' Econozel on your site with articles, editions, and volumes.
 
 > This WordPress plugin requires at least [WordPress](https://wordpress.org) 4.4 and [VGSR](https://github.com/vgsr/vgsr/) 0.1.
 
-Tightly coupled with the VGSR plugin, providing a secured platform to archive and display articles from d' Econozel or any other medium. Articles are clustered by edition, which in turn are clustered in volumes. Since both editions and volumes are stored as WordPress taxonomies, this plugin creates their front-facing pages and paths dynamically.
+Tightly coupled with the VGSR plugin, providing a secured platform to archive and display articles from d' Econozel or any other medium. Articles are clustered by edition, which in turn are clustered in volumes. Because both editions and volumes are stored as WordPress taxonomies, this plugin creates their front-facing pages and paths dynamically.
 
-There are three ways to browse the archived articles:
+There are multiple ways to browse the archived articles:
 
 1. The plugin's root page at `/econozel/` displays a summary of recent article activity
 2. The usual article post type archives, which you can visit at `/econozel/articles/`
-3. The volume or edition archives, which you can visit starting at `/econozel/volumes//` or `/econozel/editions/`
+3. The volume or edition archives, which you can visit starting at `/econozel/volumes/` or at `/econozel/editions/`
+4. A randomly selected article, which you can visit at `/econozel/random/`
+5. A selection of featured articles, which you can visit at `/econozel/featured/`
 
 Several widgets are added to present the plugin's content:
 
@@ -20,6 +22,8 @@ Several widgets are added to present the plugin's content:
 * Article Comments
 
 For delegating article and plugin management to your users, the Econozel Editor role is available.
+
+When using BuddyPress, an author's articles are presented in a custom 'Econozel' profile section. Additionally, activity items are created when an article is published.
 
 ### Theme compatibility ###
 
