@@ -371,19 +371,23 @@ function econozel_get_edition( $edition = 0, $by = 'id' ) {
 }
 
 /**
- * Return the Edition associated with the current page
+ * Return the Edition that is related to current page context
  *
  * @since 1.0.0
  *
- * @param int $edition_id Optional. Edition ID. Defaults to the current edition.
- * @return WP_Term|bool Edition term object when found, else False.
+ * @param bool $object Optional. Whether to return Term object or ID. Defaults to False.
+ * @return WP_Term|bool Edition object or ID when found, else False.
  */
-function econozel_get_current_edition( $edition_id = 0 ) {
-	return ( $edition_id && is_numeric( $edition_id ) )
-		? econozel_get_edition( (int) $edition_id )
-		: ( econozel_is_article( true ) || econozel_is_edition() )
-			? econozel_get_edition()
-			: false;
+function econozel_get_related_edition( $object = false ) {
+
+	// Get the Edition by page context
+	$edition = ( econozel_is_article( true ) || econozel_is_edition() ) ? econozel_get_edition() : false;
+
+	if ( $edition && ! $object ) {
+		$edition = $edition->term_id;
+	}
+
+	return apply_filters( 'econozel_get_related_edition', $edition, $object );
 }
 
 /**

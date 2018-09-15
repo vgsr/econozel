@@ -196,7 +196,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 				'name'                => $this->get_field_name( 'econozel_edition' ),
 				'selected'            => $econozel_edition,
 				'option_none_value'   => 'false', // Results in boolean False when run through `wp_validate_boolean()`
-				'show_option_current' => true,
+				'show_option_related' => true,
 				'show_option_latest'  => true
 			) ); ?>
 		</p>

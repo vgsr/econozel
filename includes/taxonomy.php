@@ -789,13 +789,13 @@ function econozel_dropdown_cats( $dropdown, $args ) {
 	// Edition
 	if ( econozel_get_edition_tax_id() === $args['taxonomy'] ) {
 
-		// Add option for the current Edition
-		if ( ! empty( $args['show_option_current'] ) ) {
+		// Add option for the related Edition
+		if ( ! empty( $args['show_option_related'] ) ) {
 
-			// Define option for the current Edition
-			$selected = selected( 'current', $args['selected'], false );
+			// Define option for the related Edition
+			$selected = selected( 'related', $args['selected'], false );
 			/* translators: the edition that is related to the page context (article or edition) */
-			$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
+			$option   = "\t<option value='related'$selected>" . esc_html__( 'Related Edition', 'econozel' ) . "</option>\n";
 
 			// Insert new option before the first term item
 			$dropdown = substr_replace( $dropdown, $option, strpos( $dropdown, "\t<option class=\"level-" ), 0 );
@@ -910,7 +910,7 @@ function econozel_dropdown_editions( $args = array() ) {
 	return wp_dropdown_categories( wp_parse_args( $args, array(
 		'taxonomy'            => econozel_get_edition_tax_id(),
 		'show_option_none'    => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
-		'show_option_current' => false,
+		'show_option_related' => false,
 		'show_option_latest'  => false,
 
 		/**
