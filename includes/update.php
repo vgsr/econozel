@@ -178,15 +178,14 @@ function econozel_version_updater() {
 	// Get the raw database version
 	$raw_db_version = (int) econozel_get_db_version_raw();
 
-	/** 0.1.0 Branch ********************************************************/
+	/** 1.0.0 Branch ********************************************************/
 
-	// 0.1.0
-	if ( $raw_db_version < 10 ) {
-
+	// 1.0.0
+	if ( $raw_db_version < 20180819 ) {
 		// Do stuff
 	}
 
-	/** All done! *********************************************************/
+	/** All done! ***********************************************************/
 
 	// Bump the version
 	econozel_version_bump();
