@@ -181,7 +181,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 		// Define local variable(s)
 		$title             = isset( $instance['title'] ) ? $instance['title'] : '';
 		$posts_per_page    = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
-		$econozel_edition  = isset( $instance['econozel_edition'] ) ? (bool) $instance['econozel_edition'] : false;
+		$econozel_edition  = isset( $instance['econozel_edition'] ) ? $instance['econozel_edition'] : false;
 		$show_author       = isset( $instance['show_author'] ) ? (bool) $instance['show_author'] : false;
 		$show_date         = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
 		$econozel_archive  = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
@@ -196,7 +196,8 @@ class Econozel_Articles_Widget extends WP_Widget {
 				'name'                => $this->get_field_name( 'econozel_edition' ),
 				'selected'            => $econozel_edition,
 				'option_none_value'   => 'false', // Results in boolean False when run through `wp_validate_boolean()`
-				'show_option_current' => true
+				'show_option_current' => true,
+				'show_option_latest'  => true
 			) ); ?>
 		</p>
 		<p>

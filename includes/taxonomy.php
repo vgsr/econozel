@@ -786,15 +786,30 @@ function econozel_list_cats( $label, $term = null ) {
  */
 function econozel_dropdown_cats( $dd, $args ) {
 
-	/// Edition: Add option for the current Edition
-	if ( econozel_get_edition_tax_id() == $args['taxonomy'] && $args['show_option_current'] ) {
+	// Edition
+	if ( econozel_get_edition_tax_id() === $args['taxonomy'] ) {
 
-		// Define option for the current Edition
-		$selected = selected( 'current', $args['selected'], false );
-		$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
+		// Add option for the current Edition
+		if ( ! empty( $args['show_option_current'] ) ) {
 
-		// Insert new option before the first term item
-		$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+			// Define option for the current Edition
+			$selected = selected( 'current', $args['selected'], false );
+			$option   = "\t<option value='current'$selected>" . esc_html__( 'Current Edition', 'econozel' ) . "</option>\n";
+
+			// Insert new option before the first term item
+			$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+		}
+
+		// Add option for the latest Edition
+		if ( ! empty( $args['show_option_latest'] ) ) {
+
+			// Define option for the latest Edition
+			$selected = selected( 'latest', $args['selected'], false );
+			$option   = "\t<option value='latest'$selected>" . esc_html__( 'Latest Edition', 'econozel' ) . "</option>\n";
+
+			// Insert new option before the first term item
+			$dd  = substr_replace( $dd, $option, strpos( $dd, "\t<option class=\"level-" ), 0 );
+		}
 	}
 
 	return $dd;
@@ -894,6 +909,7 @@ function econozel_dropdown_editions( $args = array() ) {
 		'taxonomy'            => econozel_get_edition_tax_id(),
 		'show_option_none'    => esc_html__( '&mdash; No Edition &mdash;', 'econozel' ),
 		'show_option_current' => false,
+		'show_option_latest'  => false,
 
 		/**
 		 * Ordering arguments, see {@see econozel_query_terms_default_args()}.
