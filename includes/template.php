@@ -289,8 +289,11 @@ function econozel_parse_query_vars( $posts_query ) {
 	if ( true === $posts_query->get( 'suppress_filters' ) )
 		return;
 
+	// Get Edition query variable
+	$edition = $posts_query->get( 'econozel_edition' );
+
 	// Query by Edition
-	if ( $edition = $posts_query->get( 'econozel_edition' ) ) {
+	if ( $edition ) {
 
 		// Post type
 		$posts_query->set( 'post_type', econozel_get_article_post_type() );
@@ -310,6 +313,20 @@ function econozel_parse_query_vars( $posts_query ) {
 			$posts_query->set( 'orderby', 'menu_order' );
 			$posts_query->set( 'order',   'ASC'        );
 		}
+
+	// Query by no Edition
+	} elseif ( false === $edition ) {
+
+		// Post type
+		$posts_query->set( 'post_type', econozel_get_article_post_type() );
+
+		// Edition taxonomy
+		$tax_query   = $posts_query->get( 'tax_query', array() );
+		$tax_query[] = array(
+			'taxonomy' => econozel_get_edition_tax_id(),
+			'operator' => 'NOT EXISTS'
+		);
+		$posts_query->set( 'tax_query', $tax_query );
 	}
 }
 
