@@ -11,7 +11,7 @@
  * Plugin Name:       Econozel
  * Description:       Present d' Econozel on your site with articles, editions, and volumes.
  * Plugin URI:        https://github.com/vgsr/econozel/
- * Version:           1.0.0-beta1
+ * Version:           1.0.0
  * Author:            Laurens Offereins
  * Author URI:        https://github.com/vgsr/
  * Text Domain:       econozel
@@ -71,8 +71,8 @@ final class Econozel {
 
 		/** Versions **********************************************************/
 
-		$this->version      = '1.0.0-beta2';
-		$this->db_version   = 20180819;
+		$this->version      = '1.0.0';
+		$this->db_version   = 20180917;
 
 		/** Paths *************************************************************/
 

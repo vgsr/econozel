@@ -181,7 +181,7 @@ function econozel_version_updater() {
 	/** 1.0.0 Branch ********************************************************/
 
 	// 1.0.0
-	if ( $raw_db_version < 20180819 ) {
+	if ( $raw_db_version < 20180917 ) {
 		// Do stuff
 	}
 
