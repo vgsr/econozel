@@ -789,6 +789,17 @@ function econozel_dropdown_cats( $dropdown, $args ) {
 	// Edition
 	if ( econozel_get_edition_tax_id() === $args['taxonomy'] ) {
 
+		// Add option for no Edition
+		if ( ! empty( $args['show_option_without'] ) ) {
+
+			// Define option for no Edition
+			$selected = selected( 'false', $args['selected'], false );
+			$option   = "\t<option value='false'$selected>" . esc_html__( 'Without Edition', 'econozel' ) . "</option>\n";
+
+			// Insert new option before the first term item
+			$dropdown = substr_replace( $dropdown, $option, strpos( $dropdown, "\t<option class=\"level-" ), 0 );
+		}
+
 		// Add option for the related Edition
 		if ( ! empty( $args['show_option_related'] ) ) {
 
@@ -925,4 +936,43 @@ function econozel_dropdown_editions( $args = array() ) {
 			)
 		)
 	) ) );
+}
+
+/**
+ * Return the Edition based on the taxonomy dropdown's value
+ *
+ * @since 1.0.0
+ *
+ * @param string $dropdown_value Selected dropdown value
+ * @param string $by Optional. Type of value to get the Edition by, see {@see econozel_get_edition()}.
+ * @return int|bool Edition object or False when not found.
+ */
+function econozel_get_dropdown_edition( $dropdown_value = false, $by = 'id' ) {
+
+	// Define return variable
+	$edition = null;
+
+	// Without Edition selected
+	if ( 'false' === $dropdown_value ) {
+		$edition = false;
+
+	// Get related Edition
+	} elseif ( 'related' === $dropdown_value ) {
+		$edition = econozel_get_related_edition( true );
+
+	// Get latest Edition
+	} elseif ( 'latest' === $dropdown_value ) {
+		$edition = econozel_get_latest_edition( true );
+
+	// Get Edition
+	} elseif ( $term = econozel_get_edition( $dropdown_value, $by ) ) {
+		$edition = $term;
+	}
+
+	// Make sure that a no-match does not result in a without-edition
+	if ( ! $edition && 'false' !== $dropdown_value ) {
+		$edition = null;
+	}
+
+	return $edition;
 }

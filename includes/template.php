@@ -290,7 +290,7 @@ function econozel_parse_query_vars( $posts_query ) {
 		return;
 
 	// Get Edition query variable
-	$edition = $posts_query->get( 'econozel_edition' );
+	$edition = $posts_query->get( 'econozel_edition', null );
 
 	// Query by Edition
 	if ( $edition ) {
@@ -353,7 +353,7 @@ function econozel_posts_clauses( $clauses, $posts_query ) {
 		return $clauses;
 
 	// Querying for recent or archived posts
-	if ( null !== $posts_query->get( 'econozel_archive', null ) && ! $posts_query->get( 'econozel_edition' ) ) {
+	if ( null !== $posts_query->get( 'econozel_archive', null ) && null === $posts_query->get( 'econozel_edition', null ) ) {
 
 		/**
 		 * Recent posts are published in the latest Edition or those not published in

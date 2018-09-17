@@ -74,25 +74,25 @@ class Econozel_Articles_Widget extends WP_Widget {
 			'show_date'         => false,
 
 			// Query args
-			'econozel_edition'  => false,
-			'econozel_archive'  => false,
+			'econozel_edition'  => null,
+			'econozel_archive'  => null,
 			'econozel_featured' => false,
 			'posts_per_page'    => 5,
 		) );
 
-		// Detect whether to query by the current Edition
+		// Detect whether to query by an Edition
 		if ( $r['econozel_edition'] ) {
-			$edition = econozel_get_current_edition( $r['econozel_edition'] );
-			$r['econozel_edition'] = $edition ? $edition->term_id : false;
-		}
+			$edition = econozel_get_dropdown_edition( $r['econozel_edition'] );
+			$r['econozel_edition'] = is_a( $edition, 'WP_Term' ) ? $edition->term_id : $edition;
 
-		// When querying by Edition, query all its Articles and override the title
-		if ( $r['econozel_edition'] ) {
-			$r['posts_per_page'] = -1;
-			$title = econozel_get_edition_title( $r['econozel_edition'] );
+			// When querying by Edition, query all its Articles and override the title
+			if ( $r['econozel_edition'] ) {
+				$r['posts_per_page'] = -1;
+				$title = econozel_get_edition_title( $r['econozel_edition'] );
 
-			if ( $title ) {
-				$r['title'] = sprintf( esc_html__( 'Articles in %s', 'econozel' ), $title );
+				if ( $title ) {
+					$r['title'] = sprintf( esc_html__( 'Articles in %s', 'econozel' ), $title );
+				}
 			}
 		}
 
@@ -100,8 +100,8 @@ class Econozel_Articles_Widget extends WP_Widget {
 		if ( $r['econozel_featured'] ) {
 			$r['post_status'] = econozel_get_featured_status_id();
 
-			// Do not limit to archived or recent articles
-			unset( $r['econozel_archive'] );
+			// Do not limit to Editions or archived or recent articles
+			unset( $r['econozel_edition'], $r['econozel_archive'] );
 		}
 
 		// Open widget 
@@ -121,6 +121,7 @@ class Econozel_Articles_Widget extends WP_Widget {
 				echo '<p>' . is_string( $r['description'] ) ? $r['description'] : $this->widget_options['description'] . '</p>';
 			}
 
+			// Output page list
 			printf( '<ul>%s</ul>', walk_page_tree( econozel()->article_query->posts, 0, econozel_is_article( true ) ? get_queried_object_id() : 0, $r ) );
 
 		// Nothing found
@@ -152,18 +153,16 @@ class Econozel_Articles_Widget extends WP_Widget {
 		$instance['show_date'] = (bool) $new_instance['show_date'];
 
 		/**
-		 * Edition
-		 * 
-		 * Accept a term ID for the given Edition, or a boolean True 
-		 * for the current Edition.
+		 * Accept a term ID for the given Edition, 'related' for the related Edition, 'latest'
+		 * for the latest Edition, or either 'false' or a boolean False for no Edition.
 		 */
-		if ( isset( $new_instance['econozel_edition'] ) ) {
-			$instance['econozel_edition'] = is_numeric( $new_instance['econozel_edition'] ) ? (int) $new_instance['econozel_edition'] : wp_validate_boolean( $new_instance['econozel_edition'] );
-		} else {
-			$instance['econozel_edition'] = false;
-		}
+		$instance['econozel_edition'] = is_numeric( $new_instance['econozel_edition'] )
+			? (int) $new_instance['econozel_edition']
+			: in_array( $new_instance['econozel_edition'], array( 'related', 'latest' ) )
+				? $new_instance['econozel_edition']
+				: wp_validate_boolean( $new_instance['econozel_edition'] );
 
-		$instance['econozel_archive'] = (bool) $new_instance['econozel_archive'];
+		$instance['econozel_archive'] = -1 != $new_instance['econozel_archive'] ? wp_validate_boolean( $new_instance['econozel_archive'] ) : null;
 		$instance['econozel_featured'] = (bool) $new_instance['econozel_featured'];
 
 		return $instance;
@@ -181,10 +180,10 @@ class Econozel_Articles_Widget extends WP_Widget {
 		// Define local variable(s)
 		$title             = isset( $instance['title'] ) ? $instance['title'] : '';
 		$posts_per_page    = isset( $instance['posts_per_page'] ) ? $instance['posts_per_page'] : 5;
-		$econozel_edition  = isset( $instance['econozel_edition'] ) ? $instance['econozel_edition'] : false;
+		$econozel_edition  = isset( $instance['econozel_edition'] ) ? $instance['econozel_edition'] : -1;
+		$econozel_archive  = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : -1;
 		$show_author       = isset( $instance['show_author'] ) ? (bool) $instance['show_author'] : false;
 		$show_date         = isset( $instance['show_date'] ) ? (bool) $instance['show_date'] : false;
-		$econozel_archive  = isset( $instance['econozel_archive'] ) ? (bool) $instance['econozel_archive'] : false;
 		$econozel_featured = isset( $instance['econozel_featured'] ) ? (bool) $instance['econozel_featured'] : false;
 
 		?>
@@ -195,10 +194,20 @@ class Econozel_Articles_Widget extends WP_Widget {
 				'id'                  => $this->get_field_id( 'econozel_edition' ),
 				'name'                => $this->get_field_name( 'econozel_edition' ),
 				'selected'            => $econozel_edition,
-				'option_none_value'   => 'false', // Results in boolean False when run through `wp_validate_boolean()`
+				'show_option_none'    => esc_html__( '&mdash; No Selection &mdash;', 'econozel' ),
+				'show_option_without' => true,
 				'show_option_related' => true,
 				'show_option_latest'  => true
 			) ); ?>
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'econozel_archive' ); ?>"><?php esc_html_e( 'Limit articles to show:', 'econozel' ); ?></label>
+			<select id="<?php echo $this->get_field_id( 'econozel_archive' ); ?>" name="<?php echo $this->get_field_name( 'econozel_archive' ); ?>">
+				<option value="-1"><?php esc_html_e( '&mdash; All articles &mdash;', 'econozel' ); ?></option>
+				<option value="false"<?php selected( false, $econozel_archive ); ?>><?php esc_html_e( 'Only recent articles', 'econozel' ); ?></option>
+				<option value="true"<?php selected( true,  $econozel_archive ); ?>><?php esc_html_e( 'Only older articles',  'econozel' ); ?></option>
+			</select>
+			<span class="description"><?php esc_html_e( 'Only effects unfiltered article lists.', 'econozel' ); ?></span>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:' ); ?></label>
@@ -217,10 +226,6 @@ class Econozel_Articles_Widget extends WP_Widget {
 		<p>
 			<input type="checkbox" class="checkbox"<?php checked( $show_date ); ?> id="<?php echo $this->get_field_id( 'show_date' ); ?>" name="<?php echo $this->get_field_name( 'show_date' ); ?>"/>
 			<label for="<?php echo $this->get_field_id( 'show_date' ); ?>"><?php esc_html_e( 'Display edition or post date?', 'econozel' ); ?></label>
-		</p>
-		<p>
-			<input type="checkbox" class="checkbox"<?php checked( $econozel_archive ); ?> id="<?php echo $this->get_field_id( 'econozel_archive' ); ?>" name="<?php echo $this->get_field_name( 'econozel_archive' ); ?>"/>
-			<label for="<?php echo $this->get_field_id( 'econozel_archive' ); ?>"><?php esc_html_e( 'Display articles from the archive', 'econozel' ); ?></label>
 		</p>
 		<p>
 			<input type="checkbox" class="checkbox"<?php checked( $econozel_featured ); ?> id="<?php echo $this->get_field_id( 'econozel_featured' ); ?>" name="<?php echo $this->get_field_name( 'econozel_featured' ); ?>"/>
