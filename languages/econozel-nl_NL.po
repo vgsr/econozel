@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Econozel\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-17 20:01+0000\n"
-"PO-Revision-Date: 2018-09-17 20:06+0000\n"
+"PO-Revision-Date: 2018-10-10 13:34+0000\n"
 "Last-Translator: Laurens Offereins <lmoffereins@gmail.com>\n"
 "Language-Team: Nederlands\n"
 "Language: nl_NL\n"
@@ -265,7 +265,7 @@ msgstr "Pagina %d"
 #, php-format
 msgid "Viewing %1$s article"
 msgid_plural "Viewing %1$s articles"
-msgstr[0] "Viewing %1$s article"
+msgstr[0] "Je bekijkt %1$s artikel"
 msgstr[1] "Je bekijkt %1$s artikelen"
 
 #: ../../../../src/wp-content/plugins/econozel/includes/articles.php:928
