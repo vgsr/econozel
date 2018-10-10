@@ -144,7 +144,7 @@ function econozel_is_deactivation( $basename = '' ) {
  * @since 1.0.0
  */
 function econozel_version_bump() {
-	update_site_option( 'econozel_db_version', econozel_get_db_version() );
+	update_option( 'econozel_db_version', econozel_get_db_version() );
 }
 
 /**
