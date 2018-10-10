@@ -897,7 +897,7 @@ function is_econozel() {
 	} elseif ( econozel_is_article_archive() ) {
 		$retval = true;
 
-	} elseif ( econozel_is_article() ) {
+	} elseif ( econozel_is_article( true ) ) {
 		$retval = true;
 	}
 
