@@ -44,5 +44,10 @@ This plugin is not hosted in the official WordPress repository. Instead, updatin
 
 == Changelog ==
 
+= 1.0.1 =
+* Updated author urls to point to their profile's published articles
+* Fixed bug where search results pages with aritcles would be marked as plugin pages
+* Fixed bug where the author's articles on their BuddyPress profile would not be shown for visitors
+
 = 1.0.0 =
 * Initial release
