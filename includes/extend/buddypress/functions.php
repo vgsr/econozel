@@ -23,6 +23,18 @@ function econozel_bp_enable_summary() {
 	return (bool) apply_filters( 'econozel_bp_enable_summary', false );
 }
 
+/**
+ * Return whether to point author urls to their published articles
+ *
+ * @since 1.0.1
+ *
+ * @param int $user_id Optional. User ID. Defaults to none.
+ * @return bool Link author urls to published articles?
+ */
+function econozel_bp_published_articles_author_url( $user_id = 0 ) {
+	return (bool) apply_filters( 'econozel_bp_published_articles_author_url', true, $user_id );
+}
+
 /** Components ***************************************************************/
 
 /**

@@ -50,7 +50,16 @@ class Econozel_BP_Members {
 	 * @return string Article author url
 	 */
 	public function get_article_author_url( $url, $user_id, $article ) {
-		return bp_core_get_user_domain( $user_id );
+
+		// Profile url
+		$url = trailingslashit( bp_core_get_user_domain( $user_id ) );
+
+		// Link to published articles
+		if ( econozel_bp_published_articles_author_url( $user_id ) ) {
+			$url .= econozel_bp_get_component() . '/' . econozel_bp_get_article_slug();
+		}
+
+		return $url;
 	}
 
 	/**
