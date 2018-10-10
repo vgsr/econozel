@@ -127,9 +127,12 @@ function econozel_query_articles( $args = array() ) {
 	$query->post         = null;
 	$query->posts        = array();
 
+	// Get the associated edition
+	$edition_id = econozel_get_edition_id();
+
 	// Define query args
 	$r = wp_parse_args( $args, array(
-		'econozel_edition' => econozel_get_edition_id(),
+		'econozel_edition' => $edition_id ? $edition_id : null,
 		'post_type'        => econozel_get_article_post_type(),
 		'posts_per_page'   => -1,
 		'fields'           => 'all'
