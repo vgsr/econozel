@@ -198,7 +198,7 @@ function econozel_admin_setting_callback_general_section() { ?>
  */
 function econozel_admin_setting_callback_limit_admin_access() { ?>
 
-	<input name="_econozel_limited_admin_access" id="_econozel_limited_admin_access" type="checkbox" value="1" <?php checked( econozel_limited_admin_access() ); ?>>
+	<input name="_econozel_limited_admin_access" id="_econozel_limited_admin_access" type="checkbox" value="1" <?php checked( get_option( '_econozel_limited_admin_access' ) ); ?>>
 	<label for="_econozel_limited_admin_access"><?php esc_html_e( 'Limit Econozel admin access to Econozel Editors only', 'econozel' ); ?></label>
 
 	<?php
@@ -224,7 +224,7 @@ function econozel_admin_setting_callback_issue_whitelist() { ?>
  */
 function econozel_admin_setting_callback_volume_title() { ?>
 
-	<input name="_econozel_prepend_volume_title" id="_econozel_prepend_volume_title" type="checkbox" value="1" <?php checked( econozel_prepend_volume_title() ); ?>>
+	<input name="_econozel_prepend_volume_title" id="_econozel_prepend_volume_title" type="checkbox" value="1" <?php checked( get_option( '_econozel_prepend_volume_title', true ) ); ?>>
 	<label for="_econozel_prepend_volume_title"><?php esc_html_e( "Prefix all volume titles with the term 'Volume' (Useful when you have only numeric volumes)", 'econozel' ); ?></label>
 
 	<?php
