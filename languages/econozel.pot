@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-17 20:01+0000\n"
+"POT-Creation-Date: 2020-06-21 19:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -174,10 +174,10 @@ msgstr ""
 #. Name of the plugin
 #: ../../../../src/wp-content/plugins/econozel/includes/admin.php:1176
 #: ../../../../src/wp-content/plugins/econozel/includes/articles.php:37
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:35
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:148
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:199
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:226
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:32
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:145
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:196
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:223
 msgid "Econozel"
 msgstr ""
 
@@ -256,19 +256,19 @@ msgstr ""
 msgid "Articles list"
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:795
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:798
 #, php-format
 msgid "Page %d"
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:924
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:927
 #, php-format
 msgid "Viewing %1$s article"
 msgid_plural "Viewing %1$s articles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:928
+#: ../../../../src/wp-content/plugins/econozel/includes/articles.php:931
 #, php-format
 msgid "Viewing article %2$s of %4$s articles"
 msgid_plural "Viewing %2$s - %3$s of %4$s articles"
@@ -425,6 +425,10 @@ msgid "%d article"
 msgid_plural "%d articles"
 msgstr[0] ""
 msgstr[1] ""
+
+#: ../../../../src/wp-content/plugins/econozel/includes/functions.php:376
+msgid "Prevent Edition documents from being indexed"
+msgstr ""
 
 #: ../../../../src/wp-content/plugins/econozel/includes/functions.php:553
 #: ../../../../src/wp-content/plugins/econozel/includes/extend/woosidebars.php:96
@@ -674,17 +678,17 @@ msgid "Editions navigation"
 msgstr ""
 
 #: ../../../../src/wp-content/plugins/econozel/includes/template.php:1631
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:139
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:151
 msgid "Older articles"
 msgstr ""
 
 #: ../../../../src/wp-content/plugins/econozel/includes/template.php:1632
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:140
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:152
 msgid "Newer articles"
 msgstr ""
 
 #: ../../../../src/wp-content/plugins/econozel/includes/template.php:1633
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:141
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:153
 msgid "Articles navigation"
 msgstr ""
 
@@ -954,21 +958,21 @@ msgstr ""
 msgid "%1$s commented on the article %2$s, on the site %3$s"
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:81
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:78
 msgid "Search Articles..."
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:169
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:207
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:113
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:166
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/buddypress.php:204
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:125
 msgid "Articles published"
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:151
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:163
 msgid "You have not published any articles."
 msgstr ""
 
-#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:151
+#: ../../../../src/wp-content/plugins/econozel/includes/extend/buddypress/functions.php:163
 msgid "This user has not published any articles."
 msgstr ""
 
