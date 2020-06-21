@@ -3,7 +3,7 @@ Contributors: Offereins
 Tags: vgsr, econozel, magazine, article, edition, volume
 Requires at least: 4.4
 Tested up to: 4.9.8
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,6 +43,10 @@ Activate Econozel in the "Plugins" admin panel using the "Activate" link. If you
 This plugin is not hosted in the official WordPress repository. Instead, updating is supported through use of the [GitHub Updater](https://github.com/afragen/github-updater/) plugin by @afragen and friends.
 
 == Changelog ==
+
+= 1.0.2 =
+* Fix bug when BuddyPress is not installed
+* Fix bugs for PHP 7.4+
 
 = 1.0.1 =
 * Updated author urls to point to their profile's published articles
