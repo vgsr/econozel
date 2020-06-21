@@ -10,7 +10,7 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'Econozel_BP_Component' ) ) :
+if ( ! class_exists( 'Econozel_BP_Component' ) && class_exists( 'BP_Component' ) ) :
 /**
  * Loads Econozel Component
  *
