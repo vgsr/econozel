@@ -158,9 +158,9 @@ class Econozel_Articles_Widget extends WP_Widget {
 		 */
 		$instance['econozel_edition'] = is_numeric( $new_instance['econozel_edition'] )
 			? (int) $new_instance['econozel_edition']
-			: in_array( $new_instance['econozel_edition'], array( 'related', 'latest' ) )
+			: ( in_array( $new_instance['econozel_edition'], array( 'related', 'latest' ) )
 				? $new_instance['econozel_edition']
-				: wp_validate_boolean( $new_instance['econozel_edition'] );
+				: wp_validate_boolean( $new_instance['econozel_edition'] ) );
 
 		$instance['econozel_archive'] = -1 != $new_instance['econozel_archive'] ? wp_validate_boolean( $new_instance['econozel_archive'] ) : null;
 		$instance['econozel_featured'] = (bool) $new_instance['econozel_featured'];
