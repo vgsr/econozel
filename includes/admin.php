@@ -1220,7 +1220,7 @@ class Econozel_Admin {
 }
 
 /**
- * Setup the form search class
+ * Setup the admin class
  *
  * @since 1.0.0
  *
