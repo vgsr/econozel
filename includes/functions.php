@@ -373,7 +373,7 @@ function econozel_update_htaccess() {
 
 	if ( $documents ) {
 		$lines[] = '';
-		$lines[] = '# block edition documents from being indexed';
+		$lines[] = '# ' . esc_html__( 'Prevent Edition documents from being indexed', 'econozel' );
 		$lines[] = '<FilesMatch "^(' . implode( '|', $documents ) . ')$">';
 		$lines[] = 'Header Set X-Robots-Tag "noindex, noarchive, nosnippet"';
 		$lines[] = '</FilesMatch>';
