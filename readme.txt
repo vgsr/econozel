@@ -44,6 +44,9 @@ This plugin is not hosted in the official WordPress repository. Instead, updatin
 
 == Changelog ==
 
+= 1.0.3 =
+* Fix fatal error in admin when the plugin is loaded unexpectedly early
+
 = 1.0.2 =
 * Fix bug when BuddyPress is not installed
 * Fix bugs for PHP 7.4+
