@@ -911,7 +911,7 @@ class Econozel_Admin {
 		}
 
 		// When we're able to determine where we are
-		if ( get_current_screen() && null !== get_current_screen()->id ) {
+		if ( function_exists( 'get_current_screen' ) && get_current_screen() && null !== get_current_screen()->id ) {
 
 			// Bail when not on the Articles list table page
 			if ( 'edit-' . econozel_get_article_post_type() !== get_current_screen()->id ) {
